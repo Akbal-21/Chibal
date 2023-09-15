@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Administrador {
+  Usuario_id Int      @id
+  Escuela_id Int?
+  Turno_id   Int?
+  Escuela    Escuela? @relation(fields: [Escuela_id], references: [Escuela_id], onDelete: NoAction, onUpdate: NoAction)
+  Turno      Turno?   @relation(fields: [Turno_id], references: [Turno_id], onDelete: NoAction, onUpdate: NoAction)
+  Usuarios   Usuarios @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Alumnos {
+  Usuario_id Int          @id
+  Grupo_id   Int?
+  Grupos     Grupos?      @relation(fields: [Grupo_id], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
+  Usuarios   Usuarios     @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+  Respuestas Respuestas[]
+}
+
+model Ejercicios {
+  Ejercicios_id    Int            @id @default(autoincrement())
+  NombreEjercicio  String?        @db.VarChar
+  MaestroID        Int?
+  GrupoID          Int?
+  TipoEjercicio_id Int?
+  FechaPublicacion DateTime?      @db.Date
+  FechaLimite      DateTime?      @db.Date
+  FechaEntrega     DateTime?      @db.Date
+  Estado_id        Int?
+  Estado           Estado?        @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
+  Grupos           Grupos?        @relation(fields: [GrupoID], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
+  Maestros         Maestros?      @relation(fields: [MaestroID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  TipoEjercicio    TipoEjercicio? @relation(fields: [TipoEjercicio_id], references: [Tipo_id], onDelete: NoAction, onUpdate: NoAction)
+  Incisos          Incisos[]
+}
+
+model Escuela {
+  Escuela_id    Int             @id @default(autoincrement())
+  Nombre        String          @db.VarChar
+  Administrador Administrador[]
+  Grupos        Grupos[]
+  Maestros      Maestros[]
+}
+
+model Estado {
+  Estado_id  Int          @id @default(autoincrement())
+  Nombre     String       @db.VarChar
+  Ejercicios Ejercicios[]
+}
+
+model Grado {
+  Grado_id Int      @id @default(autoincrement())
+  Nivel    String   @db.VarChar
+  Grupos   Grupos[]
+}
+
+model Grupos {
+  Grupos_id   Int          @id @default(autoincrement())
+  Escuela_id  Int?
+  NombreGrupo String?      @db.VarChar
+  Maestro_id  Int?
+  Turno_id    Int?
+  Grado_id    Int?
+  Alumnos     Alumnos[]
+  Ejercicios  Ejercicios[]
+  Escuela     Escuela?     @relation(fields: [Escuela_id], references: [Escuela_id], onDelete: NoAction, onUpdate: NoAction)
+  Grado       Grado?       @relation(fields: [Grado_id], references: [Grado_id], onDelete: NoAction, onUpdate: NoAction)
+  Maestros    Maestros?    @relation(fields: [Maestro_id], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  Turno       Turno?       @relation(fields: [Turno_id], references: [Turno_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Incisos {
+  Incisos_id   Int          @id @default(autoincrement())
+  LoSolicitado String?      @db.VarChar
+  EjercicioID  Int?
+  Ejercicios   Ejercicios?  @relation(fields: [EjercicioID], references: [Ejercicios_id], onDelete: NoAction, onUpdate: NoAction)
+  Respuestas   Respuestas[]
+}
+
+model Maestros {
+  Usuario_id Int          @id
+  Escuela_id Int?
+  Ejercicios Ejercicios[]
+  Grupos     Grupos[]
+  Escuela    Escuela?     @relation(fields: [Escuela_id], references: [Escuela_id], onDelete: NoAction, onUpdate: NoAction)
+  Usuarios   Usuarios     @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Respuestas {
+  AlumnoID  Int
+  Imagen    String? @db.VarChar
+  Puntaje   Int?
+  Respuesta String? @db.VarChar
+  Inciso_id Int
+  Alumnos   Alumnos @relation(fields: [AlumnoID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  Incisos   Incisos @relation(fields: [Inciso_id], references: [Incisos_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([AlumnoID, Inciso_id])
+}
+
+model SuperAdmin {
+  Usuario_id Int      @id
+  Usuarios   Usuarios @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model TipoEjercicio {
+  Tipo_id    Int          @id @default(autoincrement())
+  Nombre     String       @db.VarChar
+  Ejercicios Ejercicios[]
+}
+
+model Turno {
+  Turno_id      Int             @id @default(autoincrement())
+  Horario       String          @db.VarChar
+  Administrador Administrador[]
+  Grupos        Grupos[]
+}
+
+model Usuarios {
+  Usuarios_id   Int            @id @default(autoincrement())
+  Nombres       String         @db.VarChar
+  Apellidos     String         @db.VarChar
+  Correo        String         @unique @db.VarChar
+  Contrasena    String         @db.VarChar
+  Administrador Administrador?
+  Alumnos       Alumnos?
+  Maestros      Maestros?
+  SuperAdmin    SuperAdmin?
+}

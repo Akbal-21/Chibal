@@ -1,20 +1,40 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
-  plugins: [],
-}
-export default config
+  plugins: [
+    require("rippleui")({
+      themes: [
+        {
+          defaultStyle: true,
+          prefersColorScheme: true,
+          themeName: "light",
+          colorScheme: "light",
+          colors: {
+            backgroundPrimary: "#a5d5cc",
+            red_orange: "#fd3d31",
+            my_sin: "#fdb731",
+            golden_fizz: "#fdf72b",
+            screamin_green: "#3cfd5b",
+            dodger_blue: "#3cbcfc",
+          },
+        },
+      ],
+      removeThemes: ["dark"],
+    }),
+  ],
+};
+export default config;
