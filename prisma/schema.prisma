@@ -64,7 +64,7 @@ model Grado {
 model Grupos {
   Grupos_id   Int          @id @default(autoincrement())
   Escuela_id  Int?
-  NombreGrupo String?      @db.VarChar
+  NombreGrupo String       @db.VarChar
   Maestro_id  Int?
   Turno_id    Int?
   Grado_id    Int?

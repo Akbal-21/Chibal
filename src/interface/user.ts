@@ -4,4 +4,5 @@ export interface IUser {
   Apellidos: string;
   Correo: string;
   Contrasena?: string;
+  roll: string;
 }

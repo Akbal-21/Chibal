@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import { AppdataSource } from "@/db/db";
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -12,7 +12,7 @@ export default function handler(
 ) {
   let a;
   switch (req.method) {
-    case "POST":
+    case "GET":
       return encript(req, res);
 
     default:
@@ -21,9 +21,6 @@ export default function handler(
   // const encript = bcrypt.hashSync(password, 10);
 }
 async function encript(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const data = req.body;
-  const { email, password } = data;
-  const pass = bcrypt.hashSync(password, 10);
-  console.log({ pass });
-  return res.status(200).json({ name: "Hola" });
+  await AppdataSource.initialize();
+  return res.status(200).json({ name: "John Doe" });
 }

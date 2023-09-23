@@ -1,9 +1,11 @@
 import { AuthLayouth } from "@/components/layouths";
-import { AuthContext } from "@/context";
+import { useLoginUser } from "@/store/auth";
 import { isEmail } from "@/utils";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+// ~ Icons
 
 type FormData = {
   email: string;
@@ -13,7 +15,8 @@ type FormData = {
 const LoginPage = () => {
   const router = useRouter();
 
-  const { loginUser } = useContext(AuthContext);
+  // const { loginUser } = useContext(AuthContext);
+  const { loginUser } = useLoginUser();
 
   //*Formulario
   const {
@@ -27,6 +30,7 @@ const LoginPage = () => {
 
   // *funcion del form
   const onLoginUser = async ({ email, password }: FormData) => {
+    // await login(email, password);
     const isValidLogin = await loginUser(email, password);
     if (!isValidLogin) {
       setShowError(true);
@@ -39,11 +43,7 @@ const LoginPage = () => {
 
   return (
     <AuthLayouth titel={"Inicio de sesión"}>
-      <div
-        className={
-          "flex min-h-screen flex-col items-center justify-between p-[calc(100%/4)] "
-        }
-      >
+      <div className="flex min-h-screen flex-col items-center justify-between p-[calc(100%/4)] ">
         <div className="bg-my_sin w-[400px] p-2 rounded-md">
           <h1 className="text-center text-xl ">Inicio de sesión</h1>
           {showError && (
