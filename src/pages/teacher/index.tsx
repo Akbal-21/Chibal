@@ -1,8 +1,12 @@
+import { TeacherLayouth } from "@/components";
+
 const TeacherPage = () => {
   return (
-    <div>
-      <h3>TeacherPage</h3>
-    </div>
+    <TeacherLayouth titel="Bienvenido">
+      <div>
+        <h3>TeacherPage</h3>
+      </div>
+    </TeacherLayouth>
   );
 };
 

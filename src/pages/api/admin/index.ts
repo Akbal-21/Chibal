@@ -1,67 +1,28 @@
-import { ISchool } from "@/interface";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data =
-  | {
-      message: string;
-    }
-  | {
-      teachers: ISchool;
-    };
+type Data = {
+  message: string;
+};
 
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
   switch (req.method) {
-    case "GET":
-      return getAllDataSchool(req, res);
+    case "DELETE":
+      return deleteTeacher(req, res);
 
     default:
       return res.status(400).json({ message: "Bad Request" });
   }
 }
 
-async function getAllDataSchool(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>,
-) {
-  const a = req.query;
-  console.log(a);
+async function deleteTeacher(req: NextApiRequest, res: NextApiResponse<Data>) {
+  const { Usuario_id } = req.body as { Usuario_id: number };
+  console.log(Usuario_id);
 
-  // await db.prisma.$connect();
-  // const teachers = await db.prisma.administrador.findUnique({
-  //   where: {
-  //     Usuario_id: Usuarios_id,
-  //   },
-  //   select: {
-  //     Escuela: {
-  //       select: {
-  //         Nombre: true,
-  //         Grupos: {
-  //           select: {
-  //             Grupos_id: true,
-  //             NombreGrupo: true,
-  //             Maestros: {
-  //               select: {
-  //                 Usuario_id: true,
-  //                 Usuarios: {
-  //                   select: {
-  //                     Nombres: true,
-  //                     Apellidos: true,
-  //                   },
-  //                 },
-  //               },
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
+  // await db.prisma.$connect()
 
-  // await db.prisma.$disconnect();
+  // const user = await db.prisma.
 
-  // if (!teachers) {
-  //   return res.status(400).json({ message: "Bad Request" });
-  // }
+  // await db.prisma.$disconnect()
 
   return res.status(200).json({ message: "Hola" });
 }
