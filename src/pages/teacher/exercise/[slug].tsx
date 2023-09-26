@@ -1,6 +1,7 @@
 import { TeacherLayouth } from "@/components";
 import { getTypeofExercise } from "@/db/teacher";
 import { IExercise, ITypeExercise } from "@/interface/";
+import { useExerciseStore } from "@/store";
 import { GetServerSideProps } from "next";
 import { FC, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
@@ -25,6 +26,8 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
   const [typeExercise, setTypeExercise] = useState("");
   const [typeExcerciseId, setTypeExcerciseID] = useState<number>(0);
 
+  const { excercise } = useExerciseStore();
+
   useEffect(() => {
     setValue("TipoEjercicio_id", typeExcerciseId);
     if (datePublic !== null) {
@@ -33,8 +36,6 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
     if (dateLimit !== null) {
       setValue("FechaLimite", dateLimit.toDateString());
     }
-
-    console.log({ datePublic, dateLimit, typeExcercise: typeExercise });
   }, [typeExcerciseId, datePublic, dateLimit]);
 
   const {
@@ -48,12 +49,23 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
     defaultValues: exercise,
   });
 
+  const onSubmit = (form: FormData) => {
+    if (form.NombreEjercicio.length < 3) {
+      return alert("debe de tener un nombre el ejercicio");
+    }
+    if (!excercise === null) {
+      return alert("debe de agregar un inciso por lo menos");
+    }
+
+    console.log({ form, excercise });
+  };
+
   return (
     <TeacherLayouth titel={`Ejercicio ${exercise.Ejercicios_id}`}>
       <div className="pt-11">
         <section className="bg-gray-2 rounded-xl">
           <div className="p-8 shadow-lg">
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control relative w-full">
                 Nombre del ejercicio:
                 {/* <label className="sr-only">Name</label> */}
@@ -127,7 +139,7 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
 
               <div className="mt-4">
                 <button
-                  type="button"
+                  type="submit"
                   className="rounded-lg btn btn-primary btn-block"
                 >
                   Guadar

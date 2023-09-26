@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface DataExercise {
   solicitado: string;
   typeExercise: string;
+  typeExerciseId: number;
 }
 
 interface Exercise {
