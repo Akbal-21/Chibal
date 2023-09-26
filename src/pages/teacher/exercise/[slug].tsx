@@ -2,18 +2,20 @@ import { TeacherLayouth } from "@/components";
 import { getTypeofExercise } from "@/db/teacher";
 import { IExercise, ITypeExercise } from "@/interface/";
 import { useExerciseStore } from "@/store";
+import { isValidLineLetter, isValidLineMix, isValidLineNumber } from "@/utils";
 import { GetServerSideProps } from "next";
 import { FC, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { BsFillCalendarFill } from "react-icons/bs";
-import { TeacherExercise } from "../../../components/teacher/TeacherExercise";
+
 interface FormData {
   NombreEjercicio: string;
   TipoEjercicio_id?: number;
   FechaPublicacion: string;
   FechaLimite: string;
+  incisos: string;
 }
 interface Props {
   exercise: IExercise;
@@ -26,7 +28,7 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
   const [typeExercise, setTypeExercise] = useState("");
   const [typeExcerciseId, setTypeExcerciseID] = useState<number>(0);
 
-  const { excercise } = useExerciseStore();
+  const { addExcercise, excercise, removeExcercise } = useExerciseStore();
 
   useEffect(() => {
     setValue("TipoEjercicio_id", typeExcerciseId);
@@ -134,7 +136,76 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
               </div>
 
               <div>
-                <TeacherExercise typeExercise={typeExercise} />
+                <div className="flex justify-center items-center">
+                  {excercise.length === 0 ? (
+                    <div>
+                      <h3>Agrege un inciso porfavor</h3>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 w-full">
+                      <div className="w-full">
+                        Solicitado
+                        {excercise.map((item) => (
+                          <div>{item.solicitado}</div>
+                        ))}
+                      </div>
+                      <div>
+                        Tipo
+                        {excercise.map((item) => (
+                          <div>{item.typeExercise}</div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <br />
+                <div className="grid grid-cols-custom-2 gap-4 w-full">
+                  <div className="w-full">
+                    Incisos:
+                    <div className="form-control relative">
+                      {typeExercise === "Numeros" ? (
+                        <input
+                          className="input input-solid max-w-full"
+                          placeholder="Ingreese los numeros separados por ,"
+                          type="text"
+                          {...register("incisos", {
+                            required: "Este Campo es requerido",
+                            validate: isValidLineNumber,
+                          })}
+                        />
+                      ) : typeExercise === "Letras" ? (
+                        <input
+                          className="input input-solid max-w-full"
+                          placeholder="Ingreese los numeros separados por ,"
+                          type="text"
+                          {...register("incisos", {
+                            required: "Este Campo es requerido",
+                            validate: isValidLineLetter,
+                          })}
+                        />
+                      ) : (
+                        <input
+                          className="input input-solid max-w-full"
+                          placeholder="Ingreese los numeros y letras separados por ,"
+                          type="text"
+                          {...register("incisos", {
+                            required: "Este Campo es requerido",
+                            validate: isValidLineMix,
+                          })}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <button
+                      className="btn btn-success mt-6 w-full"
+                      type="button"
+                    >
+                      Agregar
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-4">
