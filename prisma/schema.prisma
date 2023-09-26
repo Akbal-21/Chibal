@@ -32,7 +32,6 @@ model Ejercicios {
   TipoEjercicio_id Int?
   FechaPublicacion DateTime?      @db.Date
   FechaLimite      DateTime?      @db.Date
-  FechaEntrega     DateTime?      @db.Date
   Estado_id        Int?
   Estado           Estado?        @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
   Grupos           Grupos?        @relation(fields: [GrupoID], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)

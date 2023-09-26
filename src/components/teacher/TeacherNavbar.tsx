@@ -5,26 +5,31 @@ export const TeacherNavbar = () => {
   const { user } = useLoginUser();
 
   return (
-    <div className="navbar bg-coral rounded-lg">
+    <div className="navbar bg-fuzzy_Wuzzy rounded-lg">
       <div className="navbar-start">
         <Link href={"/"} className="navbar-item">
-          Chiba'l
+          <h1 className="text-white text-2xl">
+            <b>Chiba'l</b>
+          </h1>
         </Link>
       </div>
       <div className="navbar-center">
-        <Link
-          href={`/teacher/group/${user?.Usuarios_id}`}
-          className="navbar-item"
-        >
-          Grupo
+        <Link href={"/teacher/group/"} className="navbar-item">
+          <h1 className="text-white text-xl">
+            <b>Grupo</b>
+          </h1>
         </Link>
-        <Link href={"/"} className="navbar-item">
-          Ejercicios
+        <Link href={"/teacher/exercise"} className="navbar-item">
+          <h1 className="text-white text-xl">
+            <b>Ejercicios</b>
+          </h1>
         </Link>
       </div>
       <div className="navbar-end">
         <Link href={"/"} className="navbar-item">
-          {`Hola ${user?.Nombres} `}
+          <h1 className="text-white text-xl">
+            <b>{`Hola ${user?.Nombres} `}</b>
+          </h1>
         </Link>
       </div>
     </div>

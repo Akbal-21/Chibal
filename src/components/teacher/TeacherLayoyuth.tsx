@@ -15,7 +15,7 @@ export const TeacherLayouth: FC<Props> = ({ titel, children }) => {
       </Head>
       <main>
         <TeacherNavbar />
-        <div className="flex justify-center items-center h-[calc(100vh - 200px)] p-3">
+        <div className="flex justify-center items-center h-[calc(100vh - 200px)]">
           {children}
         </div>
       </main>

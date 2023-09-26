@@ -13,6 +13,9 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      gridTemplateColumns: {
+        "custom-2": "80% 20%",
+      },
     },
   },
   plugins: [
@@ -24,7 +27,7 @@ const config: Config = {
           themeName: "light",
           colorScheme: "light",
           colors: {
-            backgroundPrimary: "#3cbcfc",
+            backgroundPrimary: "#f6c188",
             red_orange: "#fd3d31",
             my_sin: "#fdb731",
             golden_fizz: "#fdf72b",
@@ -34,7 +37,8 @@ const config: Config = {
             green: "#00ff00",
             Cerulean: "#00bfff",
             purple_heart: "#9932cd",
-            // dodger_blue: "#3cbcfc",
+            fuzzy_Wuzzy: "#c45a5a",
+            secondary: "#37b2f0",
           },
         },
       ],
