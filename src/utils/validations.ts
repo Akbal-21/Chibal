@@ -21,7 +21,9 @@ export const isValidLineLetter = (text: string): boolean => {
 };
 
 export const isTextLetter = (text: string): string | undefined => {
-  return isValidLineLetter(text) ? undefined : "El texto no parece ser válido";
+  return isValidLineLetter(text)
+    ? undefined
+    : "El texto Solo puede tener letras separados por ,";
 };
 
 // *Number
@@ -33,7 +35,9 @@ export const isValidLineNumber = (text: string): boolean => {
 };
 
 export const isTextNumber = (text: string): string | undefined => {
-  return isValidLineLetter(text) ? undefined : "El texto no parece ser válido";
+  return isValidLineNumber(text)
+    ? undefined
+    : "El texto solo puede tener numeros separados por ,";
 };
 
 // *Number

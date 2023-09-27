@@ -2,7 +2,7 @@ import { TeacherLayouth } from "@/components";
 import { getTypeofExercise } from "@/db/teacher";
 import { IExercise, ITypeExercise } from "@/interface/";
 import { useExerciseStore } from "@/store";
-import { isValidLineLetter, isValidLineMix, isValidLineNumber } from "@/utils";
+import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
 import { GetServerSideProps } from "next";
 import { FC, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
@@ -29,6 +29,9 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
   const [typeExcerciseId, setTypeExcerciseID] = useState<number>(0);
 
   const { addExcercise, excercise, removeExcercise } = useExerciseStore();
+  const [showError, setShowError] = useState(false);
+
+  const [dataIncises, setDataIncises] = useState("");
 
   useEffect(() => {
     setValue("TipoEjercicio_id", typeExcerciseId);
@@ -52,24 +55,57 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
   });
 
   const onSubmit = (form: FormData) => {
-    if (form.NombreEjercicio.length < 3) {
-      return alert("debe de tener un nombre el ejercicio");
-    }
-    if (!excercise === null) {
-      return alert("debe de agregar un inciso por lo menos");
-    }
-
     console.log({ form, excercise });
   };
+  const checkInquire = () => {
+    const cadenaSinEspacios = dataIncises.replace(/\s+/g, "");
+
+    // Separa la cadena por comas y crea un arreglo de palabras
+    const item = cadenaSinEspacios.split(",");
+
+    if (typeExercise === "Numeros") {
+      const isCorrect = isTextNumber(dataIncises);
+      if (!isCorrect) {
+        setShowError(true);
+      }
+
+      for (const key in item) {
+        const data = {
+          solicitado: item[key],
+          typeExercise: typeExercise,
+          typeExerciseId: typeExcerciseId,
+        };
+        addExcercise(data);
+      }
+
+      console.log(item);
+    }
+  };
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) =>
+      console.log(value, name, type),
+    );
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <TeacherLayouth titel={`Ejercicio ${exercise.Ejercicios_id}`}>
       <div className="pt-11">
         <section className="bg-gray-2 rounded-xl">
           <div className="p-8 shadow-lg">
-            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="space-y-4"
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+            >
               <div className="form-control relative w-full">
                 Nombre del ejercicio:
+                {errors.NombreEjercicio && (
+                  <span className=" badge badge-error m-1">
+                    {errors.NombreEjercicio.message}
+                  </span>
+                )}
+                <br />
                 {/* <label className="sr-only">Name</label> */}
                 <input
                   className="input input-solid max-w-full"
@@ -162,36 +198,56 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
                 <div className="grid grid-cols-custom-2 gap-4 w-full">
                   <div className="w-full">
                     Incisos:
+                    {errors.incisos && (
+                      <span className=" badge badge-error m-1">
+                        {errors.incisos.message}
+                      </span>
+                    )}
                     <div className="form-control relative">
                       {typeExercise === "Numeros" ? (
                         <input
-                          className="input input-solid max-w-full"
+                          className={
+                            !errors.incisos
+                              ? "input input-solid max-w-full"
+                              : "input input-solid-error max-w-full"
+                          }
                           placeholder="Ingreese los numeros separados por ,"
                           type="text"
                           {...register("incisos", {
                             required: "Este Campo es requerido",
-                            validate: isValidLineNumber,
+                            validate: isTextNumber,
                           })}
+                          onChange={(e) => setDataIncises(e.target.value)}
                         />
                       ) : typeExercise === "Letras" ? (
                         <input
-                          className="input input-solid max-w-full"
+                          className={
+                            !errors.incisos
+                              ? "input input-solid max-w-full"
+                              : "input input-solid-error max-w-full"
+                          }
                           placeholder="Ingreese los numeros separados por ,"
                           type="text"
                           {...register("incisos", {
                             required: "Este Campo es requerido",
-                            validate: isValidLineLetter,
+                            validate: isTextLetter,
                           })}
+                          onChange={(e) => setDataIncises(e.target.value)}
                         />
                       ) : (
                         <input
-                          className="input input-solid max-w-full"
+                          className={
+                            !errors.incisos
+                              ? "input input-solid max-w-full"
+                              : "input input-solid-error max-w-full"
+                          }
                           placeholder="Ingreese los numeros y letras separados por ,"
                           type="text"
                           {...register("incisos", {
                             required: "Este Campo es requerido",
-                            validate: isValidLineMix,
+                            validate: isTextMix,
                           })}
+                          onChange={(e) => setDataIncises(e.target.value)}
                         />
                       )}
                     </div>
@@ -201,6 +257,7 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
                     <button
                       className="btn btn-success mt-6 w-full"
                       type="button"
+                      onClick={checkInquire}
                     >
                       Agregar
                     </button>

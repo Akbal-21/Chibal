@@ -17,7 +17,6 @@ type FormData = {
 const LoginPage = () => {
   const router = useRouter();
 
-  // const { loginUser } = useContext(AuthContext);
   const { loginUser, user } = useLoginUser();
 
   //*Formulario
