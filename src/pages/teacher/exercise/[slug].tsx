@@ -57,6 +57,8 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
   const onSubmit = (form: FormData) => {
     console.log({ form, excercise });
   };
+
+  let isCorrect: string | undefined;
   const checkInquire = () => {
     const cadenaSinEspacios = dataIncises.replace(/\s+/g, "");
 
@@ -64,9 +66,15 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
     const item = cadenaSinEspacios.split(",");
 
     if (typeExercise === "Numeros") {
-      const isCorrect = isTextNumber(dataIncises);
-      if (!isCorrect) {
+      isCorrect = isTextNumber(dataIncises);
+
+      // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
+      if (!!isCorrect) {
         setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+        console.log(isCorrect);
+
+        return;
       }
 
       for (const key in item) {
@@ -79,6 +87,51 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
       }
 
       console.log(item);
+    }
+
+    if (typeExercise === "Letras") {
+      isCorrect = isTextLetter(dataIncises);
+
+      // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
+      if (!!isCorrect) {
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
+
+      for (const key in item) {
+        const data = {
+          solicitado: item[key],
+          typeExercise: typeExercise,
+          typeExerciseId: typeExcerciseId,
+        };
+        addExcercise(data);
+      }
+
+      console.log(item);
+      return;
+    }
+    if (typeExercise === "Mixto") {
+      isCorrect = isTextMix(dataIncises);
+
+      // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
+      if (!!isCorrect) {
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
+
+      for (const key in item) {
+        const data = {
+          solicitado: item[key],
+          typeExercise: typeExercise,
+          typeExerciseId: typeExcerciseId,
+        };
+        addExcercise(data);
+      }
+
+      console.log(item);
+      return;
     }
   };
   useEffect(() => {
@@ -198,58 +251,28 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
                 <div className="grid grid-cols-custom-2 gap-4 w-full">
                   <div className="w-full">
                     Incisos:
-                    {errors.incisos && (
+                    {(showError || errors.incisos) && (
                       <span className=" badge badge-error m-1">
-                        {errors.incisos.message}
+                        Error: Dato incompatible con tipo de ejercicio{" "}
+                        {typeExercise}.
                       </span>
                     )}
                     <div className="form-control relative">
-                      {typeExercise === "Numeros" ? (
-                        <input
-                          className={
-                            !errors.incisos
-                              ? "input input-solid max-w-full"
-                              : "input input-solid-error max-w-full"
-                          }
-                          placeholder="Ingreese los numeros separados por ,"
-                          type="text"
-                          {...register("incisos", {
-                            required: "Este Campo es requerido",
-                            validate: isTextNumber,
-                          })}
-                          onChange={(e) => setDataIncises(e.target.value)}
-                        />
-                      ) : typeExercise === "Letras" ? (
-                        <input
-                          className={
-                            !errors.incisos
-                              ? "input input-solid max-w-full"
-                              : "input input-solid-error max-w-full"
-                          }
-                          placeholder="Ingreese los numeros separados por ,"
-                          type="text"
-                          {...register("incisos", {
-                            required: "Este Campo es requerido",
-                            validate: isTextLetter,
-                          })}
-                          onChange={(e) => setDataIncises(e.target.value)}
-                        />
-                      ) : (
-                        <input
-                          className={
-                            !errors.incisos
-                              ? "input input-solid max-w-full"
-                              : "input input-solid-error max-w-full"
-                          }
-                          placeholder="Ingreese los numeros y letras separados por ,"
-                          type="text"
-                          {...register("incisos", {
-                            required: "Este Campo es requerido",
-                            validate: isTextMix,
-                          })}
-                          onChange={(e) => setDataIncises(e.target.value)}
-                        />
-                      )}
+                      <input
+                        className={
+                          !errors.incisos
+                            ? "input input-solid max-w-full"
+                            : "input input-solid-error max-w-full"
+                        }
+                        placeholder={
+                          typeExercise === "Mixto"
+                            ? "Ingrese los numeros y letras separados por , (coma)"
+                            : `Ingrese los ${typeExercise.toLocaleLowerCase()} separados por , (coma)`
+                        }
+                        type="text"
+                        {...register("incisos", {})}
+                        onChange={(e) => setDataIncises(e.target.value)}
+                      />
                     </div>
                   </div>
 
@@ -270,7 +293,7 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
                   type="submit"
                   className="rounded-lg btn btn-primary btn-block"
                 >
-                  Guadar
+                  Guardar
                 </button>
               </div>
             </form>
