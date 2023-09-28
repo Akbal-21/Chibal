@@ -26,7 +26,7 @@ export interface IExerciseDB {
   GrupoID: number | null;
   TipoEjercicio_id: number | null;
   FechaPublicacion: Date | null;
-  FechaLimite: Date | null;
+  FechaLimite: Date;
   Estado_id: number | null;
 }
 
