@@ -67,10 +67,12 @@ const ExcercisePage = () => {
                             <td className="whitespace-nowrap px-6 py-4">
                               {exercise.Estado_id === 1
                                 ? "El ejercicio es un Borrador"
-                                : String(exercise.FechaPublicacion)}
+                                : String(exercise.FechaPublicacion).split(
+                                    "T",
+                                  )[0]}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4">
-                              {String(exercise.FechaLimite)}
+                              {String(exercise.FechaLimite).split("T")[0]}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4">
                               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -78,6 +80,9 @@ const ExcercisePage = () => {
                                 className="btn btn-secondary mx-1"
                                 onClick={() =>
                                   handleEdith(exercise.Ejercicios_id)
+                                }
+                                disabled={
+                                  exercise.Estado_id === 1 ? false : true
                                 }
                               >
                                 Editar
