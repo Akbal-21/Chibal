@@ -65,10 +65,12 @@ const ExcercisePage = () => {
                               {exercise.NombreEjercicio}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4">
-                              {/* {exercise.FechaPublicacion} */}
+                              {exercise.Estado_id === 1
+                                ? "El ejercicio es un Borrador"
+                                : String(exercise.FechaPublicacion)}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4">
-                              {/* {exercise.FechaLimite} */}
+                              {String(exercise.FechaLimite)}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4">
                               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -83,6 +85,9 @@ const ExcercisePage = () => {
                               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                               <button
                                 className="btn btn-error mx-1"
+                                disabled={
+                                  exercise.Estado_id === 1 ? false : true
+                                }
                                 onClick={() =>
                                   handleDelete(exercise.Ejercicios_id)
                                 }
