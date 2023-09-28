@@ -279,6 +279,7 @@ const ExcersisePage: FC<Props> = ({
                     </label>
                     <ul className="dropdown-menu">
                       {typeOfExercise.map((item) => {
+                        //{item.Nombre === "Letras" || item.Nombre === "Numeros" && resetStore()}
                         return (
                           // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                           <li
