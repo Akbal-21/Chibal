@@ -3,7 +3,7 @@ import { create } from "zustand";
 interface DataExercise {
   solicitado: string;
   typeExercise: string;
-  typeExerciseId: number;
+  typeExerciseId: number | undefined;
 }
 
 interface Exercise {
@@ -13,6 +13,7 @@ interface Exercise {
 type UserActions = {
   addExcercise: (excercise: DataExercise) => void;
   removeExcercise: (data: string) => void;
+  resetStore: () => void;
 };
 
 export const useExerciseStore = create<Exercise & UserActions>((set) => ({
@@ -29,5 +30,10 @@ export const useExerciseStore = create<Exercise & UserActions>((set) => ({
     set((state) => ({
       excercise: state.excercise.filter((item) => item.solicitado !== data),
     }));
+  },
+  resetStore: () => {
+    set({
+      excercise: [],
+    });
   },
 }));

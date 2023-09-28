@@ -13,3 +13,25 @@ export interface ITypeExercise {
   Tipo_id: number;
   Nombre: string;
 }
+
+export interface ITypePublisher {
+  Estado_id: number;
+  Nombre: string;
+}
+
+export interface IExerciseDB {
+  Ejercicios_id: number;
+  NombreEjercicio: string;
+  MaestroID: number | null;
+  GrupoID: number | null;
+  TipoEjercicio_id: number | null;
+  FechaPublicacion: Date | null;
+  FechaLimite: Date | null;
+  Estado_id: number | null;
+}
+
+export interface ILine {
+  Incisos_id: number;
+  LoSolicitado: string;
+  EjercicioID: number | null;
+}

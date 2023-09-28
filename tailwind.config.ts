@@ -38,7 +38,7 @@ const config: Config = {
             Cerulean: "#00bfff",
             purple_heart: "#9932cd",
             fuzzy_Wuzzy: "#c45a5a",
-            secondary: "#37b2f0",
+            // secondary: "#37b2f0",
           },
         },
       ],

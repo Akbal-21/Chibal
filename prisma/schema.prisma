@@ -26,11 +26,11 @@ model Alumnos {
 
 model Ejercicios {
   Ejercicios_id    Int            @id @default(autoincrement())
-  NombreEjercicio  String?        @db.VarChar
+  NombreEjercicio  String         @db.VarChar
   MaestroID        Int?
   GrupoID          Int?
   TipoEjercicio_id Int?
-  FechaPublicacion DateTime?      @db.Date
+  FechaPublicacion DateTime       @db.Date
   FechaLimite      DateTime?      @db.Date
   Estado_id        Int?
   Estado           Estado?        @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
@@ -77,7 +77,7 @@ model Grupos {
 
 model Incisos {
   Incisos_id   Int          @id @default(autoincrement())
-  LoSolicitado String?      @db.VarChar
+  LoSolicitado String       @db.VarChar
   EjercicioID  Int?
   Ejercicios   Ejercicios?  @relation(fields: [EjercicioID], references: [Ejercicios_id], onDelete: NoAction, onUpdate: NoAction)
   Respuestas   Respuestas[]

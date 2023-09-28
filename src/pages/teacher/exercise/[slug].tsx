@@ -1,6 +1,17 @@
 import { TeacherLayouth } from "@/components";
-import { getTypeofExercise } from "@/db/teacher";
-import { IExercise, ITypeExercise } from "@/interface/";
+import {
+  getDataOfExercise,
+  getLine,
+  getTypePublisher,
+  getTypeofExercise,
+} from "@/db/teacher";
+import {
+  IExercise,
+  IExerciseDB,
+  ILine,
+  ITypeExercise,
+  ITypePublisher,
+} from "@/interface/";
 import { useExerciseStore } from "@/store";
 import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
 import { GetServerSideProps } from "next";
@@ -16,25 +27,37 @@ interface FormData {
   FechaPublicacion: string;
   FechaLimite: string;
   incisos: string;
+  Estado: number;
 }
 interface Props {
   exercise: IExercise;
   typeOfExercise: ITypeExercise[];
+  incisos: ILine[];
+  typeOfPublisher: ITypePublisher[];
 }
 
-const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
+const ExcersisePage: FC<Props> = ({
+  exercise,
+  typeOfExercise,
+  incisos,
+  typeOfPublisher,
+}) => {
   const [datePublic, setDatePublic] = useState<Date | null>(new Date());
   const [dateLimit, setDateLimit] = useState<Date | null>(new Date());
+
   const [typeExercise, setTypeExercise] = useState("");
   const [typeExcerciseId, setTypeExcerciseID] = useState<number>(0);
+  const [typePublisher, setTypePublisher] = useState("");
+  const [typePublisherId, setTypePublisherId] = useState(0);
 
-  const { addExcercise, excercise, removeExcercise } = useExerciseStore();
+  const { addExcercise, excercise, resetStore } = useExerciseStore();
   const [showError, setShowError] = useState(false);
 
   const [dataIncises, setDataIncises] = useState("");
 
   useEffect(() => {
     setValue("TipoEjercicio_id", typeExcerciseId);
+    setValue("Estado", typePublisherId);
     if (datePublic !== null) {
       setValue("FechaPublicacion", datePublic.toDateString());
     }
@@ -42,6 +65,57 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
       setValue("FechaLimite", dateLimit.toDateString());
     }
   }, [typeExcerciseId, datePublic, dateLimit]);
+
+  useEffect(() => {
+    resetStore();
+    if (incisos.length > 0) {
+      const { TipoEjercicio_id, Estado_id } = exercise;
+
+      setDatePublic(new Date(exercise.FechaPublicacion));
+      setDateLimit(new Date(exercise.FechaLimite));
+
+      let typeEjercicio = "";
+      let typePublish = "";
+
+      if (Estado_id === 1) {
+        typePublish = "Borrador";
+        setTypePublisher(typePublish);
+      }
+
+      if (Estado_id === 2) {
+        typePublish = "Publicado";
+        setTypePublisher(typePublish);
+      }
+
+      if (TipoEjercicio_id === 1) {
+        typeEjercicio = "Letras";
+        setTypeExercise(typeEjercicio);
+      }
+      if (TipoEjercicio_id === 2) {
+        typeEjercicio = "Numeros";
+        setTypeExercise(typeEjercicio);
+      }
+      if (TipoEjercicio_id === 3) {
+        typeEjercicio = "Mixto";
+        setTypeExercise(typeEjercicio);
+      }
+      if (TipoEjercicio_id === 4) {
+        typeEjercicio = "Deletreo";
+        setTypeExercise(typeEjercicio);
+      }
+
+      for (const key in incisos) {
+        const { LoSolicitado } = incisos[key];
+
+        const data = {
+          solicitado: LoSolicitado,
+          typeExercise: typeEjercicio,
+          typeExerciseId: TipoEjercicio_id,
+        };
+        addExcercise(data);
+      }
+    }
+  }, []);
 
   const {
     register,
@@ -134,13 +208,6 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
       return;
     }
   };
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type),
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   return (
     <TeacherLayouth titel={`Ejercicio ${exercise.Ejercicios_id}`}>
       <div className="pt-11">
@@ -152,23 +219,54 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
               noValidate
             >
               <div className="form-control relative w-full">
-                Nombre del ejercicio:
-                {errors.NombreEjercicio && (
-                  <span className=" badge badge-error m-1">
-                    {errors.NombreEjercicio.message}
-                  </span>
-                )}
-                <br />
-                {/* <label className="sr-only">Name</label> */}
-                <input
-                  className="input input-solid max-w-full"
-                  placeholder="Name"
-                  type="text"
-                  {...register("NombreEjercicio", {
-                    required: "Este Campo es requerido",
-                    minLength: { value: 3, message: "Mínimo 3 caracteres" },
-                  })}
-                />
+                <div className=" grid grid-cols-custom-2 w-full gap-5">
+                  <div>
+                    Nombre del ejercicio:
+                    {errors.NombreEjercicio && (
+                      <span className=" badge badge-error m-1">
+                        {errors.NombreEjercicio.message}
+                      </span>
+                    )}
+                    <br />
+                    {/* <label className="sr-only">Name</label> */}
+                    <input
+                      className="input input-solid max-w-full"
+                      placeholder="Name"
+                      type="text"
+                      {...register("NombreEjercicio", {
+                        required: "Este Campo es requerido",
+                        minLength: { value: 3, message: "Mínimo 3 caracteres" },
+                      })}
+                    />
+                  </div>
+                  <div>
+                    Publicacion:
+                    <div className="dropdown">
+                      {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                      <label className="btn btn-solid-primary" tabIndex={0}>
+                        {!typePublisher ? "click" : typePublisher}
+                      </label>
+                      <br />
+                      <ul className="dropdown-menu">
+                        {typeOfPublisher.map((publish) => {
+                          return (
+                            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                            <li
+                              key={publish.Estado_id}
+                              className="dropdown-item"
+                              onClick={() => {
+                                setTypePublisher(publish.Nombre);
+                                setTypePublisherId(publish.Estado_id);
+                              }}
+                            >
+                              {publish.Nombre}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -307,7 +405,9 @@ const ExcersisePage: FC<Props> = ({ exercise, typeOfExercise }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
 
-  let exercise: IExercise | null;
+  let exercise: IExercise | IExerciseDB | null;
+
+  let incisos: ILine | string;
 
   if (slug === "new") {
     exercise = {
@@ -315,20 +415,21 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       FechaLimite: new Date().toISOString(),
       FechaPublicacion: new Date().toISOString(),
     };
+    incisos = "";
   } else {
     // todo: hacer el chequeo de la info con el ID del ejercicio
-    exercise = JSON.parse(
-      JSON.stringify({
-        NombreEjercicio: "",
-        FechaLimite: new Date().toISOString(),
-        FechaPublicacion: new Date().toISOString(),
-      }),
-    );
+    const datExercise = await getDataOfExercise(slug.toString());
+    exercise = JSON.parse(JSON.stringify(datExercise));
+    const datLine = await getLine(slug.toLocaleString());
+    incisos = JSON.parse(JSON.stringify(datLine));
   }
 
   const typeOfExercise = await getTypeofExercise();
 
-  if (!exercise || !typeOfExercise) {
+  const typeOfPublisher: ITypePublisher[] | undefined =
+    await getTypePublisher();
+
+  if (!exercise || !typeOfExercise || !typeOfPublisher) {
     return {
       redirect: {
         destination: "/teacher/exercise",
@@ -341,6 +442,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       exercise,
       typeOfExercise,
+      incisos,
+      typeOfPublisher,
     },
   };
 };
