@@ -288,6 +288,7 @@ const ExcersisePage: FC<Props> = ({
                             onClick={() => {
                               setTypeExercise(item.Nombre);
                               setTypeExcerciseID(item.Tipo_id);
+                              resetStore();
                             }}
                           >
                             {item.Nombre}
