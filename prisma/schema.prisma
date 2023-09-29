@@ -25,18 +25,18 @@ model Alumnos {
 }
 
 model Ejercicios {
-  Ejercicios_id    Int            @id @default(autoincrement())
-  NombreEjercicio  String         @db.VarChar
+  Ejercicios_id    Int           @id @default(autoincrement())
+  NombreEjercicio  String        @db.VarChar
   MaestroID        Int?
   GrupoID          Int?
-  TipoEjercicio_id Int?
-  FechaPublicacion DateTime       @db.Date
-  FechaLimite      DateTime?      @db.Date
-  Estado_id        Int?
-  Estado           Estado?        @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
-  Grupos           Grupos?        @relation(fields: [GrupoID], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
-  Maestros         Maestros?      @relation(fields: [MaestroID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
-  TipoEjercicio    TipoEjercicio? @relation(fields: [TipoEjercicio_id], references: [Tipo_id], onDelete: NoAction, onUpdate: NoAction)
+  TipoEjercicio_id Int
+  FechaPublicacion DateTime      @db.Date
+  FechaLimite      DateTime?     @db.Date
+  Estado_id        Int
+  Estado           Estado        @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
+  Grupos           Grupos?       @relation(fields: [GrupoID], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
+  Maestros         Maestros?     @relation(fields: [MaestroID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  TipoEjercicio    TipoEjercicio @relation(fields: [TipoEjercicio_id], references: [Tipo_id], onDelete: NoAction, onUpdate: NoAction)
   Incisos          Incisos[]
 }
 
