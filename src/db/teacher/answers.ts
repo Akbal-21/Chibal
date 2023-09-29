@@ -15,6 +15,7 @@ export const getExerciseAnswers = async (exerciseId: string) => {
             select: {
               Apellidos: true,
               Nombres: true,
+              Usuarios_id: true,
             },
           },
         },

@@ -7,8 +7,41 @@ interface Props {
   results: IAnswer[];
 }
 
+interface UsuarioResultados {
+  usuario: string;
+  aciertos: string[];
+  fallos: string[];
+}
+
 const ExerciseAnswersPage: NextPage<Props> = ({ results }) => {
+  const resultadosAgrupados: Record<string, UsuarioResultados> = {};
+
+  results.forEach((row) => {
+    const userId = row.Alumnos.Usuarios.Usuarios_id; // Supongo que hay un campo 'Id' en Usuarios
+    if (!resultadosAgrupados[userId]) {
+      resultadosAgrupados[userId] = {
+        usuario: `${row.Alumnos.Usuarios.Apellidos} ${row.Alumnos.Usuarios.Nombres}`,
+        aciertos: [],
+        fallos: [],
+      };
+    }
+
+    // Divide los caracteres en aciertos y fallos
+    row.Incisos.Respuestas.forEach((result) => {
+      if (result.Respuesta === row.Incisos.LoSolicitado) {
+        resultadosAgrupados[userId].aciertos.push(
+          result.Respuesta ? result.Respuesta : "",
+        );
+      } else {
+        resultadosAgrupados[userId].fallos.push(
+          result.Respuesta ? result.Respuesta : "",
+        );
+      }
+    });
+  });
+
   return (
+    // Luego, renderiza la tabla con los datos agrupados
     <TeacherLayouth titel="Resultados de los Ejercicios">
       <div className="py-6">
         <h1 className="text-2xl font-semibold mb-4">
@@ -32,27 +65,32 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {results.map((row, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <tr key={index}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {row.Alumnos.Usuarios.Apellidos}{" "}
-                  {row.Alumnos.Usuarios.Nombres}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {row.Incisos.Respuestas.map((result) => (
-                    <div>{result.Respuesta}</div>
-                  ))}
-                </td>
-                {/*
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {row.RespuestasIncorrectas}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {row.PromedioPuntaje.toFixed(2)}
-            </td>*/}
-              </tr>
-            ))}
+            {Object.keys(resultadosAgrupados).map((userId) => {
+              const usuario = resultadosAgrupados[userId];
+              const promedioPuntaje = (
+                (usuario.aciertos.length /
+                  (usuario.aciertos.length + usuario.fallos.length)) *
+                100
+              ).toFixed(2);
+
+              return (
+                <tr key={userId}>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {usuario.usuario}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {usuario.aciertos.join(", ")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {usuario.fallos.join(", ")}
+                  </td>
+
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {promedioPuntaje}%
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
