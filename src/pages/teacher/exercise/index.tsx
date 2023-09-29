@@ -24,6 +24,11 @@ const ExcercisePage = () => {
     console.log(Ejercicios_id);
   };
 
+  const handleShowResults = (exerciseId: number) => {
+    
+    return route.replace(`/teacher/results/${exerciseId}`);
+  };
+
   return (
     <TeacherLayouth titel="Ejercicios">
       <div className="grid grid-cols-custom-2 items-center w-full">
@@ -98,6 +103,18 @@ const ExcercisePage = () => {
                                 }
                               >
                                 Eliminar
+                              </button>
+                              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                              <button
+                                className="btn btn-primary mx-1"
+                                disabled={
+                                  exercise.Estado_id === 1 ? false : true
+                                }
+                                onClick={() =>
+                                  handleShowResults(exercise.Ejercicios_id)
+                                }
+                              >
+                                Mostrar Resultados
                               </button>
                             </td>
                           </tr>
