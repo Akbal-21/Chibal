@@ -1,25 +1,46 @@
-import { IGroup } from "@/interface";
+import { IDataGroup } from "@/interface";
 import { db } from "..";
 
 export const getDataGroup = async (idUser: string) => {
   // let informacionGrupos;
 
   await db.prisma.$connect();
-  const dataStudent: IGroup[] = await db.prisma.grupos.findMany({
+  const dataGroup: IDataGroup[] = await db.prisma.alumnos.findMany({
     select: {
-      Grupos_id: true,
-      NombreGrupo: true,
-    },
-    where: {
-      Maestro_id: Number(idUser),
+      Usuarios: {
+        select: {
+          Nombres: true,
+          Apellidos: true,
+        },
+      },
+      Grupos: {
+        select: {
+          Escuela: {
+            select: {
+              Nombre: true,
+            },
+          },
+          NombreGrupo: true,
+          Turno: {
+            select: {
+              Horario: true,
+            },
+          },
+          Grado: {
+            select: {
+              Nivel: true,
+            },
+          },
+        },
+      },
     },
   });
 
   await db.prisma.$disconnect();
 
-  if (!dataStudent) {
+  if (!dataGroup) {
     return;
   }
 
-  return dataStudent;
+  return dataGroup;
 };

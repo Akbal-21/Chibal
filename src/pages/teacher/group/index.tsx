@@ -1,16 +1,19 @@
 import { FullScreenLoading, TeacherLayouth } from "@/components";
 import { useGroup } from "@/hooks";
 import { useLoginUser } from "@/store/auth";
+import { useRouter } from "next/router";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
 const GroupPage = () => {
+  const route = useRouter();
+
   const { user } = useLoginUser();
   const { escuela, isError, isLoading } = useGroup(
     `teacher/${user?.Usuarios_id}`,
   );
 
   const handleEdit = (Grupos_id: number) => {
-    console.log(Grupos_id);
+    route.replace(`/teacher/group/${Grupos_id}`);
   };
   const handleDelete = (Grupos_id: number) => {
     console.log(Grupos_id);
