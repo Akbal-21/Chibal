@@ -15,6 +15,7 @@ interface UsuarioResultados {
 
 const ExerciseAnswersPage: NextPage<Props> = ({ results }) => {
   const resultadosAgrupados: Record<string, UsuarioResultados> = {};
+  console.log(results);
 
   results.forEach((row) => {
     const userId = row.Alumnos.Usuarios.Usuarios_id; // Supongo que hay un campo 'Id' en Usuarios
@@ -25,17 +26,20 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results }) => {
         fallos: [],
       };
     }
+    console.log(resultadosAgrupados);
 
     // Divide los caracteres en aciertos y fallos
     row.Incisos.Respuestas.forEach((result) => {
-      if (result.Respuesta === row.Incisos.LoSolicitado) {
-        resultadosAgrupados[userId].aciertos.push(
-          result.Respuesta ? result.Respuesta : "",
-        );
-      } else {
-        resultadosAgrupados[userId].fallos.push(
-          result.Respuesta ? result.Respuesta : "",
-        );
+      if (result.AlumnoID === row.Alumnos.Usuarios.Usuarios_id) {
+        if (result.Respuesta === row.Incisos.LoSolicitado) {
+          resultadosAgrupados[userId].aciertos.push(
+            result.Respuesta ? result.Respuesta : "",
+          );
+        } else {
+          resultadosAgrupados[userId].fallos.push(
+            result.Respuesta ? result.Respuesta : "",
+          );
+        }
       }
     });
   });
@@ -43,56 +47,61 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results }) => {
   return (
     // Luego, renderiza la tabla con los datos agrupados
     <TeacherLayouth titel="Resultados de los Ejercicios">
-      <div className="py-6">
-        <h1 className="text-2xl font-semibold mb-4">
+      <div className="pt-11">
+        <h2 className="mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl text-center">
           Resultados del Ejercicio
-        </h1>
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nombre del Alumno
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Caracteres Acertados
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Caracteres Fallados
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Promedio del Puntaje
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {Object.keys(resultadosAgrupados).map((userId) => {
-              const usuario = resultadosAgrupados[userId];
-              const promedioPuntaje = (
-                (usuario.aciertos.length /
-                  (usuario.aciertos.length + usuario.fallos.length)) *
-                100
-              ).toFixed(2);
+        </h2>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left text-gray-500 ">
+            <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nombre del Alumno
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Caracteres Acertados
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Caracteres Fallados
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Promedio del Puntaje
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(resultadosAgrupados).map((userId) => {
+                const usuario = resultadosAgrupados[userId];
+                const promedioPuntaje = (
+                  (usuario.aciertos.length /
+                    (usuario.aciertos.length + usuario.fallos.length)) *
+                  100
+                ).toFixed(2);
 
-              return (
-                <tr key={userId}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {usuario.usuario}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {usuario.aciertos.join(", ")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {usuario.fallos.join(", ")}
-                  </td>
+                return (
+                  <tr
+                    key={userId}
+                    className="bg-white border-b  hover:bg-gray-200 "
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {usuario.usuario}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {usuario.aciertos.join(", ")}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {usuario.fallos.join(", ")}
+                    </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {promedioPuntaje}%
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {promedioPuntaje}%
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </TeacherLayouth>
   );
