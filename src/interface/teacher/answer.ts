@@ -1,6 +1,7 @@
 export interface IAnswer {
   Alumnos: {
     Usuarios: {
+      Usuarios_id: number;
       Nombres: string;
       Apellidos: string;
     };
