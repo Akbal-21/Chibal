@@ -25,8 +25,8 @@ export interface IExerciseDB {
   MaestroID: number | null;
   GrupoID: number | null;
   TipoEjercicio_id: number | null;
-  FechaPublicacion: Date | null;
-  FechaLimite: Date;
+  FechaPublicacion: Date;
+  FechaLimite: Date | null;
   Estado_id: number | null;
 }
 

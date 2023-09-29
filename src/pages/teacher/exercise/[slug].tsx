@@ -241,30 +241,25 @@ const ExcersisePage: FC<Props> = ({
                   </div>
                   <div>
                     Publicacion:
-                    <div className="dropdown">
-                      {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
-                      <label className="btn btn-solid-primary" tabIndex={0}>
-                        {!typePublisher ? "click" : typePublisher}
-                      </label>
-                      <br />
-                      <ul className="dropdown-menu">
-                        {typeOfPublisher.map((publish) => {
-                          return (
-                            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                            <li
-                              key={publish.Estado_id}
-                              className="dropdown-item"
-                              onClick={() => {
-                                setTypePublisher(publish.Nombre);
-                                setTypePublisherId(publish.Estado_id);
-                              }}
-                            >
-                              {publish.Nombre}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
+                    <br />
+
+                    <select className="select select-solid-primary">
+                      {typeOfPublisher.map((publish) => {
+                        return (
+                          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                          <option
+                            key={publish.Estado_id}
+                            className="dropdown-item"
+                            onClick={() => {
+                              setTypePublisher(publish.Nombre);
+                              setTypePublisherId(publish.Estado_id);
+                            }}
+                          >
+                            {publish.Nombre}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -272,30 +267,24 @@ const ExcersisePage: FC<Props> = ({
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
                   Tipo de Ejercicio:
-                  <div className="dropdown">
-                    {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
-                    <label className="btn btn-solid-primary" tabIndex={0}>
-                      {!typeExercise ? "click" : typeExercise}
-                    </label>
-                    <ul className="dropdown-menu">
-                      {typeOfExercise.map((item) => {
-                        return (
-                          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                          <li
-                            key={item.Tipo_id}
-                            className="dropdown-item"
-                            onClick={() => {
-                              setTypeExercise(item.Nombre);
-                              setTypeExcerciseID(item.Tipo_id);
-                              resetStore();
-                            }}
-                          >
-                            {item.Nombre}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
+                  <select className="select select-solid-primary">
+                    {typeOfExercise.map((item) => {
+                      return (
+                        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                        <option
+                          key={item.Tipo_id}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setTypeExercise(item.Nombre);
+                            setTypeExcerciseID(item.Tipo_id);
+                            resetStore();
+                          }}
+                        >
+                          {item.Nombre}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
 
                 <div>
@@ -324,29 +313,39 @@ const ExcersisePage: FC<Props> = ({
               </div>
 
               <div>
-                <div className="flex justify-center items-center">
-                  {excercise.length === 0 ? (
-                    <div>
-                      <h3>Agrege un inciso porfavor</h3>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 w-full">
-                      <div className="w-full">
-                        Solicitado
-                        {excercise.map((item) => (
-                          <div>{item.solicitado}</div>
-                        ))}
-                      </div>
-                      <div>
-                        Tipo
-                        {excercise.map((item) => (
-                          <div>{item.typeExercise}</div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                <div className="divider divider-horizontal">
+                  <h3 className="text-xl">Incisos del ejercicio</h3>
                 </div>
-                <br />
+                {excercise.length === 0 ? (
+                  <div className="flex justify-center items-center">
+                    <h3>Agrege un inciso porfavor</h3>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 w-full">
+                    <div className="w-full text-center">
+                      <h3 className="text-xl">
+                        <b>Solicitado</b>
+                      </h3>
+                      {excercise.map((item) => (
+                        <h3 className="text-lg">{item.solicitado}</h3>
+                      ))}
+                    </div>
+                    <div className="w-full text-center">
+                      <h3 className="text-xl">
+                        <b>Tipo</b>
+                      </h3>
+                      {excercise.map((item) => (
+                        <h3 className="text-lg">{item.typeExercise}</h3>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <br />{" "}
+                <div className="divider divider-horizontal">
+                  <h3 className="text-xl">Agregar Incisos</h3>
+                </div>
+
                 <div className="grid grid-cols-custom-2 gap-4 w-full">
                   <div className="w-full">
                     Incisos:
