@@ -27,21 +27,23 @@ async function getExercisesByStudent(req: NextApiRequest, res: NextApiResponse<D
     await db.prisma.$connect();
     // Primero obtener el grupo del niño y despues lso ejercicios segun el grupo
     const grupoId = await db.prisma.alumnos.findUnique({
-        where: {
-          Usuario_id: Number(StudentID),
-        },
-        select: {
-          Grupo_id: true,
-        },
-      });
-  
-    const dataExercise: IExerciseDB[] = await db.prisma.ejercicios.findMany({
-        where: {
-            GrupoID: grupoId?.Grupo_id,
-        },
+      where: {
+        Usuario_id: Number(StudentID),
+      },
+      select: {
+        Grupo_id: true,
+      },
     });
-
+    console.log(grupoId);
+    
+    const dataExercise: IExerciseDB[] = await db.prisma.ejercicios.findMany({
+      where: {
+        GrupoID: grupoId?.Grupo_id,
+      },
+    });
+    
     await db.prisma.$disconnect();
+    console.log(dataExercise);
 
     if (!dataExercise) {
         return res.status(404).json({ message: "Bad Request" });
