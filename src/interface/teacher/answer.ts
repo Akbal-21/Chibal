@@ -18,3 +18,17 @@ export interface IAnswer {
     EjercicioID: number | null;
   };
 }
+
+export interface IPDFCabecera {
+  Grupos: {
+    Grado: {
+      Nivel: string;
+    } | null;
+    Turno: {
+      Horario: string;
+    } | null;
+    NombreGrupo: string;
+  } | null;
+  NombreEjercicio: string | null;
+}
+
