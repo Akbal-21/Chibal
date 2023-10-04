@@ -8,12 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma db pull",
-    "postinstall1": "prisma generate"
+    "postinstall1": "prisma generate",
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@prisma/client": "5.4.0",
     "@react-icons/all-files": "4.1.0",
-    "@sira-ui/tailwind": "0.11.6",
     "@types/react": "18.2.24",
     "@types/react-dom": "18.2.9",
     "add": "2.0.6",
