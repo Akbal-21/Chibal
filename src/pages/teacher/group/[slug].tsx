@@ -8,7 +8,7 @@ interface Props {
   dataGroup: IDataGroup[];
 }
 interface FormData {
-  NombreGrupo: string;
+  groupName: string;
   nivel: string;
 }
 
@@ -20,26 +20,32 @@ const levelsSchool = [
 const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   const { addStudent, students, resetStore } = useStudentStore();
 
-  const { Grado, NombreGrupo } = dataGroup[0];
-  if (!Grado) {
-    return;
-  }
-  const nivel = Grado.Nivel;
+  let nivel;
+  let groupName;
 
-  useEffect(() => {
-    resetStore();
-    for (const key in dataGroup[0].Alumnos) {
-      const data = dataGroup[0].Alumnos[key].Usuarios;
-      addStudent(data);
+  if (dataGroup.length > 0) {
+    const { Grado, NombreGrupo } = dataGroup[0];
+    if (!Grado) {
+      return;
     }
-  }, []);
+    nivel = Grado.Nivel;
+    groupName = NombreGrupo;
+
+    useEffect(() => {
+      resetStore();
+      for (const key in dataGroup[0].Alumnos) {
+        const data = dataGroup[0].Alumnos[key].Usuarios;
+        addStudent(data);
+      }
+    }, []);
+  }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: { NombreGrupo, nivel },
+    defaultValues: { groupName, nivel },
   });
 
   return (
@@ -61,7 +67,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                       className="input input-solid max-w-full"
                       placeholder="1A"
                       type="text"
-                      {...register("NombreGrupo")}
+                      {...register("groupName")}
                     />
                   </div>
                   <div>
