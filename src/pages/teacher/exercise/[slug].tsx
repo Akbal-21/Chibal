@@ -56,17 +56,6 @@ const ExcersisePage: FC<Props> = ({
   const [dataIncises, setDataIncises] = useState("");
 
   useEffect(() => {
-    setValue("TipoEjercicio_id", typeExcerciseId);
-    setValue("Estado", typePublisherId);
-    if (datePublic !== null) {
-      setValue("FechaPublicacion", datePublic.toDateString());
-    }
-    if (dateLimit !== null) {
-      setValue("FechaLimite", dateLimit.toDateString());
-    }
-  }, [typeExcerciseId, datePublic, dateLimit]);
-
-  useEffect(() => {
     resetStore();
     if (incisos.length > 0) {
       const { TipoEjercicio_id, Estado_id } = exercise;
@@ -129,6 +118,15 @@ const ExcersisePage: FC<Props> = ({
   });
 
   const onSubmit = (form: FormData) => {
+    setValue("TipoEjercicio_id", typeExcerciseId);
+    setValue("Estado", typePublisherId);
+    if (datePublic !== null) {
+      setValue("FechaPublicacion", datePublic.toDateString());
+    }
+    if (dateLimit !== null) {
+      setValue("FechaLimite", dateLimit.toDateString());
+    }
+
     console.log({ form, excercise });
   };
 

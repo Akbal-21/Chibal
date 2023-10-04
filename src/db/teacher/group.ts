@@ -5,34 +5,31 @@ export const getDataGroup = async (idUser: string) => {
   // let informacionGrupos;
 
   await db.prisma.$connect();
-  const dataGroup: IDataGroup[] = await db.prisma.alumnos.findMany({
+
+  const dataGroup: IDataGroup[] = await db.prisma.grupos.findMany({
     select: {
-      Usuarios: {
+      Alumnos: {
         select: {
-          Nombres: true,
-          Apellidos: true,
-        },
-      },
-      Grupos: {
-        select: {
-          Escuela: {
+          Usuarios: {
             select: {
-              Nombre: true,
-            },
-          },
-          NombreGrupo: true,
-          Turno: {
-            select: {
-              Horario: true,
-            },
-          },
-          Grado: {
-            select: {
-              Nivel: true,
+              Usuarios_id: true,
+              Nombres: true,
+              Apellidos: true,
+              Correo: true,
             },
           },
         },
       },
+      NombreGrupo: true,
+      Grado_id: true,
+      Grado: {
+        select: {
+          Nivel: true,
+        },
+      },
+    },
+    where: {
+      Grupos_id: Number(idUser),
     },
   });
 

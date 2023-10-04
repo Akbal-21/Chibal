@@ -1,15 +1,46 @@
 import { TeacherLayouth } from "@/components";
 import { getDataGroup } from "@/db/teacher";
-import { getExerciseAnswers } from "@/db/teacher/answers";
 import { IDataGroup } from "@/interface";
+import { useStudentStore } from "@/store";
 
 interface Props {
   slug: string;
   dataGroup: IDataGroup[];
 }
+interface FormData {
+  NombreGrupo: string;
+  nivel: string;
+}
+
+const levelsSchool = [
+  { id: 1, grado: "1ro Primaria" },
+  { id: 2, grado: "3ro Preescolar" },
+];
 
 const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
-  console.log(dataGroup);
+  const { addStudent, students, resetStore } = useStudentStore();
+
+  const { Grado, NombreGrupo } = dataGroup[0];
+  if (!Grado) {
+    return;
+  }
+  const nivel = Grado.Nivel;
+
+  useEffect(() => {
+    resetStore();
+    for (const key in dataGroup[0].Alumnos) {
+      const data = dataGroup[0].Alumnos[key].Usuarios;
+      addStudent(data);
+    }
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: { NombreGrupo, nivel },
+  });
 
   return (
     <TeacherLayouth
@@ -30,13 +61,17 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                       className="input input-solid max-w-full"
                       placeholder="1A"
                       type="text"
+                      {...register("NombreGrupo")}
                     />
                   </div>
                   <div>
                     Grado
                     <select className="select select-secondary">
-                      <option>3ro de Preescolar</option>
-                      <option>1ro de Primaria</option>
+                      {levelsSchool.map((level) => (
+                        <option key={level.id} {...register("nivel")}>
+                          {level.grado}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -91,8 +126,17 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
               <div className="divider divider-horizontal">Lista de Alumnos</div>
 
               <div>
-                <br />
-                <div className="grid grid-cols-custom-2 gap-4 w-full">Hola</div>
+                {students.length < 0 ? (
+                  <div className="grid gap-4 w-full">Agregue un alumno</div>
+                ) : (
+                  students.map((student) => (
+                    <div key={student.Usuarios_id} className="grid grid-cols-3">
+                      <div>{student.Nombres}</div>
+                      <div>{student.Apellidos}</div>
+                      <div>{student.Correo}</div>
+                    </div>
+                  ))
+                )}
               </div>
 
               <div className="mt-4">
@@ -112,18 +156,16 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
 };
 
 import { GetServerSideProps, NextPage } from "next";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // const { data } = await  // your fetch function here
   const { slug = "" } = query as { slug: string };
 
-  console.log(slug);
-
   const dataGroup: IDataGroup[] | undefined = await getDataGroup(slug);
 
-  const test = await getExerciseAnswers("4");
-
-  console.log(test);
+  console.log(dataGroup);
 
   return {
     props: {

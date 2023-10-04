@@ -5,7 +5,7 @@ export const TeacherNavbar = () => {
   const { user } = useLoginUser();
 
   return (
-    <div className="navbar bg-fuzzy_Wuzzy rounded-lg">
+    <div className="navbar bg-coral rounded-lg">
       <div className="navbar-start">
         <Link href={"/"} className="navbar-item">
           <h1 className="text-white text-2xl">
