@@ -12,10 +12,10 @@
     "vercel-build": "prisma db pull && prisma generate && next build"
   },
   "dependencies": {
-    "@prisma/client": "5.4.0",
+    "@prisma/client": "5.4.1",
     "@react-icons/all-files": "4.1.0",
-    "@types/react": "18.2.24",
-    "@types/react-dom": "18.2.9",
+    "@types/react": "18.2.25",
+    "@types/react-dom": "18.2.10",
     "add": "2.0.6",
     "autoprefixer": "10.4.16",
     "axios": "1.5.1",
@@ -29,7 +29,7 @@
     "react": "18.2.0",
     "react-datepicker": "4.18.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "7.46.2",
+    "react-hook-form": "7.47.0",
     "react-icons": "^4.11.0",
     "rippleui": "1.12.1",
     "swr": "2.2.4",
@@ -43,6 +43,6 @@
     "@types/js-cookie": "3.0.4",
     "@types/jsonwebtoken": "9.0.3",
     "@types/react-datepicker": "4.15.1",
-    "prisma": "5.4.0"
+    "prisma": "5.4.1"
   }
 }
