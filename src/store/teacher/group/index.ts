@@ -1,10 +1,11 @@
 import { create } from "zustand";
 
 interface dataStudent {
-  Usuarios_id: number;
+  Usuarios_id?: number;
   Nombres: string;
   Apellidos: string;
   Correo: string;
+  Contrasena?: string;
 }
 
 interface Exercise {
