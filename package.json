@@ -6,13 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma db pull",
-    "postinstall1": "prisma generate",
-    "vercel-build": "prisma db pull && prisma generate && next build"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "5.4.0",
+    "@prisma/client": "5.3.1",
     "@react-icons/all-files": "4.1.0",
     "@types/react": "18.2.24",
     "@types/react-dom": "18.2.9",
@@ -43,6 +40,6 @@
     "@types/js-cookie": "3.0.4",
     "@types/jsonwebtoken": "9.0.3",
     "@types/react-datepicker": "4.15.1",
-    "prisma": "5.4.0"
+    "prisma": "5.3.1"
   }
 }

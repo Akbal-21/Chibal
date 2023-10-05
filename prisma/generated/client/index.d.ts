@@ -101,7 +101,7 @@ export type Usuarios = $Result.DefaultSelection<Prisma.$UsuariosPayload>
 export class PrismaClient<
   T extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
   U = 'log' extends keyof T ? T['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<T['log']> : never : never,
-  ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
+  ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
@@ -402,8 +402,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 5.4.0
-   * Query Engine version: a5596b96668f0f4b397761ce0956db54e17e48c4
+   * Prisma Client JS version: 5.3.1
+   * Query Engine version: 61e140623197a131c2a6189271ffee05a7aa9a59
    */
   export type PrismaVersion = {
     client: string
@@ -839,11 +839,11 @@ export namespace Prisma {
   }
 
 
-  interface TypeMapCb extends $Utils.Fn<{extArgs: $Extensions.InternalArgs}, $Utils.Record<string, any>> {
+  interface TypeMapCb extends $Utils.Fn<{extArgs: $Extensions.Args}, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs']>
   }
 
-  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TypeMap<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     meta: {
       modelProps: 'administrador' | 'alumnos' | 'ejercicios' | 'escuela' | 'estado' | 'grado' | 'grupos' | 'incisos' | 'maestros' | 'respuestas' | 'superAdmin' | 'tipoEjercicio' | 'turno' | 'usuarios'
       txIsolationLevel: Prisma.TransactionIsolationLevel
@@ -1800,19 +1800,23 @@ export namespace Prisma {
   export const defineExtension: $Extensions.ExtendsHook<'define', Prisma.TypeMapCb, $Extensions.DefaultArgs>
   export type DefaultPrismaClient = PrismaClient
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
+
   export interface PrismaClientOptions {
     /**
      * Overwrites the datasource url from your schema.prisma file
      */
     datasources?: Datasources
+
     /**
      * Overwrites the datasource url from your schema.prisma file
      */
     datasourceUrl?: string
+
     /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
+
     /**
      * @example
      * ```
@@ -1821,15 +1825,15 @@ export namespace Prisma {
      * 
      * // Emit as events
      * log: [
-     *   { emit: 'stdout', level: 'query' },
-     *   { emit: 'stdout', level: 'info' },
-     *   { emit: 'stdout', level: 'warn' }
-     *   { emit: 'stdout', level: 'error' }
+     *  { emit: 'stdout', level: 'query' },
+     *  { emit: 'stdout', level: 'info' },
+     *  { emit: 'stdout', level: 'warn' }
+     *  { emit: 'stdout', level: 'error' }
      * ]
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
-    log?: (LogLevel | LogDefinition)[]
+    log?: Array<LogLevel | LogDefinition>
   }
 
   /* Types for Logging */
@@ -1925,7 +1929,7 @@ export namespace Prisma {
     Respuestas: number
   }
 
-  export type AlumnosCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Respuestas?: boolean | AlumnosCountOutputTypeCountRespuestasArgs
   }
 
@@ -1934,7 +1938,7 @@ export namespace Prisma {
   /**
    * AlumnosCountOutputType without action
    */
-  export type AlumnosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the AlumnosCountOutputType
      */
@@ -1945,7 +1949,7 @@ export namespace Prisma {
   /**
    * AlumnosCountOutputType without action
    */
-  export type AlumnosCountOutputTypeCountRespuestasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosCountOutputTypeCountRespuestasArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: RespuestasWhereInput
   }
 
@@ -1959,7 +1963,7 @@ export namespace Prisma {
     Incisos: number
   }
 
-  export type EjerciciosCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Incisos?: boolean | EjerciciosCountOutputTypeCountIncisosArgs
   }
 
@@ -1968,7 +1972,7 @@ export namespace Prisma {
   /**
    * EjerciciosCountOutputType without action
    */
-  export type EjerciciosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the EjerciciosCountOutputType
      */
@@ -1979,7 +1983,7 @@ export namespace Prisma {
   /**
    * EjerciciosCountOutputType without action
    */
-  export type EjerciciosCountOutputTypeCountIncisosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosCountOutputTypeCountIncisosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: IncisosWhereInput
   }
 
@@ -1995,7 +1999,7 @@ export namespace Prisma {
     Maestros: number
   }
 
-  export type EscuelaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Administrador?: boolean | EscuelaCountOutputTypeCountAdministradorArgs
     Grupos?: boolean | EscuelaCountOutputTypeCountGruposArgs
     Maestros?: boolean | EscuelaCountOutputTypeCountMaestrosArgs
@@ -2006,7 +2010,7 @@ export namespace Prisma {
   /**
    * EscuelaCountOutputType without action
    */
-  export type EscuelaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the EscuelaCountOutputType
      */
@@ -2017,7 +2021,7 @@ export namespace Prisma {
   /**
    * EscuelaCountOutputType without action
    */
-  export type EscuelaCountOutputTypeCountAdministradorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCountOutputTypeCountAdministradorArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: AdministradorWhereInput
   }
 
@@ -2025,7 +2029,7 @@ export namespace Prisma {
   /**
    * EscuelaCountOutputType without action
    */
-  export type EscuelaCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: GruposWhereInput
   }
 
@@ -2033,7 +2037,7 @@ export namespace Prisma {
   /**
    * EscuelaCountOutputType without action
    */
-  export type EscuelaCountOutputTypeCountMaestrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCountOutputTypeCountMaestrosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: MaestrosWhereInput
   }
 
@@ -2047,7 +2051,7 @@ export namespace Prisma {
     Ejercicios: number
   }
 
-  export type EstadoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | EstadoCountOutputTypeCountEjerciciosArgs
   }
 
@@ -2056,7 +2060,7 @@ export namespace Prisma {
   /**
    * EstadoCountOutputType without action
    */
-  export type EstadoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the EstadoCountOutputType
      */
@@ -2067,7 +2071,7 @@ export namespace Prisma {
   /**
    * EstadoCountOutputType without action
    */
-  export type EstadoCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EjerciciosWhereInput
   }
 
@@ -2081,7 +2085,7 @@ export namespace Prisma {
     Grupos: number
   }
 
-  export type GradoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Grupos?: boolean | GradoCountOutputTypeCountGruposArgs
   }
 
@@ -2090,7 +2094,7 @@ export namespace Prisma {
   /**
    * GradoCountOutputType without action
    */
-  export type GradoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the GradoCountOutputType
      */
@@ -2101,7 +2105,7 @@ export namespace Prisma {
   /**
    * GradoCountOutputType without action
    */
-  export type GradoCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: GruposWhereInput
   }
 
@@ -2116,7 +2120,7 @@ export namespace Prisma {
     Ejercicios: number
   }
 
-  export type GruposCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Alumnos?: boolean | GruposCountOutputTypeCountAlumnosArgs
     Ejercicios?: boolean | GruposCountOutputTypeCountEjerciciosArgs
   }
@@ -2126,7 +2130,7 @@ export namespace Prisma {
   /**
    * GruposCountOutputType without action
    */
-  export type GruposCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the GruposCountOutputType
      */
@@ -2137,7 +2141,7 @@ export namespace Prisma {
   /**
    * GruposCountOutputType without action
    */
-  export type GruposCountOutputTypeCountAlumnosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposCountOutputTypeCountAlumnosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: AlumnosWhereInput
   }
 
@@ -2145,7 +2149,7 @@ export namespace Prisma {
   /**
    * GruposCountOutputType without action
    */
-  export type GruposCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EjerciciosWhereInput
   }
 
@@ -2159,7 +2163,7 @@ export namespace Prisma {
     Respuestas: number
   }
 
-  export type IncisosCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Respuestas?: boolean | IncisosCountOutputTypeCountRespuestasArgs
   }
 
@@ -2168,7 +2172,7 @@ export namespace Prisma {
   /**
    * IncisosCountOutputType without action
    */
-  export type IncisosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the IncisosCountOutputType
      */
@@ -2179,7 +2183,7 @@ export namespace Prisma {
   /**
    * IncisosCountOutputType without action
    */
-  export type IncisosCountOutputTypeCountRespuestasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosCountOutputTypeCountRespuestasArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: RespuestasWhereInput
   }
 
@@ -2194,7 +2198,7 @@ export namespace Prisma {
     Grupos: number
   }
 
-  export type MaestrosCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | MaestrosCountOutputTypeCountEjerciciosArgs
     Grupos?: boolean | MaestrosCountOutputTypeCountGruposArgs
   }
@@ -2204,7 +2208,7 @@ export namespace Prisma {
   /**
    * MaestrosCountOutputType without action
    */
-  export type MaestrosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MaestrosCountOutputType
      */
@@ -2215,7 +2219,7 @@ export namespace Prisma {
   /**
    * MaestrosCountOutputType without action
    */
-  export type MaestrosCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EjerciciosWhereInput
   }
 
@@ -2223,7 +2227,7 @@ export namespace Prisma {
   /**
    * MaestrosCountOutputType without action
    */
-  export type MaestrosCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: GruposWhereInput
   }
 
@@ -2237,7 +2241,7 @@ export namespace Prisma {
     Ejercicios: number
   }
 
-  export type TipoEjercicioCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | TipoEjercicioCountOutputTypeCountEjerciciosArgs
   }
 
@@ -2246,7 +2250,7 @@ export namespace Prisma {
   /**
    * TipoEjercicioCountOutputType without action
    */
-  export type TipoEjercicioCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicioCountOutputType
      */
@@ -2257,7 +2261,7 @@ export namespace Prisma {
   /**
    * TipoEjercicioCountOutputType without action
    */
-  export type TipoEjercicioCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioCountOutputTypeCountEjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EjerciciosWhereInput
   }
 
@@ -2272,7 +2276,7 @@ export namespace Prisma {
     Grupos: number
   }
 
-  export type TurnoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Administrador?: boolean | TurnoCountOutputTypeCountAdministradorArgs
     Grupos?: boolean | TurnoCountOutputTypeCountGruposArgs
   }
@@ -2282,7 +2286,7 @@ export namespace Prisma {
   /**
    * TurnoCountOutputType without action
    */
-  export type TurnoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TurnoCountOutputType
      */
@@ -2293,7 +2297,7 @@ export namespace Prisma {
   /**
    * TurnoCountOutputType without action
    */
-  export type TurnoCountOutputTypeCountAdministradorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoCountOutputTypeCountAdministradorArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: AdministradorWhereInput
   }
 
@@ -2301,7 +2305,7 @@ export namespace Prisma {
   /**
    * TurnoCountOutputType without action
    */
-  export type TurnoCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoCountOutputTypeCountGruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: GruposWhereInput
   }
 
@@ -2386,7 +2390,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type AdministradorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Administrador to aggregate.
      */
@@ -2458,7 +2462,7 @@ export namespace Prisma {
 
 
 
-  export type AdministradorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: AdministradorWhereInput
     orderBy?: AdministradorOrderByWithAggregationInput | AdministradorOrderByWithAggregationInput[]
     by: AdministradorScalarFieldEnum[] | AdministradorScalarFieldEnum
@@ -2497,7 +2501,7 @@ export namespace Prisma {
     >
 
 
-  export type AdministradorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type AdministradorSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Usuario_id?: boolean
     Escuela_id?: boolean
     Turno_id?: boolean
@@ -2512,21 +2516,21 @@ export namespace Prisma {
     Turno_id?: boolean
   }
 
-  export type AdministradorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Escuela?: boolean | Administrador$EscuelaArgs<ExtArgs>
     Turno?: boolean | Administrador$TurnoArgs<ExtArgs>
     Usuarios?: boolean | UsuariosDefaultArgs<ExtArgs>
   }
 
 
-  export type $AdministradorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $AdministradorPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Administrador"
     objects: {
       Escuela: Prisma.$EscuelaPayload<ExtArgs> | null
       Turno: Prisma.$TurnoPayload<ExtArgs> | null
       Usuarios: Prisma.$UsuariosPayload<ExtArgs>
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Usuario_id: number
       Escuela_id: number | null
       Turno_id: number | null
@@ -2537,12 +2541,12 @@ export namespace Prisma {
 
   type AdministradorGetPayload<S extends boolean | null | undefined | AdministradorDefaultArgs> = $Result.GetResult<Prisma.$AdministradorPayload, S>
 
-  type AdministradorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type AdministradorCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<AdministradorFindManyArgs, 'select' | 'include'> & {
       select?: AdministradorCountAggregateInputType | true
     }
 
-  export interface AdministradorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface AdministradorDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Administrador'], meta: { name: 'Administrador' } }
     /**
      * Find zero or one Administrador that matches the filter.
@@ -2892,7 +2896,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__AdministradorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__AdministradorClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Escuela<T extends Administrador$EscuelaArgs<ExtArgs> = {}>(args?: Subset<T, Administrador$EscuelaArgs<ExtArgs>>): Prisma__EscuelaClient<$Result.GetResult<Prisma.$EscuelaPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
@@ -2940,7 +2944,7 @@ export namespace Prisma {
   /**
    * Administrador findUnique
    */
-  export type AdministradorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -2959,7 +2963,7 @@ export namespace Prisma {
   /**
    * Administrador findUniqueOrThrow
    */
-  export type AdministradorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -2978,7 +2982,7 @@ export namespace Prisma {
   /**
    * Administrador findFirst
    */
-  export type AdministradorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3027,7 +3031,7 @@ export namespace Prisma {
   /**
    * Administrador findFirstOrThrow
    */
-  export type AdministradorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3076,7 +3080,7 @@ export namespace Prisma {
   /**
    * Administrador findMany
    */
-  export type AdministradorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3120,7 +3124,7 @@ export namespace Prisma {
   /**
    * Administrador create
    */
-  export type AdministradorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3139,7 +3143,7 @@ export namespace Prisma {
   /**
    * Administrador createMany
    */
-  export type AdministradorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Administradors.
      */
@@ -3151,7 +3155,7 @@ export namespace Prisma {
   /**
    * Administrador update
    */
-  export type AdministradorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3174,7 +3178,7 @@ export namespace Prisma {
   /**
    * Administrador updateMany
    */
-  export type AdministradorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Administradors.
      */
@@ -3189,7 +3193,7 @@ export namespace Prisma {
   /**
    * Administrador upsert
    */
-  export type AdministradorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3216,7 +3220,7 @@ export namespace Prisma {
   /**
    * Administrador delete
    */
-  export type AdministradorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3235,7 +3239,7 @@ export namespace Prisma {
   /**
    * Administrador deleteMany
    */
-  export type AdministradorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Administradors to delete
      */
@@ -3246,7 +3250,7 @@ export namespace Prisma {
   /**
    * Administrador.Escuela
    */
-  export type Administrador$EscuelaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Administrador$EscuelaArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -3262,7 +3266,7 @@ export namespace Prisma {
   /**
    * Administrador.Turno
    */
-  export type Administrador$TurnoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Administrador$TurnoArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -3278,7 +3282,7 @@ export namespace Prisma {
   /**
    * Administrador without action
    */
-  export type AdministradorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AdministradorDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -3356,7 +3360,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type AlumnosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Alumnos to aggregate.
      */
@@ -3428,7 +3432,7 @@ export namespace Prisma {
 
 
 
-  export type AlumnosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: AlumnosWhereInput
     orderBy?: AlumnosOrderByWithAggregationInput | AlumnosOrderByWithAggregationInput[]
     by: AlumnosScalarFieldEnum[] | AlumnosScalarFieldEnum
@@ -3466,7 +3470,7 @@ export namespace Prisma {
     >
 
 
-  export type AlumnosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type AlumnosSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Usuario_id?: boolean
     Grupo_id?: boolean
     Grupos?: boolean | Alumnos$GruposArgs<ExtArgs>
@@ -3480,7 +3484,7 @@ export namespace Prisma {
     Grupo_id?: boolean
   }
 
-  export type AlumnosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Grupos?: boolean | Alumnos$GruposArgs<ExtArgs>
     Usuarios?: boolean | UsuariosDefaultArgs<ExtArgs>
     Respuestas?: boolean | Alumnos$RespuestasArgs<ExtArgs>
@@ -3488,14 +3492,14 @@ export namespace Prisma {
   }
 
 
-  export type $AlumnosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $AlumnosPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Alumnos"
     objects: {
       Grupos: Prisma.$GruposPayload<ExtArgs> | null
       Usuarios: Prisma.$UsuariosPayload<ExtArgs>
       Respuestas: Prisma.$RespuestasPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Usuario_id: number
       Grupo_id: number | null
     }, ExtArgs["result"]["alumnos"]>
@@ -3505,12 +3509,12 @@ export namespace Prisma {
 
   type AlumnosGetPayload<S extends boolean | null | undefined | AlumnosDefaultArgs> = $Result.GetResult<Prisma.$AlumnosPayload, S>
 
-  type AlumnosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type AlumnosCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<AlumnosFindManyArgs, 'select' | 'include'> & {
       select?: AlumnosCountAggregateInputType | true
     }
 
-  export interface AlumnosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface AlumnosDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Alumnos'], meta: { name: 'Alumnos' } }
     /**
      * Find zero or one Alumnos that matches the filter.
@@ -3860,7 +3864,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__AlumnosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__AlumnosClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Grupos<T extends Alumnos$GruposArgs<ExtArgs> = {}>(args?: Subset<T, Alumnos$GruposArgs<ExtArgs>>): Prisma__GruposClient<$Result.GetResult<Prisma.$GruposPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
@@ -3907,7 +3911,7 @@ export namespace Prisma {
   /**
    * Alumnos findUnique
    */
-  export type AlumnosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -3926,7 +3930,7 @@ export namespace Prisma {
   /**
    * Alumnos findUniqueOrThrow
    */
-  export type AlumnosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -3945,7 +3949,7 @@ export namespace Prisma {
   /**
    * Alumnos findFirst
    */
-  export type AlumnosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -3994,7 +3998,7 @@ export namespace Prisma {
   /**
    * Alumnos findFirstOrThrow
    */
-  export type AlumnosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4043,7 +4047,7 @@ export namespace Prisma {
   /**
    * Alumnos findMany
    */
-  export type AlumnosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4087,7 +4091,7 @@ export namespace Prisma {
   /**
    * Alumnos create
    */
-  export type AlumnosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4106,7 +4110,7 @@ export namespace Prisma {
   /**
    * Alumnos createMany
    */
-  export type AlumnosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Alumnos.
      */
@@ -4118,7 +4122,7 @@ export namespace Prisma {
   /**
    * Alumnos update
    */
-  export type AlumnosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4141,7 +4145,7 @@ export namespace Prisma {
   /**
    * Alumnos updateMany
    */
-  export type AlumnosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Alumnos.
      */
@@ -4156,7 +4160,7 @@ export namespace Prisma {
   /**
    * Alumnos upsert
    */
-  export type AlumnosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4183,7 +4187,7 @@ export namespace Prisma {
   /**
    * Alumnos delete
    */
-  export type AlumnosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4202,7 +4206,7 @@ export namespace Prisma {
   /**
    * Alumnos deleteMany
    */
-  export type AlumnosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Alumnos to delete
      */
@@ -4213,7 +4217,7 @@ export namespace Prisma {
   /**
    * Alumnos.Grupos
    */
-  export type Alumnos$GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Alumnos$GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -4229,7 +4233,7 @@ export namespace Prisma {
   /**
    * Alumnos.Respuestas
    */
-  export type Alumnos$RespuestasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Alumnos$RespuestasArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -4250,7 +4254,7 @@ export namespace Prisma {
   /**
    * Alumnos without action
    */
-  export type AlumnosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlumnosDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -4376,7 +4380,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type EjerciciosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Ejercicios to aggregate.
      */
@@ -4448,7 +4452,7 @@ export namespace Prisma {
 
 
 
-  export type EjerciciosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EjerciciosWhereInput
     orderBy?: EjerciciosOrderByWithAggregationInput | EjerciciosOrderByWithAggregationInput[]
     by: EjerciciosScalarFieldEnum[] | EjerciciosScalarFieldEnum
@@ -4492,7 +4496,7 @@ export namespace Prisma {
     >
 
 
-  export type EjerciciosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type EjerciciosSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Ejercicios_id?: boolean
     NombreEjercicio?: boolean
     MaestroID?: boolean
@@ -4520,7 +4524,7 @@ export namespace Prisma {
     Estado_id?: boolean
   }
 
-  export type EjerciciosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Estado?: boolean | EstadoDefaultArgs<ExtArgs>
     Grupos?: boolean | Ejercicios$GruposArgs<ExtArgs>
     Maestros?: boolean | Ejercicios$MaestrosArgs<ExtArgs>
@@ -4530,7 +4534,7 @@ export namespace Prisma {
   }
 
 
-  export type $EjerciciosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $EjerciciosPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Ejercicios"
     objects: {
       Estado: Prisma.$EstadoPayload<ExtArgs>
@@ -4539,7 +4543,7 @@ export namespace Prisma {
       TipoEjercicio: Prisma.$TipoEjercicioPayload<ExtArgs>
       Incisos: Prisma.$IncisosPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Ejercicios_id: number
       NombreEjercicio: string
       MaestroID: number | null
@@ -4555,12 +4559,12 @@ export namespace Prisma {
 
   type EjerciciosGetPayload<S extends boolean | null | undefined | EjerciciosDefaultArgs> = $Result.GetResult<Prisma.$EjerciciosPayload, S>
 
-  type EjerciciosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type EjerciciosCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<EjerciciosFindManyArgs, 'select' | 'include'> & {
       select?: EjerciciosCountAggregateInputType | true
     }
 
-  export interface EjerciciosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface EjerciciosDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Ejercicios'], meta: { name: 'Ejercicios' } }
     /**
      * Find zero or one Ejercicios that matches the filter.
@@ -4910,7 +4914,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__EjerciciosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__EjerciciosClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Estado<T extends EstadoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EstadoDefaultArgs<ExtArgs>>): Prisma__EstadoClient<$Result.GetResult<Prisma.$EstadoPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
@@ -4967,7 +4971,7 @@ export namespace Prisma {
   /**
    * Ejercicios findUnique
    */
-  export type EjerciciosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -4986,7 +4990,7 @@ export namespace Prisma {
   /**
    * Ejercicios findUniqueOrThrow
    */
-  export type EjerciciosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5005,7 +5009,7 @@ export namespace Prisma {
   /**
    * Ejercicios findFirst
    */
-  export type EjerciciosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5054,7 +5058,7 @@ export namespace Prisma {
   /**
    * Ejercicios findFirstOrThrow
    */
-  export type EjerciciosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5103,7 +5107,7 @@ export namespace Prisma {
   /**
    * Ejercicios findMany
    */
-  export type EjerciciosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5147,7 +5151,7 @@ export namespace Prisma {
   /**
    * Ejercicios create
    */
-  export type EjerciciosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5166,7 +5170,7 @@ export namespace Prisma {
   /**
    * Ejercicios createMany
    */
-  export type EjerciciosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Ejercicios.
      */
@@ -5178,7 +5182,7 @@ export namespace Prisma {
   /**
    * Ejercicios update
    */
-  export type EjerciciosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5201,7 +5205,7 @@ export namespace Prisma {
   /**
    * Ejercicios updateMany
    */
-  export type EjerciciosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Ejercicios.
      */
@@ -5216,7 +5220,7 @@ export namespace Prisma {
   /**
    * Ejercicios upsert
    */
-  export type EjerciciosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5243,7 +5247,7 @@ export namespace Prisma {
   /**
    * Ejercicios delete
    */
-  export type EjerciciosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5262,7 +5266,7 @@ export namespace Prisma {
   /**
    * Ejercicios deleteMany
    */
-  export type EjerciciosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Ejercicios to delete
      */
@@ -5273,7 +5277,7 @@ export namespace Prisma {
   /**
    * Ejercicios.Grupos
    */
-  export type Ejercicios$GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Ejercicios$GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -5289,7 +5293,7 @@ export namespace Prisma {
   /**
    * Ejercicios.Maestros
    */
-  export type Ejercicios$MaestrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Ejercicios$MaestrosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -5305,7 +5309,7 @@ export namespace Prisma {
   /**
    * Ejercicios.Incisos
    */
-  export type Ejercicios$IncisosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Ejercicios$IncisosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -5326,7 +5330,7 @@ export namespace Prisma {
   /**
    * Ejercicios without action
    */
-  export type EjerciciosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EjerciciosDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -5400,7 +5404,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type EscuelaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Escuela to aggregate.
      */
@@ -5472,7 +5476,7 @@ export namespace Prisma {
 
 
 
-  export type EscuelaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EscuelaWhereInput
     orderBy?: EscuelaOrderByWithAggregationInput | EscuelaOrderByWithAggregationInput[]
     by: EscuelaScalarFieldEnum[] | EscuelaScalarFieldEnum
@@ -5510,7 +5514,7 @@ export namespace Prisma {
     >
 
 
-  export type EscuelaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type EscuelaSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Escuela_id?: boolean
     Nombre?: boolean
     Administrador?: boolean | Escuela$AdministradorArgs<ExtArgs>
@@ -5524,7 +5528,7 @@ export namespace Prisma {
     Nombre?: boolean
   }
 
-  export type EscuelaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Administrador?: boolean | Escuela$AdministradorArgs<ExtArgs>
     Grupos?: boolean | Escuela$GruposArgs<ExtArgs>
     Maestros?: boolean | Escuela$MaestrosArgs<ExtArgs>
@@ -5532,14 +5536,14 @@ export namespace Prisma {
   }
 
 
-  export type $EscuelaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $EscuelaPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Escuela"
     objects: {
       Administrador: Prisma.$AdministradorPayload<ExtArgs>[]
       Grupos: Prisma.$GruposPayload<ExtArgs>[]
       Maestros: Prisma.$MaestrosPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Escuela_id: number
       Nombre: string
     }, ExtArgs["result"]["escuela"]>
@@ -5549,12 +5553,12 @@ export namespace Prisma {
 
   type EscuelaGetPayload<S extends boolean | null | undefined | EscuelaDefaultArgs> = $Result.GetResult<Prisma.$EscuelaPayload, S>
 
-  type EscuelaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type EscuelaCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<EscuelaFindManyArgs, 'select' | 'include'> & {
       select?: EscuelaCountAggregateInputType | true
     }
 
-  export interface EscuelaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface EscuelaDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Escuela'], meta: { name: 'Escuela' } }
     /**
      * Find zero or one Escuela that matches the filter.
@@ -5904,7 +5908,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__EscuelaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__EscuelaClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Administrador<T extends Escuela$AdministradorArgs<ExtArgs> = {}>(args?: Subset<T, Escuela$AdministradorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdministradorPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -5951,7 +5955,7 @@ export namespace Prisma {
   /**
    * Escuela findUnique
    */
-  export type EscuelaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -5970,7 +5974,7 @@ export namespace Prisma {
   /**
    * Escuela findUniqueOrThrow
    */
-  export type EscuelaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -5989,7 +5993,7 @@ export namespace Prisma {
   /**
    * Escuela findFirst
    */
-  export type EscuelaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6038,7 +6042,7 @@ export namespace Prisma {
   /**
    * Escuela findFirstOrThrow
    */
-  export type EscuelaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6087,7 +6091,7 @@ export namespace Prisma {
   /**
    * Escuela findMany
    */
-  export type EscuelaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6131,7 +6135,7 @@ export namespace Prisma {
   /**
    * Escuela create
    */
-  export type EscuelaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6150,7 +6154,7 @@ export namespace Prisma {
   /**
    * Escuela createMany
    */
-  export type EscuelaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Escuelas.
      */
@@ -6162,7 +6166,7 @@ export namespace Prisma {
   /**
    * Escuela update
    */
-  export type EscuelaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6185,7 +6189,7 @@ export namespace Prisma {
   /**
    * Escuela updateMany
    */
-  export type EscuelaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Escuelas.
      */
@@ -6200,7 +6204,7 @@ export namespace Prisma {
   /**
    * Escuela upsert
    */
-  export type EscuelaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6227,7 +6231,7 @@ export namespace Prisma {
   /**
    * Escuela delete
    */
-  export type EscuelaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6246,7 +6250,7 @@ export namespace Prisma {
   /**
    * Escuela deleteMany
    */
-  export type EscuelaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Escuelas to delete
      */
@@ -6257,7 +6261,7 @@ export namespace Prisma {
   /**
    * Escuela.Administrador
    */
-  export type Escuela$AdministradorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Escuela$AdministradorArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -6278,7 +6282,7 @@ export namespace Prisma {
   /**
    * Escuela.Grupos
    */
-  export type Escuela$GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Escuela$GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -6299,7 +6303,7 @@ export namespace Prisma {
   /**
    * Escuela.Maestros
    */
-  export type Escuela$MaestrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Escuela$MaestrosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -6320,7 +6324,7 @@ export namespace Prisma {
   /**
    * Escuela without action
    */
-  export type EscuelaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EscuelaDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -6394,7 +6398,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type EstadoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Estado to aggregate.
      */
@@ -6466,7 +6470,7 @@ export namespace Prisma {
 
 
 
-  export type EstadoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: EstadoWhereInput
     orderBy?: EstadoOrderByWithAggregationInput | EstadoOrderByWithAggregationInput[]
     by: EstadoScalarFieldEnum[] | EstadoScalarFieldEnum
@@ -6504,7 +6508,7 @@ export namespace Prisma {
     >
 
 
-  export type EstadoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type EstadoSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Estado_id?: boolean
     Nombre?: boolean
     Ejercicios?: boolean | Estado$EjerciciosArgs<ExtArgs>
@@ -6516,18 +6520,18 @@ export namespace Prisma {
     Nombre?: boolean
   }
 
-  export type EstadoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | Estado$EjerciciosArgs<ExtArgs>
     _count?: boolean | EstadoCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
-  export type $EstadoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $EstadoPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Estado"
     objects: {
       Ejercicios: Prisma.$EjerciciosPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Estado_id: number
       Nombre: string
     }, ExtArgs["result"]["estado"]>
@@ -6537,12 +6541,12 @@ export namespace Prisma {
 
   type EstadoGetPayload<S extends boolean | null | undefined | EstadoDefaultArgs> = $Result.GetResult<Prisma.$EstadoPayload, S>
 
-  type EstadoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type EstadoCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<EstadoFindManyArgs, 'select' | 'include'> & {
       select?: EstadoCountAggregateInputType | true
     }
 
-  export interface EstadoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface EstadoDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Estado'], meta: { name: 'Estado' } }
     /**
      * Find zero or one Estado that matches the filter.
@@ -6892,7 +6896,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__EstadoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__EstadoClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Ejercicios<T extends Estado$EjerciciosArgs<ExtArgs> = {}>(args?: Subset<T, Estado$EjerciciosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EjerciciosPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -6935,7 +6939,7 @@ export namespace Prisma {
   /**
    * Estado findUnique
    */
-  export type EstadoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -6954,7 +6958,7 @@ export namespace Prisma {
   /**
    * Estado findUniqueOrThrow
    */
-  export type EstadoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -6973,7 +6977,7 @@ export namespace Prisma {
   /**
    * Estado findFirst
    */
-  export type EstadoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7022,7 +7026,7 @@ export namespace Prisma {
   /**
    * Estado findFirstOrThrow
    */
-  export type EstadoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7071,7 +7075,7 @@ export namespace Prisma {
   /**
    * Estado findMany
    */
-  export type EstadoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7115,7 +7119,7 @@ export namespace Prisma {
   /**
    * Estado create
    */
-  export type EstadoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7134,7 +7138,7 @@ export namespace Prisma {
   /**
    * Estado createMany
    */
-  export type EstadoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Estados.
      */
@@ -7146,7 +7150,7 @@ export namespace Prisma {
   /**
    * Estado update
    */
-  export type EstadoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7169,7 +7173,7 @@ export namespace Prisma {
   /**
    * Estado updateMany
    */
-  export type EstadoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Estados.
      */
@@ -7184,7 +7188,7 @@ export namespace Prisma {
   /**
    * Estado upsert
    */
-  export type EstadoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7211,7 +7215,7 @@ export namespace Prisma {
   /**
    * Estado delete
    */
-  export type EstadoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7230,7 +7234,7 @@ export namespace Prisma {
   /**
    * Estado deleteMany
    */
-  export type EstadoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Estados to delete
      */
@@ -7241,7 +7245,7 @@ export namespace Prisma {
   /**
    * Estado.Ejercicios
    */
-  export type Estado$EjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Estado$EjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -7262,7 +7266,7 @@ export namespace Prisma {
   /**
    * Estado without action
    */
-  export type EstadoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EstadoDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Estado
      */
@@ -7336,7 +7340,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type GradoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Grado to aggregate.
      */
@@ -7408,7 +7412,7 @@ export namespace Prisma {
 
 
 
-  export type GradoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: GradoWhereInput
     orderBy?: GradoOrderByWithAggregationInput | GradoOrderByWithAggregationInput[]
     by: GradoScalarFieldEnum[] | GradoScalarFieldEnum
@@ -7446,7 +7450,7 @@ export namespace Prisma {
     >
 
 
-  export type GradoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type GradoSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Grado_id?: boolean
     Nivel?: boolean
     Grupos?: boolean | Grado$GruposArgs<ExtArgs>
@@ -7458,18 +7462,18 @@ export namespace Prisma {
     Nivel?: boolean
   }
 
-  export type GradoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Grupos?: boolean | Grado$GruposArgs<ExtArgs>
     _count?: boolean | GradoCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
-  export type $GradoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $GradoPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Grado"
     objects: {
       Grupos: Prisma.$GruposPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Grado_id: number
       Nivel: string
     }, ExtArgs["result"]["grado"]>
@@ -7479,12 +7483,12 @@ export namespace Prisma {
 
   type GradoGetPayload<S extends boolean | null | undefined | GradoDefaultArgs> = $Result.GetResult<Prisma.$GradoPayload, S>
 
-  type GradoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type GradoCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<GradoFindManyArgs, 'select' | 'include'> & {
       select?: GradoCountAggregateInputType | true
     }
 
-  export interface GradoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface GradoDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Grado'], meta: { name: 'Grado' } }
     /**
      * Find zero or one Grado that matches the filter.
@@ -7834,7 +7838,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__GradoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__GradoClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Grupos<T extends Grado$GruposArgs<ExtArgs> = {}>(args?: Subset<T, Grado$GruposArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GruposPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -7877,7 +7881,7 @@ export namespace Prisma {
   /**
    * Grado findUnique
    */
-  export type GradoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -7896,7 +7900,7 @@ export namespace Prisma {
   /**
    * Grado findUniqueOrThrow
    */
-  export type GradoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -7915,7 +7919,7 @@ export namespace Prisma {
   /**
    * Grado findFirst
    */
-  export type GradoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -7964,7 +7968,7 @@ export namespace Prisma {
   /**
    * Grado findFirstOrThrow
    */
-  export type GradoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8013,7 +8017,7 @@ export namespace Prisma {
   /**
    * Grado findMany
    */
-  export type GradoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8057,7 +8061,7 @@ export namespace Prisma {
   /**
    * Grado create
    */
-  export type GradoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8076,7 +8080,7 @@ export namespace Prisma {
   /**
    * Grado createMany
    */
-  export type GradoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Grados.
      */
@@ -8088,7 +8092,7 @@ export namespace Prisma {
   /**
    * Grado update
    */
-  export type GradoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8111,7 +8115,7 @@ export namespace Prisma {
   /**
    * Grado updateMany
    */
-  export type GradoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Grados.
      */
@@ -8126,7 +8130,7 @@ export namespace Prisma {
   /**
    * Grado upsert
    */
-  export type GradoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8153,7 +8157,7 @@ export namespace Prisma {
   /**
    * Grado delete
    */
-  export type GradoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8172,7 +8176,7 @@ export namespace Prisma {
   /**
    * Grado deleteMany
    */
-  export type GradoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Grados to delete
      */
@@ -8183,7 +8187,7 @@ export namespace Prisma {
   /**
    * Grado.Grupos
    */
-  export type Grado$GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grado$GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -8204,7 +8208,7 @@ export namespace Prisma {
   /**
    * Grado without action
    */
-  export type GradoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GradoDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -8318,7 +8322,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type GruposAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Grupos to aggregate.
      */
@@ -8390,7 +8394,7 @@ export namespace Prisma {
 
 
 
-  export type GruposGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: GruposWhereInput
     orderBy?: GruposOrderByWithAggregationInput | GruposOrderByWithAggregationInput[]
     by: GruposScalarFieldEnum[] | GruposScalarFieldEnum
@@ -8432,7 +8436,7 @@ export namespace Prisma {
     >
 
 
-  export type GruposSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type GruposSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Grupos_id?: boolean
     Escuela_id?: boolean
     NombreGrupo?: boolean
@@ -8457,7 +8461,7 @@ export namespace Prisma {
     Grado_id?: boolean
   }
 
-  export type GruposInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Alumnos?: boolean | Grupos$AlumnosArgs<ExtArgs>
     Ejercicios?: boolean | Grupos$EjerciciosArgs<ExtArgs>
     Escuela?: boolean | Grupos$EscuelaArgs<ExtArgs>
@@ -8468,7 +8472,7 @@ export namespace Prisma {
   }
 
 
-  export type $GruposPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $GruposPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Grupos"
     objects: {
       Alumnos: Prisma.$AlumnosPayload<ExtArgs>[]
@@ -8478,7 +8482,7 @@ export namespace Prisma {
       Maestros: Prisma.$MaestrosPayload<ExtArgs> | null
       Turno: Prisma.$TurnoPayload<ExtArgs> | null
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Grupos_id: number
       Escuela_id: number | null
       NombreGrupo: string
@@ -8492,12 +8496,12 @@ export namespace Prisma {
 
   type GruposGetPayload<S extends boolean | null | undefined | GruposDefaultArgs> = $Result.GetResult<Prisma.$GruposPayload, S>
 
-  type GruposCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type GruposCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<GruposFindManyArgs, 'select' | 'include'> & {
       select?: GruposCountAggregateInputType | true
     }
 
-  export interface GruposDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface GruposDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Grupos'], meta: { name: 'Grupos' } }
     /**
      * Find zero or one Grupos that matches the filter.
@@ -8847,7 +8851,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__GruposClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__GruposClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Alumnos<T extends Grupos$AlumnosArgs<ExtArgs> = {}>(args?: Subset<T, Grupos$AlumnosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlumnosPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -8904,7 +8908,7 @@ export namespace Prisma {
   /**
    * Grupos findUnique
    */
-  export type GruposFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -8923,7 +8927,7 @@ export namespace Prisma {
   /**
    * Grupos findUniqueOrThrow
    */
-  export type GruposFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -8942,7 +8946,7 @@ export namespace Prisma {
   /**
    * Grupos findFirst
    */
-  export type GruposFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -8991,7 +8995,7 @@ export namespace Prisma {
   /**
    * Grupos findFirstOrThrow
    */
-  export type GruposFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9040,7 +9044,7 @@ export namespace Prisma {
   /**
    * Grupos findMany
    */
-  export type GruposFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9084,7 +9088,7 @@ export namespace Prisma {
   /**
    * Grupos create
    */
-  export type GruposCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9103,7 +9107,7 @@ export namespace Prisma {
   /**
    * Grupos createMany
    */
-  export type GruposCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Grupos.
      */
@@ -9115,7 +9119,7 @@ export namespace Prisma {
   /**
    * Grupos update
    */
-  export type GruposUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9138,7 +9142,7 @@ export namespace Prisma {
   /**
    * Grupos updateMany
    */
-  export type GruposUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Grupos.
      */
@@ -9153,7 +9157,7 @@ export namespace Prisma {
   /**
    * Grupos upsert
    */
-  export type GruposUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9180,7 +9184,7 @@ export namespace Prisma {
   /**
    * Grupos delete
    */
-  export type GruposDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9199,7 +9203,7 @@ export namespace Prisma {
   /**
    * Grupos deleteMany
    */
-  export type GruposDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Grupos to delete
      */
@@ -9210,7 +9214,7 @@ export namespace Prisma {
   /**
    * Grupos.Alumnos
    */
-  export type Grupos$AlumnosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grupos$AlumnosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -9231,7 +9235,7 @@ export namespace Prisma {
   /**
    * Grupos.Ejercicios
    */
-  export type Grupos$EjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grupos$EjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -9252,7 +9256,7 @@ export namespace Prisma {
   /**
    * Grupos.Escuela
    */
-  export type Grupos$EscuelaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grupos$EscuelaArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -9268,7 +9272,7 @@ export namespace Prisma {
   /**
    * Grupos.Grado
    */
-  export type Grupos$GradoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grupos$GradoArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grado
      */
@@ -9284,7 +9288,7 @@ export namespace Prisma {
   /**
    * Grupos.Maestros
    */
-  export type Grupos$MaestrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grupos$MaestrosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -9300,7 +9304,7 @@ export namespace Prisma {
   /**
    * Grupos.Turno
    */
-  export type Grupos$TurnoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Grupos$TurnoArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -9316,7 +9320,7 @@ export namespace Prisma {
   /**
    * Grupos without action
    */
-  export type GruposDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GruposDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -9400,7 +9404,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type IncisosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Incisos to aggregate.
      */
@@ -9472,7 +9476,7 @@ export namespace Prisma {
 
 
 
-  export type IncisosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: IncisosWhereInput
     orderBy?: IncisosOrderByWithAggregationInput | IncisosOrderByWithAggregationInput[]
     by: IncisosScalarFieldEnum[] | IncisosScalarFieldEnum
@@ -9511,7 +9515,7 @@ export namespace Prisma {
     >
 
 
-  export type IncisosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type IncisosSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Incisos_id?: boolean
     LoSolicitado?: boolean
     EjercicioID?: boolean
@@ -9526,20 +9530,20 @@ export namespace Prisma {
     EjercicioID?: boolean
   }
 
-  export type IncisosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | Incisos$EjerciciosArgs<ExtArgs>
     Respuestas?: boolean | Incisos$RespuestasArgs<ExtArgs>
     _count?: boolean | IncisosCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
-  export type $IncisosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $IncisosPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Incisos"
     objects: {
       Ejercicios: Prisma.$EjerciciosPayload<ExtArgs> | null
       Respuestas: Prisma.$RespuestasPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Incisos_id: number
       LoSolicitado: string
       EjercicioID: number | null
@@ -9550,12 +9554,12 @@ export namespace Prisma {
 
   type IncisosGetPayload<S extends boolean | null | undefined | IncisosDefaultArgs> = $Result.GetResult<Prisma.$IncisosPayload, S>
 
-  type IncisosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type IncisosCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<IncisosFindManyArgs, 'select' | 'include'> & {
       select?: IncisosCountAggregateInputType | true
     }
 
-  export interface IncisosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface IncisosDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Incisos'], meta: { name: 'Incisos' } }
     /**
      * Find zero or one Incisos that matches the filter.
@@ -9905,7 +9909,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__IncisosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__IncisosClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Ejercicios<T extends Incisos$EjerciciosArgs<ExtArgs> = {}>(args?: Subset<T, Incisos$EjerciciosArgs<ExtArgs>>): Prisma__EjerciciosClient<$Result.GetResult<Prisma.$EjerciciosPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
@@ -9951,7 +9955,7 @@ export namespace Prisma {
   /**
    * Incisos findUnique
    */
-  export type IncisosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -9970,7 +9974,7 @@ export namespace Prisma {
   /**
    * Incisos findUniqueOrThrow
    */
-  export type IncisosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -9989,7 +9993,7 @@ export namespace Prisma {
   /**
    * Incisos findFirst
    */
-  export type IncisosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10038,7 +10042,7 @@ export namespace Prisma {
   /**
    * Incisos findFirstOrThrow
    */
-  export type IncisosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10087,7 +10091,7 @@ export namespace Prisma {
   /**
    * Incisos findMany
    */
-  export type IncisosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10131,7 +10135,7 @@ export namespace Prisma {
   /**
    * Incisos create
    */
-  export type IncisosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10150,7 +10154,7 @@ export namespace Prisma {
   /**
    * Incisos createMany
    */
-  export type IncisosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Incisos.
      */
@@ -10162,7 +10166,7 @@ export namespace Prisma {
   /**
    * Incisos update
    */
-  export type IncisosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10185,7 +10189,7 @@ export namespace Prisma {
   /**
    * Incisos updateMany
    */
-  export type IncisosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Incisos.
      */
@@ -10200,7 +10204,7 @@ export namespace Prisma {
   /**
    * Incisos upsert
    */
-  export type IncisosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10227,7 +10231,7 @@ export namespace Prisma {
   /**
    * Incisos delete
    */
-  export type IncisosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10246,7 +10250,7 @@ export namespace Prisma {
   /**
    * Incisos deleteMany
    */
-  export type IncisosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Incisos to delete
      */
@@ -10257,7 +10261,7 @@ export namespace Prisma {
   /**
    * Incisos.Ejercicios
    */
-  export type Incisos$EjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Incisos$EjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -10273,7 +10277,7 @@ export namespace Prisma {
   /**
    * Incisos.Respuestas
    */
-  export type Incisos$RespuestasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Incisos$RespuestasArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -10294,7 +10298,7 @@ export namespace Prisma {
   /**
    * Incisos without action
    */
-  export type IncisosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncisosDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Incisos
      */
@@ -10372,7 +10376,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type MaestrosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Maestros to aggregate.
      */
@@ -10444,7 +10448,7 @@ export namespace Prisma {
 
 
 
-  export type MaestrosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: MaestrosWhereInput
     orderBy?: MaestrosOrderByWithAggregationInput | MaestrosOrderByWithAggregationInput[]
     by: MaestrosScalarFieldEnum[] | MaestrosScalarFieldEnum
@@ -10482,7 +10486,7 @@ export namespace Prisma {
     >
 
 
-  export type MaestrosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type MaestrosSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Usuario_id?: boolean
     Escuela_id?: boolean
     Ejercicios?: boolean | Maestros$EjerciciosArgs<ExtArgs>
@@ -10497,7 +10501,7 @@ export namespace Prisma {
     Escuela_id?: boolean
   }
 
-  export type MaestrosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | Maestros$EjerciciosArgs<ExtArgs>
     Grupos?: boolean | Maestros$GruposArgs<ExtArgs>
     Escuela?: boolean | Maestros$EscuelaArgs<ExtArgs>
@@ -10506,7 +10510,7 @@ export namespace Prisma {
   }
 
 
-  export type $MaestrosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $MaestrosPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Maestros"
     objects: {
       Ejercicios: Prisma.$EjerciciosPayload<ExtArgs>[]
@@ -10514,7 +10518,7 @@ export namespace Prisma {
       Escuela: Prisma.$EscuelaPayload<ExtArgs> | null
       Usuarios: Prisma.$UsuariosPayload<ExtArgs>
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Usuario_id: number
       Escuela_id: number | null
     }, ExtArgs["result"]["maestros"]>
@@ -10524,12 +10528,12 @@ export namespace Prisma {
 
   type MaestrosGetPayload<S extends boolean | null | undefined | MaestrosDefaultArgs> = $Result.GetResult<Prisma.$MaestrosPayload, S>
 
-  type MaestrosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type MaestrosCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<MaestrosFindManyArgs, 'select' | 'include'> & {
       select?: MaestrosCountAggregateInputType | true
     }
 
-  export interface MaestrosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface MaestrosDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Maestros'], meta: { name: 'Maestros' } }
     /**
      * Find zero or one Maestros that matches the filter.
@@ -10879,7 +10883,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__MaestrosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__MaestrosClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Ejercicios<T extends Maestros$EjerciciosArgs<ExtArgs> = {}>(args?: Subset<T, Maestros$EjerciciosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EjerciciosPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -10928,7 +10932,7 @@ export namespace Prisma {
   /**
    * Maestros findUnique
    */
-  export type MaestrosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -10947,7 +10951,7 @@ export namespace Prisma {
   /**
    * Maestros findUniqueOrThrow
    */
-  export type MaestrosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -10966,7 +10970,7 @@ export namespace Prisma {
   /**
    * Maestros findFirst
    */
-  export type MaestrosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11015,7 +11019,7 @@ export namespace Prisma {
   /**
    * Maestros findFirstOrThrow
    */
-  export type MaestrosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11064,7 +11068,7 @@ export namespace Prisma {
   /**
    * Maestros findMany
    */
-  export type MaestrosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11108,7 +11112,7 @@ export namespace Prisma {
   /**
    * Maestros create
    */
-  export type MaestrosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11127,7 +11131,7 @@ export namespace Prisma {
   /**
    * Maestros createMany
    */
-  export type MaestrosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Maestros.
      */
@@ -11139,7 +11143,7 @@ export namespace Prisma {
   /**
    * Maestros update
    */
-  export type MaestrosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11162,7 +11166,7 @@ export namespace Prisma {
   /**
    * Maestros updateMany
    */
-  export type MaestrosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Maestros.
      */
@@ -11177,7 +11181,7 @@ export namespace Prisma {
   /**
    * Maestros upsert
    */
-  export type MaestrosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11204,7 +11208,7 @@ export namespace Prisma {
   /**
    * Maestros delete
    */
-  export type MaestrosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11223,7 +11227,7 @@ export namespace Prisma {
   /**
    * Maestros deleteMany
    */
-  export type MaestrosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Maestros to delete
      */
@@ -11234,7 +11238,7 @@ export namespace Prisma {
   /**
    * Maestros.Ejercicios
    */
-  export type Maestros$EjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Maestros$EjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -11255,7 +11259,7 @@ export namespace Prisma {
   /**
    * Maestros.Grupos
    */
-  export type Maestros$GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Maestros$GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -11276,7 +11280,7 @@ export namespace Prisma {
   /**
    * Maestros.Escuela
    */
-  export type Maestros$EscuelaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Maestros$EscuelaArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Escuela
      */
@@ -11292,7 +11296,7 @@ export namespace Prisma {
   /**
    * Maestros without action
    */
-  export type MaestrosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaestrosDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -11392,7 +11396,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type RespuestasAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Respuestas to aggregate.
      */
@@ -11464,7 +11468,7 @@ export namespace Prisma {
 
 
 
-  export type RespuestasGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: RespuestasWhereInput
     orderBy?: RespuestasOrderByWithAggregationInput | RespuestasOrderByWithAggregationInput[]
     by: RespuestasScalarFieldEnum[] | RespuestasScalarFieldEnum
@@ -11505,7 +11509,7 @@ export namespace Prisma {
     >
 
 
-  export type RespuestasSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RespuestasSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     AlumnoID?: boolean
     Imagen?: boolean
     Puntaje?: boolean
@@ -11523,19 +11527,19 @@ export namespace Prisma {
     Inciso_id?: boolean
   }
 
-  export type RespuestasInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Alumnos?: boolean | AlumnosDefaultArgs<ExtArgs>
     Incisos?: boolean | IncisosDefaultArgs<ExtArgs>
   }
 
 
-  export type $RespuestasPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $RespuestasPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Respuestas"
     objects: {
       Alumnos: Prisma.$AlumnosPayload<ExtArgs>
       Incisos: Prisma.$IncisosPayload<ExtArgs>
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       AlumnoID: number
       Imagen: string | null
       Puntaje: number | null
@@ -11548,12 +11552,12 @@ export namespace Prisma {
 
   type RespuestasGetPayload<S extends boolean | null | undefined | RespuestasDefaultArgs> = $Result.GetResult<Prisma.$RespuestasPayload, S>
 
-  type RespuestasCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type RespuestasCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<RespuestasFindManyArgs, 'select' | 'include'> & {
       select?: RespuestasCountAggregateInputType | true
     }
 
-  export interface RespuestasDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface RespuestasDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Respuestas'], meta: { name: 'Respuestas' } }
     /**
      * Find zero or one Respuestas that matches the filter.
@@ -11903,7 +11907,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__RespuestasClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__RespuestasClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Alumnos<T extends AlumnosDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AlumnosDefaultArgs<ExtArgs>>): Prisma__AlumnosClient<$Result.GetResult<Prisma.$AlumnosPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
@@ -11951,7 +11955,7 @@ export namespace Prisma {
   /**
    * Respuestas findUnique
    */
-  export type RespuestasFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -11970,7 +11974,7 @@ export namespace Prisma {
   /**
    * Respuestas findUniqueOrThrow
    */
-  export type RespuestasFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -11989,7 +11993,7 @@ export namespace Prisma {
   /**
    * Respuestas findFirst
    */
-  export type RespuestasFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12038,7 +12042,7 @@ export namespace Prisma {
   /**
    * Respuestas findFirstOrThrow
    */
-  export type RespuestasFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12087,7 +12091,7 @@ export namespace Prisma {
   /**
    * Respuestas findMany
    */
-  export type RespuestasFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12131,7 +12135,7 @@ export namespace Prisma {
   /**
    * Respuestas create
    */
-  export type RespuestasCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12150,7 +12154,7 @@ export namespace Prisma {
   /**
    * Respuestas createMany
    */
-  export type RespuestasCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Respuestas.
      */
@@ -12162,7 +12166,7 @@ export namespace Prisma {
   /**
    * Respuestas update
    */
-  export type RespuestasUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12185,7 +12189,7 @@ export namespace Prisma {
   /**
    * Respuestas updateMany
    */
-  export type RespuestasUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Respuestas.
      */
@@ -12200,7 +12204,7 @@ export namespace Prisma {
   /**
    * Respuestas upsert
    */
-  export type RespuestasUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12227,7 +12231,7 @@ export namespace Prisma {
   /**
    * Respuestas delete
    */
-  export type RespuestasDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12246,7 +12250,7 @@ export namespace Prisma {
   /**
    * Respuestas deleteMany
    */
-  export type RespuestasDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Respuestas to delete
      */
@@ -12257,7 +12261,7 @@ export namespace Prisma {
   /**
    * Respuestas without action
    */
-  export type RespuestasDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RespuestasDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Respuestas
      */
@@ -12325,7 +12329,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type SuperAdminAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which SuperAdmin to aggregate.
      */
@@ -12397,7 +12401,7 @@ export namespace Prisma {
 
 
 
-  export type SuperAdminGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: SuperAdminWhereInput
     orderBy?: SuperAdminOrderByWithAggregationInput | SuperAdminOrderByWithAggregationInput[]
     by: SuperAdminScalarFieldEnum[] | SuperAdminScalarFieldEnum
@@ -12434,7 +12438,7 @@ export namespace Prisma {
     >
 
 
-  export type SuperAdminSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SuperAdminSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Usuario_id?: boolean
     Usuarios?: boolean | UsuariosDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["superAdmin"]>
@@ -12443,17 +12447,17 @@ export namespace Prisma {
     Usuario_id?: boolean
   }
 
-  export type SuperAdminInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Usuarios?: boolean | UsuariosDefaultArgs<ExtArgs>
   }
 
 
-  export type $SuperAdminPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $SuperAdminPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "SuperAdmin"
     objects: {
       Usuarios: Prisma.$UsuariosPayload<ExtArgs>
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Usuario_id: number
     }, ExtArgs["result"]["superAdmin"]>
     composites: {}
@@ -12462,12 +12466,12 @@ export namespace Prisma {
 
   type SuperAdminGetPayload<S extends boolean | null | undefined | SuperAdminDefaultArgs> = $Result.GetResult<Prisma.$SuperAdminPayload, S>
 
-  type SuperAdminCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type SuperAdminCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<SuperAdminFindManyArgs, 'select' | 'include'> & {
       select?: SuperAdminCountAggregateInputType | true
     }
 
-  export interface SuperAdminDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface SuperAdminDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SuperAdmin'], meta: { name: 'SuperAdmin' } }
     /**
      * Find zero or one SuperAdmin that matches the filter.
@@ -12817,7 +12821,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__SuperAdminClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__SuperAdminClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Usuarios<T extends UsuariosDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuariosDefaultArgs<ExtArgs>>): Prisma__UsuariosClient<$Result.GetResult<Prisma.$UsuariosPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
@@ -12859,7 +12863,7 @@ export namespace Prisma {
   /**
    * SuperAdmin findUnique
    */
-  export type SuperAdminFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -12878,7 +12882,7 @@ export namespace Prisma {
   /**
    * SuperAdmin findUniqueOrThrow
    */
-  export type SuperAdminFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -12897,7 +12901,7 @@ export namespace Prisma {
   /**
    * SuperAdmin findFirst
    */
-  export type SuperAdminFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -12946,7 +12950,7 @@ export namespace Prisma {
   /**
    * SuperAdmin findFirstOrThrow
    */
-  export type SuperAdminFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -12995,7 +12999,7 @@ export namespace Prisma {
   /**
    * SuperAdmin findMany
    */
-  export type SuperAdminFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -13039,7 +13043,7 @@ export namespace Prisma {
   /**
    * SuperAdmin create
    */
-  export type SuperAdminCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -13058,7 +13062,7 @@ export namespace Prisma {
   /**
    * SuperAdmin createMany
    */
-  export type SuperAdminCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many SuperAdmins.
      */
@@ -13070,7 +13074,7 @@ export namespace Prisma {
   /**
    * SuperAdmin update
    */
-  export type SuperAdminUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -13093,7 +13097,7 @@ export namespace Prisma {
   /**
    * SuperAdmin updateMany
    */
-  export type SuperAdminUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update SuperAdmins.
      */
@@ -13108,7 +13112,7 @@ export namespace Prisma {
   /**
    * SuperAdmin upsert
    */
-  export type SuperAdminUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -13135,7 +13139,7 @@ export namespace Prisma {
   /**
    * SuperAdmin delete
    */
-  export type SuperAdminDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -13154,7 +13158,7 @@ export namespace Prisma {
   /**
    * SuperAdmin deleteMany
    */
-  export type SuperAdminDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which SuperAdmins to delete
      */
@@ -13165,7 +13169,7 @@ export namespace Prisma {
   /**
    * SuperAdmin without action
    */
-  export type SuperAdminDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SuperAdminDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -13239,7 +13243,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type TipoEjercicioAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which TipoEjercicio to aggregate.
      */
@@ -13311,7 +13315,7 @@ export namespace Prisma {
 
 
 
-  export type TipoEjercicioGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: TipoEjercicioWhereInput
     orderBy?: TipoEjercicioOrderByWithAggregationInput | TipoEjercicioOrderByWithAggregationInput[]
     by: TipoEjercicioScalarFieldEnum[] | TipoEjercicioScalarFieldEnum
@@ -13349,7 +13353,7 @@ export namespace Prisma {
     >
 
 
-  export type TipoEjercicioSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TipoEjercicioSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Tipo_id?: boolean
     Nombre?: boolean
     Ejercicios?: boolean | TipoEjercicio$EjerciciosArgs<ExtArgs>
@@ -13361,18 +13365,18 @@ export namespace Prisma {
     Nombre?: boolean
   }
 
-  export type TipoEjercicioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Ejercicios?: boolean | TipoEjercicio$EjerciciosArgs<ExtArgs>
     _count?: boolean | TipoEjercicioCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
-  export type $TipoEjercicioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $TipoEjercicioPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "TipoEjercicio"
     objects: {
       Ejercicios: Prisma.$EjerciciosPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Tipo_id: number
       Nombre: string
     }, ExtArgs["result"]["tipoEjercicio"]>
@@ -13382,12 +13386,12 @@ export namespace Prisma {
 
   type TipoEjercicioGetPayload<S extends boolean | null | undefined | TipoEjercicioDefaultArgs> = $Result.GetResult<Prisma.$TipoEjercicioPayload, S>
 
-  type TipoEjercicioCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type TipoEjercicioCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<TipoEjercicioFindManyArgs, 'select' | 'include'> & {
       select?: TipoEjercicioCountAggregateInputType | true
     }
 
-  export interface TipoEjercicioDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface TipoEjercicioDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TipoEjercicio'], meta: { name: 'TipoEjercicio' } }
     /**
      * Find zero or one TipoEjercicio that matches the filter.
@@ -13737,7 +13741,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TipoEjercicioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TipoEjercicioClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Ejercicios<T extends TipoEjercicio$EjerciciosArgs<ExtArgs> = {}>(args?: Subset<T, TipoEjercicio$EjerciciosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EjerciciosPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -13780,7 +13784,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio findUnique
    */
-  export type TipoEjercicioFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -13799,7 +13803,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio findUniqueOrThrow
    */
-  export type TipoEjercicioFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -13818,7 +13822,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio findFirst
    */
-  export type TipoEjercicioFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -13867,7 +13871,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio findFirstOrThrow
    */
-  export type TipoEjercicioFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -13916,7 +13920,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio findMany
    */
-  export type TipoEjercicioFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -13960,7 +13964,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio create
    */
-  export type TipoEjercicioCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -13979,7 +13983,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio createMany
    */
-  export type TipoEjercicioCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many TipoEjercicios.
      */
@@ -13991,7 +13995,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio update
    */
-  export type TipoEjercicioUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -14014,7 +14018,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio updateMany
    */
-  export type TipoEjercicioUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update TipoEjercicios.
      */
@@ -14029,7 +14033,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio upsert
    */
-  export type TipoEjercicioUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -14056,7 +14060,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio delete
    */
-  export type TipoEjercicioDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -14075,7 +14079,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio deleteMany
    */
-  export type TipoEjercicioDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which TipoEjercicios to delete
      */
@@ -14086,7 +14090,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio.Ejercicios
    */
-  export type TipoEjercicio$EjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicio$EjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ejercicios
      */
@@ -14107,7 +14111,7 @@ export namespace Prisma {
   /**
    * TipoEjercicio without action
    */
-  export type TipoEjercicioDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TipoEjercicioDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TipoEjercicio
      */
@@ -14181,7 +14185,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type TurnoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Turno to aggregate.
      */
@@ -14253,7 +14257,7 @@ export namespace Prisma {
 
 
 
-  export type TurnoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: TurnoWhereInput
     orderBy?: TurnoOrderByWithAggregationInput | TurnoOrderByWithAggregationInput[]
     by: TurnoScalarFieldEnum[] | TurnoScalarFieldEnum
@@ -14291,7 +14295,7 @@ export namespace Prisma {
     >
 
 
-  export type TurnoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TurnoSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Turno_id?: boolean
     Horario?: boolean
     Administrador?: boolean | Turno$AdministradorArgs<ExtArgs>
@@ -14304,20 +14308,20 @@ export namespace Prisma {
     Horario?: boolean
   }
 
-  export type TurnoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Administrador?: boolean | Turno$AdministradorArgs<ExtArgs>
     Grupos?: boolean | Turno$GruposArgs<ExtArgs>
     _count?: boolean | TurnoCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
-  export type $TurnoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $TurnoPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Turno"
     objects: {
       Administrador: Prisma.$AdministradorPayload<ExtArgs>[]
       Grupos: Prisma.$GruposPayload<ExtArgs>[]
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Turno_id: number
       Horario: string
     }, ExtArgs["result"]["turno"]>
@@ -14327,12 +14331,12 @@ export namespace Prisma {
 
   type TurnoGetPayload<S extends boolean | null | undefined | TurnoDefaultArgs> = $Result.GetResult<Prisma.$TurnoPayload, S>
 
-  type TurnoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type TurnoCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<TurnoFindManyArgs, 'select' | 'include'> & {
       select?: TurnoCountAggregateInputType | true
     }
 
-  export interface TurnoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface TurnoDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Turno'], meta: { name: 'Turno' } }
     /**
      * Find zero or one Turno that matches the filter.
@@ -14682,7 +14686,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TurnoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TurnoClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Administrador<T extends Turno$AdministradorArgs<ExtArgs> = {}>(args?: Subset<T, Turno$AdministradorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdministradorPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -14727,7 +14731,7 @@ export namespace Prisma {
   /**
    * Turno findUnique
    */
-  export type TurnoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14746,7 +14750,7 @@ export namespace Prisma {
   /**
    * Turno findUniqueOrThrow
    */
-  export type TurnoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14765,7 +14769,7 @@ export namespace Prisma {
   /**
    * Turno findFirst
    */
-  export type TurnoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14814,7 +14818,7 @@ export namespace Prisma {
   /**
    * Turno findFirstOrThrow
    */
-  export type TurnoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14863,7 +14867,7 @@ export namespace Prisma {
   /**
    * Turno findMany
    */
-  export type TurnoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14907,7 +14911,7 @@ export namespace Prisma {
   /**
    * Turno create
    */
-  export type TurnoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14926,7 +14930,7 @@ export namespace Prisma {
   /**
    * Turno createMany
    */
-  export type TurnoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Turnos.
      */
@@ -14938,7 +14942,7 @@ export namespace Prisma {
   /**
    * Turno update
    */
-  export type TurnoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -14961,7 +14965,7 @@ export namespace Prisma {
   /**
    * Turno updateMany
    */
-  export type TurnoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Turnos.
      */
@@ -14976,7 +14980,7 @@ export namespace Prisma {
   /**
    * Turno upsert
    */
-  export type TurnoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -15003,7 +15007,7 @@ export namespace Prisma {
   /**
    * Turno delete
    */
-  export type TurnoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -15022,7 +15026,7 @@ export namespace Prisma {
   /**
    * Turno deleteMany
    */
-  export type TurnoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Turnos to delete
      */
@@ -15033,7 +15037,7 @@ export namespace Prisma {
   /**
    * Turno.Administrador
    */
-  export type Turno$AdministradorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Turno$AdministradorArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -15054,7 +15058,7 @@ export namespace Prisma {
   /**
    * Turno.Grupos
    */
-  export type Turno$GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Turno$GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Grupos
      */
@@ -15075,7 +15079,7 @@ export namespace Prisma {
   /**
    * Turno without action
    */
-  export type TurnoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurnoDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Turno
      */
@@ -15167,7 +15171,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type UsuariosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Usuarios to aggregate.
      */
@@ -15239,7 +15243,7 @@ export namespace Prisma {
 
 
 
-  export type UsuariosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: UsuariosWhereInput
     orderBy?: UsuariosOrderByWithAggregationInput | UsuariosOrderByWithAggregationInput[]
     by: UsuariosScalarFieldEnum[] | UsuariosScalarFieldEnum
@@ -15280,7 +15284,7 @@ export namespace Prisma {
     >
 
 
-  export type UsuariosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UsuariosSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Usuarios_id?: boolean
     Nombres?: boolean
     Apellidos?: boolean
@@ -15300,7 +15304,7 @@ export namespace Prisma {
     Contrasena?: boolean
   }
 
-  export type UsuariosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     Administrador?: boolean | Usuarios$AdministradorArgs<ExtArgs>
     Alumnos?: boolean | Usuarios$AlumnosArgs<ExtArgs>
     Maestros?: boolean | Usuarios$MaestrosArgs<ExtArgs>
@@ -15308,7 +15312,7 @@ export namespace Prisma {
   }
 
 
-  export type $UsuariosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type $UsuariosPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     name: "Usuarios"
     objects: {
       Administrador: Prisma.$AdministradorPayload<ExtArgs> | null
@@ -15316,7 +15320,7 @@ export namespace Prisma {
       Maestros: Prisma.$MaestrosPayload<ExtArgs> | null
       SuperAdmin: Prisma.$SuperAdminPayload<ExtArgs> | null
     }
-    scalars: $Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetResult<{
       Usuarios_id: number
       Nombres: string
       Apellidos: string
@@ -15329,12 +15333,12 @@ export namespace Prisma {
 
   type UsuariosGetPayload<S extends boolean | null | undefined | UsuariosDefaultArgs> = $Result.GetResult<Prisma.$UsuariosPayload, S>
 
-  type UsuariosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+  type UsuariosCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
     Omit<UsuariosFindManyArgs, 'select' | 'include'> & {
       select?: UsuariosCountAggregateInputType | true
     }
 
-  export interface UsuariosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface UsuariosDelegate<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Usuarios'], meta: { name: 'Usuarios' } }
     /**
      * Find zero or one Usuarios that matches the filter.
@@ -15684,7 +15688,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UsuariosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UsuariosClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
     Administrador<T extends Usuarios$AdministradorArgs<ExtArgs> = {}>(args?: Subset<T, Usuarios$AdministradorArgs<ExtArgs>>): Prisma__AdministradorClient<$Result.GetResult<Prisma.$AdministradorPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
@@ -15736,7 +15740,7 @@ export namespace Prisma {
   /**
    * Usuarios findUnique
    */
-  export type UsuariosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15755,7 +15759,7 @@ export namespace Prisma {
   /**
    * Usuarios findUniqueOrThrow
    */
-  export type UsuariosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15774,7 +15778,7 @@ export namespace Prisma {
   /**
    * Usuarios findFirst
    */
-  export type UsuariosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15823,7 +15827,7 @@ export namespace Prisma {
   /**
    * Usuarios findFirstOrThrow
    */
-  export type UsuariosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15872,7 +15876,7 @@ export namespace Prisma {
   /**
    * Usuarios findMany
    */
-  export type UsuariosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15916,7 +15920,7 @@ export namespace Prisma {
   /**
    * Usuarios create
    */
-  export type UsuariosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15935,7 +15939,7 @@ export namespace Prisma {
   /**
    * Usuarios createMany
    */
-  export type UsuariosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Usuarios.
      */
@@ -15947,7 +15951,7 @@ export namespace Prisma {
   /**
    * Usuarios update
    */
-  export type UsuariosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -15970,7 +15974,7 @@ export namespace Prisma {
   /**
    * Usuarios updateMany
    */
-  export type UsuariosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Usuarios.
      */
@@ -15985,7 +15989,7 @@ export namespace Prisma {
   /**
    * Usuarios upsert
    */
-  export type UsuariosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -16012,7 +16016,7 @@ export namespace Prisma {
   /**
    * Usuarios delete
    */
-  export type UsuariosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -16031,7 +16035,7 @@ export namespace Prisma {
   /**
    * Usuarios deleteMany
    */
-  export type UsuariosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Filter which Usuarios to delete
      */
@@ -16042,7 +16046,7 @@ export namespace Prisma {
   /**
    * Usuarios.Administrador
    */
-  export type Usuarios$AdministradorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Usuarios$AdministradorArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Administrador
      */
@@ -16058,7 +16062,7 @@ export namespace Prisma {
   /**
    * Usuarios.Alumnos
    */
-  export type Usuarios$AlumnosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Usuarios$AlumnosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Alumnos
      */
@@ -16074,7 +16078,7 @@ export namespace Prisma {
   /**
    * Usuarios.Maestros
    */
-  export type Usuarios$MaestrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Usuarios$MaestrosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maestros
      */
@@ -16090,7 +16094,7 @@ export namespace Prisma {
   /**
    * Usuarios.SuperAdmin
    */
-  export type Usuarios$SuperAdminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Usuarios$SuperAdminArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the SuperAdmin
      */
@@ -16106,7 +16110,7 @@ export namespace Prisma {
   /**
    * Usuarios without action
    */
-  export type UsuariosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UsuariosDefaultArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Usuarios
      */
@@ -21897,99 +21901,99 @@ export namespace Prisma {
     /**
      * @deprecated Use AlumnosCountOutputTypeDefaultArgs instead
      */
-    export type AlumnosCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AlumnosCountOutputTypeDefaultArgs<ExtArgs>
+    export type AlumnosCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = AlumnosCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EjerciciosCountOutputTypeDefaultArgs instead
      */
-    export type EjerciciosCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EjerciciosCountOutputTypeDefaultArgs<ExtArgs>
+    export type EjerciciosCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = EjerciciosCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EscuelaCountOutputTypeDefaultArgs instead
      */
-    export type EscuelaCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EscuelaCountOutputTypeDefaultArgs<ExtArgs>
+    export type EscuelaCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = EscuelaCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EstadoCountOutputTypeDefaultArgs instead
      */
-    export type EstadoCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EstadoCountOutputTypeDefaultArgs<ExtArgs>
+    export type EstadoCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = EstadoCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use GradoCountOutputTypeDefaultArgs instead
      */
-    export type GradoCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GradoCountOutputTypeDefaultArgs<ExtArgs>
+    export type GradoCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = GradoCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use GruposCountOutputTypeDefaultArgs instead
      */
-    export type GruposCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GruposCountOutputTypeDefaultArgs<ExtArgs>
+    export type GruposCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = GruposCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use IncisosCountOutputTypeDefaultArgs instead
      */
-    export type IncisosCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = IncisosCountOutputTypeDefaultArgs<ExtArgs>
+    export type IncisosCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = IncisosCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use MaestrosCountOutputTypeDefaultArgs instead
      */
-    export type MaestrosCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MaestrosCountOutputTypeDefaultArgs<ExtArgs>
+    export type MaestrosCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = MaestrosCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use TipoEjercicioCountOutputTypeDefaultArgs instead
      */
-    export type TipoEjercicioCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TipoEjercicioCountOutputTypeDefaultArgs<ExtArgs>
+    export type TipoEjercicioCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = TipoEjercicioCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use TurnoCountOutputTypeDefaultArgs instead
      */
-    export type TurnoCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TurnoCountOutputTypeDefaultArgs<ExtArgs>
+    export type TurnoCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = TurnoCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use AdministradorDefaultArgs instead
      */
-    export type AdministradorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AdministradorDefaultArgs<ExtArgs>
+    export type AdministradorArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = AdministradorDefaultArgs<ExtArgs>
     /**
      * @deprecated Use AlumnosDefaultArgs instead
      */
-    export type AlumnosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AlumnosDefaultArgs<ExtArgs>
+    export type AlumnosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = AlumnosDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EjerciciosDefaultArgs instead
      */
-    export type EjerciciosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EjerciciosDefaultArgs<ExtArgs>
+    export type EjerciciosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = EjerciciosDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EscuelaDefaultArgs instead
      */
-    export type EscuelaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EscuelaDefaultArgs<ExtArgs>
+    export type EscuelaArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = EscuelaDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EstadoDefaultArgs instead
      */
-    export type EstadoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EstadoDefaultArgs<ExtArgs>
+    export type EstadoArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = EstadoDefaultArgs<ExtArgs>
     /**
      * @deprecated Use GradoDefaultArgs instead
      */
-    export type GradoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GradoDefaultArgs<ExtArgs>
+    export type GradoArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = GradoDefaultArgs<ExtArgs>
     /**
      * @deprecated Use GruposDefaultArgs instead
      */
-    export type GruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GruposDefaultArgs<ExtArgs>
+    export type GruposArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = GruposDefaultArgs<ExtArgs>
     /**
      * @deprecated Use IncisosDefaultArgs instead
      */
-    export type IncisosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = IncisosDefaultArgs<ExtArgs>
+    export type IncisosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = IncisosDefaultArgs<ExtArgs>
     /**
      * @deprecated Use MaestrosDefaultArgs instead
      */
-    export type MaestrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MaestrosDefaultArgs<ExtArgs>
+    export type MaestrosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = MaestrosDefaultArgs<ExtArgs>
     /**
      * @deprecated Use RespuestasDefaultArgs instead
      */
-    export type RespuestasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = RespuestasDefaultArgs<ExtArgs>
+    export type RespuestasArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = RespuestasDefaultArgs<ExtArgs>
     /**
      * @deprecated Use SuperAdminDefaultArgs instead
      */
-    export type SuperAdminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SuperAdminDefaultArgs<ExtArgs>
+    export type SuperAdminArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = SuperAdminDefaultArgs<ExtArgs>
     /**
      * @deprecated Use TipoEjercicioDefaultArgs instead
      */
-    export type TipoEjercicioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TipoEjercicioDefaultArgs<ExtArgs>
+    export type TipoEjercicioArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = TipoEjercicioDefaultArgs<ExtArgs>
     /**
      * @deprecated Use TurnoDefaultArgs instead
      */
-    export type TurnoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TurnoDefaultArgs<ExtArgs>
+    export type TurnoArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = TurnoDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UsuariosDefaultArgs instead
      */
-    export type UsuariosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UsuariosDefaultArgs<ExtArgs>
+    export type UsuariosArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = UsuariosDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
