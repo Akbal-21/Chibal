@@ -4,17 +4,20 @@ export interface IGroup {
 }
 
 export interface IDataGroup {
-  Alumnos: {
-    Usuarios: {
-      Usuarios_id: number;
-      Nombres: string;
-      Apellidos: string;
-      Correo: string;
-    };
-  }[];
-  Grado: {
-    Nivel: string;
+  Grupos: {
+    Escuela: {
+      Nombre: string;
+    } | null;
+    Grado: {
+      Nivel: string;
+    } | null;
+    Turno: {
+      Horario: string;
+    } | null;
+    NombreGrupo: string;
   } | null;
-  NombreGrupo: string;
-  Grado_id: number | null;
+  Usuarios: {
+    Nombres: string;
+    Apellidos: string;
+  };
 }

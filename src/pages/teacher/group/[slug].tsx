@@ -1,6 +1,7 @@
 import { chibalApi } from "@/api";
 import { TeacherLayouth } from "@/components";
 import { getDataGroup } from "@/db/teacher";
+import { getExerciseAnswers } from "@/db/teacher/answers";
 import { IDataGroup } from "@/interface";
 import { useStudentStore } from "@/store";
 import { useLoginUser } from "@/store/auth";
@@ -135,18 +136,14 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                       className="input input-solid max-w-full"
                       placeholder="1A"
                       type="text"
-                      {...register("groupName")}
                     />
                   </div>
 
                   <div>
                     Grado
                     <select className="select select-secondary">
-                      {levelsSchool.map((level) => (
-                        <option key={level.id} {...register("nivel")}>
-                          {level.grado}
-                        </option>
-                      ))}
+                      <option>3ro de Preescolar</option>
+                      <option>1ro de Primaria</option>
                     </select>
                   </div>
 
@@ -309,7 +306,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     dataGroup = await getDataGroup(slug);
   }
 
-  console.log(dataGroup);
+  const test = await getExerciseAnswers("4");
+
+  console.log(test);
 
   return {
     props: {

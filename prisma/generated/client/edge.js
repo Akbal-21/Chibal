@@ -30,12 +30,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.4.0
- * Query Engine version: a5596b96668f0f4b397761ce0956db54e17e48c4
+ * Prisma Client JS version: 5.3.1
+ * Query Engine version: 61e140623197a131c2a6189271ffee05a7aa9a59
  */
 Prisma.prismaVersion = {
-  client: "5.4.0",
-  engine: "a5596b96668f0f4b397761ce0956db54e17e48c4"
+  client: "5.3.1",
+  engine: "61e140623197a131c2a6189271ffee05a7aa9a59"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -216,7 +216,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/fernando/Documents/Chibal/prisma/generated/client",
+      "value": "C:\\Users\\Paco\\Desktop\\Github\\TT2\\Chibal\\prisma\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -225,7 +225,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "windows",
         "native": true
       }
     ],
@@ -237,8 +237,8 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",
-  "clientVersion": "5.4.0",
-  "engineVersion": "a5596b96668f0f4b397761ce0956db54e17e48c4",
+  "clientVersion": "5.3.1",
+  "engineVersion": "61e140623197a131c2a6189271ffee05a7aa9a59",
   "datasourceNames": [
     "db"
   ],

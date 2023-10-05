@@ -7,7 +7,7 @@ export const getExerciseAnswers = async (exerciseId: string) => {
   await db.prisma.$connect();
 
   // Obtener respuestas para el ejercicio deseado
-  const respuestas: IAnswer[] = await db.prisma.respuestas.findMany({
+  const respuestas :IAnswer[]= await db.prisma.respuestas.findMany({
     select: {
       Alumnos: {
         select: {

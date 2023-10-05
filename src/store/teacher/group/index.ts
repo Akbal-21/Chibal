@@ -22,9 +22,9 @@ export const useStudentStore = create<Exercise & UserActions>((set) => ({
   students: [],
 
   // * metodos
-  addStudent: (student: dataStudent) => {
+  addStudent: (excercise: dataStudent) => {
     set((state) => ({
-      students: [...state.students, student],
+      students: [...state.students, excercise],
     }));
   },
 

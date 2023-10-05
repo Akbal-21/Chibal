@@ -18,7 +18,6 @@ const GroupPage = () => {
 
   const handleEdit = (Grupos_id: number) => {
     route.replace(`/teacher/group/${Grupos_id}`);
-    return;
   };
 
   const handleNewGroup = () => {
