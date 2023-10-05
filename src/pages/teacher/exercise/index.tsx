@@ -28,6 +28,7 @@ const ExcercisePage = () => {
   };
 
   const handleShowResults = (exerciseId: number) => {
+    
     return route.replace(`/teacher/results/${exerciseId}`);
   };
 
@@ -110,10 +111,70 @@ const ExcercisePage = () => {
                             </button>
                           </td>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                      </thead>
+                      <tbody>
+                        {exercise.map((exercise, index) => (
+                          <tr className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+                            <td className="whitespace-nowrap px-6 py-4 font-medium">
+                              {index + 1}
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4">
+                              {exercise.NombreEjercicio}
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4">
+                              {exercise.Estado_id === 1
+                                ? "El ejercicio es un Borrador"
+                                : String(exercise.FechaPublicacion).split(
+                                    "T",
+                                  )[0]}
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4">
+                              {String(exercise.FechaLimite).split("T")[0]}
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4">
+                              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                              <button
+                                className="btn btn-secondary mx-1"
+                                onClick={() =>
+                                  handleEdith(exercise.Ejercicios_id)
+                                }
+                                disabled={
+                                  exercise.Estado_id === 1 ? false : true
+                                }
+                              >
+                                Editar
+                              </button>
+                              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                              <button
+                                className="btn btn-error mx-1"
+                                disabled={
+                                  exercise.Estado_id === 1 ? false : true
+                                }
+                                onClick={() =>
+                                  handleDelete(exercise.Ejercicios_id)
+                                }
+                              >
+                                Eliminar
+                              </button>
+                              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                              <button
+                                className="btn btn-primary mx-1"
+                                disabled={
+                                  exercise.Estado_id === 1 ? false : true
+                                }
+                                onClick={() =>
+                                  handleShowResults(exercise.Ejercicios_id)
+                                }
+                              >
+                                Mostrar Resultados
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           )}

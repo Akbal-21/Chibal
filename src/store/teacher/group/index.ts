@@ -1,41 +1,41 @@
 import { create } from "zustand";
 
 interface dataStudent {
-  Usuarios_id: number;
-  Nombres: string;
-  Apellidos: string;
-  Correo: string;
+  name: string;
+  lstName: string;
+  email: string;
+  password?: string;
 }
 
 interface Exercise {
-  students: dataStudent[];
+  excercise: dataStudent[];
 }
 
 type UserActions = {
-  addStudent: (student: dataStudent) => void;
+  addStudent: (excercise: dataStudent) => void;
   removeStudent: (name: string) => void;
   resetStore: () => void;
 };
 
 export const useStudentStore = create<Exercise & UserActions>((set) => ({
-  students: [],
+  excercise: [],
 
   // * metodos
-  addStudent: (student: dataStudent) => {
+  addStudent: (excercise: dataStudent) => {
     set((state) => ({
-      students: [...state.students, student],
+      excercise: [...state.excercise, excercise],
     }));
   },
 
   removeStudent: (name: string) => {
     set((state) => ({
-      students: state.students.filter((item) => item.Nombres !== name),
+      excercise: state.excercise.filter((item) => item.name !== name),
     }));
   },
 
   resetStore: () => {
     set({
-      students: [],
+      excercise: [],
     });
   },
 }));

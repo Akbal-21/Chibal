@@ -265,25 +265,31 @@ const ExcersisePage: FC<Props> = ({
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
                   Tipo de Ejercicio:
-                  <select className="select select-solid-primary">
-                    {typeOfExercise.map((item) => {
-                      //{item.Nombre === "Letras" || item.Nombre === "Numeros" && resetStore()}
-                      return (
-                        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                        <option
-                          key={item.Tipo_id}
-                          className="dropdown-item"
-                          onClick={() => {
-                            setTypeExercise(item.Nombre);
-                            setTypeExcerciseID(item.Tipo_id);
-                            resetStore();
-                          }}
-                        >
-                          {item.Nombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <div className="dropdown">
+                    {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                    <label className="btn btn-solid-primary" tabIndex={0}>
+                      {!typeExercise ? "click" : typeExercise}
+                    </label>
+                    <ul className="dropdown-menu">
+                      {typeOfExercise.map((item) => {
+                        //{item.Nombre === "Letras" || item.Nombre === "Numeros" && resetStore()}
+                        return (
+                          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                          <li
+                            key={item.Tipo_id}
+                            className="dropdown-item"
+                            onClick={() => {
+                              setTypeExercise(item.Nombre);
+                              setTypeExcerciseID(item.Tipo_id);
+                              resetStore();
+                            }}
+                          >
+                            {item.Nombre}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
                 </div>
 
                 <div>

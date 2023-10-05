@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { FC } from "react";
+import { StudentNavbar } from ".";
 
 interface Props {
     titel: string;
@@ -14,7 +15,7 @@ return (
         <title>{titel}</title>
     </Head>
     <main>
-        <h1>Cuenta Alumno</h1>
+        <StudentNavbar/>
         <div className="flex justify-center items-center h-[calc(100vh - 200px)]">
         {children}
         </div>

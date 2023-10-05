@@ -4,9 +4,14 @@ import { useLoginUser } from "@/store/auth";
 
 const StudentPage = () => {
     const { user } = useLoginUser();
+    console.log(user);
+    
     const { exercise, isError, isLoading } = useExercise(
-        `student/exercise/${user?.Usuarios_id}`,
+        `student/6`,
       );
+
+      console.log(exercise);
+      
 
 
     return (
