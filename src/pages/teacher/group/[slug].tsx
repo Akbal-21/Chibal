@@ -1,11 +1,12 @@
 import { chibalApi } from "@/api";
 import { TeacherLayouth } from "@/components";
 import { getDataGroup } from "@/db/teacher";
-import { getExerciseAnswers } from "@/db/teacher/answers";
 import { IDataGroup } from "@/interface";
-import { useStudentStore } from "@/store";
 import { useLoginUser } from "@/store/auth";
 import { isEmail } from "@/utils";
+import { GetServerSideProps, NextPage } from "next";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface Props {
   slug: string;
@@ -15,6 +16,14 @@ interface FormData {
   groupName: string;
   nivel: string;
   turno: string;
+}
+
+interface dataStudent {
+  Usuarios_id?: number;
+  Nombres: string;
+  Apellidos: string;
+  Correo: string;
+  Contrasena?: string;
 }
 
 interface StudentState {
@@ -35,9 +44,11 @@ const schoolShift = [
 ];
 
 const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
-  const { addStudent, students, resetStore } = useStudentStore();
+  const [addStudent, setAddStudent] = useState<dataStudent[]>([]);
+  console.log({ dataGroup, slug });
 
   const { user } = useLoginUser();
+  console.log(user);
 
   const [studentState, setStudentState] = useState<StudentState>({
     Nombres: "",
@@ -67,9 +78,15 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
 
       return;
     }
-    addStudent(studentState);
 
-    // resetStore();
+    setAddStudent([
+      {
+        Nombres: studentState.Nombres,
+        Apellidos: studentState.Apellidos,
+        Correo: studentState.Correo,
+        Contrasena: studentState.Contrasena,
+      },
+    ]);
   };
 
   let nivel;
@@ -84,10 +101,19 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
     groupName = NombreGrupo;
 
     useEffect(() => {
-      resetStore();
+      console.log(dataGroup[0].Alumnos);
+
       for (const key in dataGroup[0].Alumnos) {
         const data = dataGroup[0].Alumnos[key].Usuarios;
-        addStudent(data);
+        const { Apellidos, Correo, Nombres, Usuarios_id } = data;
+        setAddStudent([
+          {
+            Usuarios_id,
+            Nombres,
+            Apellidos,
+            Correo,
+          },
+        ]);
       }
     }, []);
   }
@@ -102,12 +128,12 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
 
   const onSubmit = async (form: FormData) => {
     const teacher = user?.Usuarios_id;
-    console.log({ students, form });
+    console.log({ addStudent, form });
 
     const res = await chibalApi({
       method: "POST",
       url: "/teacher/newGroup",
-      data: { students, form, teacher },
+      data: { addStudent, form, teacher },
     });
 
     console.log(res);
@@ -142,8 +168,14 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                   <div>
                     Grado
                     <select className="select select-secondary">
-                      <option>3ro de Preescolar</option>
-                      <option>1ro de Primaria</option>
+                      {levelsSchool.map((level) => (
+                        <option
+                          key={level.id}
+                          // {...register("nivel")}
+                        >
+                          {level.grado}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -225,7 +257,8 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
               <div className="divider divider-horizontal">Lista de Alumnos</div>
 
               <div>
-                {students.length <= 0 ? (
+                Hola
+                {addStudent.length <= 0 ? (
                   <div className="grid gap-4 w-full">
                     <b className="text-center text-2xl">Agregue un alumno</b>
                   </div>
@@ -249,7 +282,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {students.map((student, index: number) => (
+                        {addStudent.map((student, index: number) => (
                           <tr
                             key={student.Usuarios_id}
                             className="bg-white border-b  hover:bg-gray-50"
@@ -290,10 +323,6 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   );
 };
 
-import { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // const { data } = await  // your fetch function here
   const { slug = "" } = query as { slug: string };
@@ -305,10 +334,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   } else {
     dataGroup = await getDataGroup(slug);
   }
-
-  const test = await getExerciseAnswers("4");
-
-  console.log(test);
 
   return {
     props: {
