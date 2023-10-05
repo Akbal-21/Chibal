@@ -23,9 +23,12 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 
 async function getExercisesByStudent(req: NextApiRequest, res: NextApiResponse<Data>) {
-    const { StudentID } = req.query;
+    const { StudentID } = req.query as {StudentID: string};
+    console.log(StudentID);
+    //return res.status(200).json({message: "Hola"})
+
     await db.prisma.$connect();
-    // Primero obtener el grupo del niño y despues lso ejercicios segun el grupo
+    //Primero obtener el grupo del niño y despues lso ejercicios segun el grupo
     const grupoId = await db.prisma.alumnos.findUnique({
       where: {
         Usuario_id: Number(StudentID),
