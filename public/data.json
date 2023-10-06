@@ -1,0 +1,23 @@
+[
+  {
+    "id": 4,
+    "question": "Ingresa: A",
+    "code": "Letra",
+    "answers": ["esto", "no", "sirve", ":("],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 5,
+    "question": "Ingresa: B",
+    "code": "Letra",
+    "answers": ["esto", "no", "sirve", ":("],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 6,
+    "question": "Ingresa: C",
+    "code": "Letra",
+    "answers": ["esto", "no", "sirve", ":("],
+    "correctAnswer": "C"
+  }
+]

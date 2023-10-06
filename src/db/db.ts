@@ -11,5 +11,4 @@ if (process.env.NOVE !== "production") {
   global.prisma = prisma;
 }
 
-export const connect = prisma.$connect();
-export const disconnect = prisma.$disconnect();
+
