@@ -29,7 +29,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/pages/api/superAdmin"  ],
   "exclude": [
     "node_modules"
   ]
