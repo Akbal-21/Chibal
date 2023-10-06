@@ -7,7 +7,7 @@ const StudentPage = () => {
     console.log(user);
     
     const { exercise, isError, isLoading } = useExercise(
-        `student/6`,
+        `student/${user?.Usuarios_id}`,
       );
 
       console.log(exercise);

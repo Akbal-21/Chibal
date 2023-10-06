@@ -42,6 +42,7 @@ async function getExercisesByStudent(req: NextApiRequest, res: NextApiResponse<D
     const dataExercise: IExerciseDB[] = await db.prisma.ejercicios.findMany({
       where: {
         GrupoID: grupoId?.Grupo_id,
+        Estado_id: 2
       },
     });
     
