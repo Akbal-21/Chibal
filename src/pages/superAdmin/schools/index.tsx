@@ -1,11 +1,11 @@
 import { FullScreenLoading, SuperAdminLayout } from "@/components";
-import { useAdmin } from "@/hooks";
+import { useSchool } from "@/hooks";
 import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai";
 
 
-const TeacherTablePage = () => {
-    const { admins, isError, isLoading } = useAdmin("superAdmin");
-        console.log(admins);
+const SchoolTablePage = () => {
+    const { schools, isError, isLoading } = useSchool("superAdmin/schools");
+        console.log(schools);
         
 
   return (
@@ -22,17 +22,17 @@ const TeacherTablePage = () => {
         ) : (
           <div className="grid grid-cols-custom-2">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-              <table className="w-full text-sm text-left text-gray-500 ">
+              <table className="w-full text-sm text-left text-gray-500">
                 <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       #
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Nombre
+                      Escuela
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Escuela
+                      Administrador
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Acciones
@@ -40,19 +40,19 @@ const TeacherTablePage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {admins.map((admin, index: number) => (
+                  {schools.map((school, index: number) => (
                     <tr
-                      key={admin.Usuario_id}
+                      key={school.Escuela_id}
                       className="bg-white border-b  hover:bg-gray-50"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         {index + 1}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {admin.Usuarios.Nombres}{" "}{admin.Usuarios.Apellidos}
+                        {school.Nombre}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {admin.Escuela?.Nombre}
+                      {school.Administrador[0].Usuarios.Nombres}{" "}{school.Administrador[0].Usuarios.Apellidos}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -78,16 +78,17 @@ const TeacherTablePage = () => {
             </div>
             <div className="px-4 w-full">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-              <button className="btn btn-primary w-36" >
+              <button className="btn btn-primary w-28" >
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>
-                Nuevo Administrador
+                Nueva escuela
               </button>
             </div>
           </div>
         )}
       </div>
+        
         </div>
       </SuperAdminLayout>
     </>
@@ -95,4 +96,4 @@ const TeacherTablePage = () => {
 };
 
 
-export default TeacherTablePage;
+export default SchoolTablePage;

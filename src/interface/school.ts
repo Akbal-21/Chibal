@@ -17,3 +17,14 @@ export interface IGrade {
   Grupos_id: number;
   NombreGrupo: string;
 }
+
+export interface ISchool{
+  Administrador: {
+    Usuarios: {
+        Nombres: string;
+        Apellidos: string;
+    };
+  }[];
+  Escuela_id: number;
+  Nombre: string;
+}
