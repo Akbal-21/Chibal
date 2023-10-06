@@ -6,34 +6,35 @@ interface DataExercise {
   typeExerciseId: number | undefined;
 }
 
-interface Exercise {
+type State = {
   excercise: DataExercise[];
-}
+};
 
-type UserActions = {
+type Actions = {
   addExcercise: (excercise: DataExercise) => void;
   removeExcercise: (data: string) => void;
   resetStore: () => void;
 };
-
-export const useExerciseStore = create<Exercise & UserActions>((set) => ({
+const initialState: State = {
   excercise: [],
+};
+
+export const useExerciseStore = create<State & Actions>((set, get) => ({
+  ...initialState,
 
   // * metodos
-  addExcercise: (excercise: DataExercise) => {
+  addExcercise: (excercise: DataExercise) =>
     set((state) => ({
       excercise: [...state.excercise, excercise],
-    }));
-  },
+    })),
 
-  removeExcercise: (data: string) => {
+  removeExcercise: (data: string) =>
     set((state) => ({
       excercise: state.excercise.filter((item) => item.solicitado !== data),
-    }));
-  },
-  resetStore: () => {
+    })),
+
+  resetStore: () =>
     set({
       excercise: [],
-    });
-  },
+    }),
 }));

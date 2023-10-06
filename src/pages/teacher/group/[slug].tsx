@@ -80,6 +80,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
     }
 
     setAddStudent([
+      ...addStudent,
       {
         Nombres: studentState.Nombres,
         Apellidos: studentState.Apellidos,
@@ -107,6 +108,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
         const data = dataGroup[0].Alumnos[key].Usuarios;
         const { Apellidos, Correo, Nombres, Usuarios_id } = data;
         setAddStudent([
+          ...addStudent,
           {
             Usuarios_id,
             Nombres,

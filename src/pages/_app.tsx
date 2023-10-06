@@ -16,9 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
           fetch(resource, init).then((res) => res.json()),
       }}
     >
-      {/* <AuthProvider> */}
       <Component {...pageProps} />
-      {/* </AuthProvider> */}
     </SWRConfig>
   );
 }
