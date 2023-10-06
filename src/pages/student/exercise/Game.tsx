@@ -24,32 +24,40 @@ const getBackgroundColor = (info: QuestionType, index: string) => {
 const Question = ({
   info,
   predictValue,
+  updatePredictValue, 
 }: {
   info: QuestionType;
   predictValue: string;
+  updatePredictValue: (newValue: string) => void;
 }) => {
   const selectAnswer = useQuestionsStore((state) => state.selectAnswer);
 
   const createHandleClick = (answerChar: string) => () => {
+    console.log(answerChar);
     selectAnswer(info.id, answerChar); // Pasa predictValue a la función
   };
 
   return (
     <div className="bg-white shadow-md p-4">
-      <h1 className="text-xl font-bold">{info.question}</h1>
+      <h1 className="text-xl font-bold">{info? info.question : ""}</h1>
 
-      <h4>{info.code}</h4>
-      {<IndexPage predictValue={predictValue} />}
-      {predictValue}
+      <h4>{info? info.code : ""}</h4>
+      <IndexPage predictValue={predictValue} updatePredictValue={updatePredictValue} />
+      
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button onClick={createHandleClick(predictValue)}>Respuesta</button>
+      <button onClick={createHandleClick(predictValue)}>Respuesta desde Padre:</button>
+      {predictValue}
     </div>
   );
 };
 
 export const Game = () => {
-  const [predictValue, setPredictValue] = useState(""); // Estado para almacenar newPredict3
+  const [predictValue, setPredictValue] = useState("");
 
+  const updatePredictValue = (newValue: string) => {
+    setPredictValue(newValue);
+  };
+  
   const questions = useQuestionsStore((state) => state.questions);
   const currentQuestion = useQuestionsStore((state) => state.currentQuestion);
   const goNextQuestion = useQuestionsStore((state) => state.goNextQuestion);
@@ -80,8 +88,8 @@ export const Game = () => {
           <FaArrowRight />
         </button>
       </div>
-      <Question info={questionInfo} predictValue={predictValue} />{" "}
-      {/* Pasa predictValue como prop */}
+      <Question info={questionInfo} predictValue={predictValue} updatePredictValue={updatePredictValue} />
+    {/* Pasa predictValue como prop */}
       <Footer />
     </>
   );

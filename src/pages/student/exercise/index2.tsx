@@ -11,7 +11,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
-export const IndexPage = ({ predictValue }: { predictValue: string }) => {
+export const IndexPage = ({ predictValue, updatePredictValue }: { predictValue: string; updatePredictValue: (newValue: string) => void }) => {
+ 
  
   const modelUrls = [
     "https://raw.githubusercontent.com/francisco-renteria/francisco-renteria.github.io/main/digitos/model.json",
@@ -104,6 +105,8 @@ export const IndexPage = ({ predictValue }: { predictValue: string }) => {
 
     console.log(newPredict3); // Imprimir en la consola
     // saveData(newPredict3); // Guardar en el servidor
+
+    updatePredictValue(newPredict3);
   };
 
   // Función para cambiar entre números y letras
