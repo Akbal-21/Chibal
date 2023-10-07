@@ -94,3 +94,5 @@ export const Game = () => {
     </>
   );
 };
+
+export default Game;
