@@ -11,11 +11,11 @@ interface Props {
 }
 const solve: NextPage<Props> = ({ results,slug }) => {
   console.log(JSON.parse(results));
-
+  console.log(typeof(results))
   return (<div>{results}
   
   <React.StrictMode>
-    <App />
+    <App slug={slug} results={results}/>
   </React.StrictMode>
   
   </div>);
@@ -26,8 +26,9 @@ export default solve;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query as { slug: string };
-  const results: string | undefined = await getExerciseQuestions(Number(slug));
-
+  const results: string = await getExerciseQuestions(Number(slug));
+  console.log(slug)
+  console.log(results)
   return {
     props: {
       results,

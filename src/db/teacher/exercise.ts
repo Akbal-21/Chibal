@@ -1,10 +1,10 @@
 import { ILine, ITypeExercise, ITypePublisher } from "@/interface";
-import { prisma } from "../db";
+import { db } from ".."
 
 export const getTypeofExercise = async () => {
-  await prisma.$connect();
-  const exercise: ITypeExercise[] = await prisma.tipoEjercicio.findMany();
-  await prisma.$disconnect();
+  await db.prisma.$connect();
+  const exercise: ITypeExercise[] = await db.prisma.tipoEjercicio.findMany();
+  await db.prisma.$disconnect();
   if (!exercise) {
     return;
   }
@@ -12,9 +12,9 @@ export const getTypeofExercise = async () => {
 };
 
 export const getTypePublisher = async () => {
-  await prisma.$connect();
-  const typePublisher: ITypePublisher[] = await prisma.estado.findMany();
-  await prisma.$disconnect();
+  await db.prisma.$connect();
+  const typePublisher: ITypePublisher[] = await db.prisma.estado.findMany();
+  await db.prisma.$disconnect();
   if (!typePublisher) {
     return;
   }
@@ -22,14 +22,14 @@ export const getTypePublisher = async () => {
 };
 
 export const getDataOfExercise = async (Ejercicios_id: string) => {
-  await prisma.$connect();
-  const exerciseData = await prisma.ejercicios.findUnique({
+  await db.prisma.$connect();
+  const exerciseData = await db.prisma.ejercicios.findUnique({
     where: {
       Ejercicios_id: Number(Ejercicios_id),
     },
   });
 
-  await prisma.$disconnect();
+  await db.prisma.$disconnect();
 
   console.log(exerciseData);
 
@@ -37,9 +37,9 @@ export const getDataOfExercise = async (Ejercicios_id: string) => {
 };
 
 export const getLine = async (Ejercicios_id: string) => {
-  await prisma.$connect();
+  await db.prisma.$connect();
 
-  const line: ILine[] = await prisma.incisos.findMany({
+  const line: ILine[] = await db.prisma.incisos.findMany({
     where: {
       EjercicioID: Number(Ejercicios_id),
     },

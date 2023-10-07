@@ -4,21 +4,26 @@ import { useQuestionsStore } from '../../../store/student/question';
 import { useQuestionsData } from '../../../hooks/student/useQuestionsData';
 import { Game } from "./Game";
 import { Results } from './Results';
-
-function App() {
+interface Props {
+  slug: string;
+  results: string;
+}
+function App({ slug ,results}:Props) {
   const questions = useQuestionsStore((state) => state.questions);
   const { unanswered } = useQuestionsData();
   const [componentToRender, setComponentToRender] = useState<ReactNode | null>(null);
 
   useEffect(() => {
     if (questions.length === 0) {
-      setComponentToRender(<Start />);
+      console.log(results)
+      console.log(slug)
+      setComponentToRender(<Start slug={slug} json1={results} />);
     } else if (questions.length > 0 && unanswered > 0) {
       setComponentToRender(<Game />);
     } else if (questions.length > 0 && unanswered === 0) {
       setComponentToRender(<Results />);
     }
-  }, [questions, unanswered]);
+  }, [questions, unanswered,slug,results]);
 
   return (
     <main>

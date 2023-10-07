@@ -3,7 +3,7 @@ import { useQuestionsStore } from "../../../store/student/question";
 import { type Question as QuestionType } from "./types";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Footer } from "./Footer";
-import { IndexPage } from "./index2";
+import { IndexPage } from "./canvasPage";
 import { useState } from "react";
 
 const getBackgroundColor = (info: QuestionType, index: string) => {

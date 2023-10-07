@@ -1,18 +1,18 @@
 import { create } from "zustand";
-import { type Question } from "../../interface/student/Question";
+import { type Question } from "@/interface/student/Question";
 import { persist, devtools } from "zustand/middleware";
-
+import { getExerciseQuestions } from "@/api/getJson";
+import { AppProps } from "next/app";
 interface State {
+  setQuestions: (parse:string)=> void;
   questions: Question[];
   currentQuestion: number;
-  fetchQuestions: (limit: number) => Promise<void>;
+  fetchQuestions: (id: string) => Promise<void>;
   selectAnswer: (questionId: number, answerChar: string) => void;
   goNextQuestion: () => void;
   goPreviousQuestion: () => void;
   reset: () => void;
 }
-
-const API_URL = "/";
 
 export const useQuestionsStore = create<State>()(
   devtools(
@@ -23,6 +23,20 @@ export const useQuestionsStore = create<State>()(
           questions: [],
           currentQuestion: 0,
 
+          fetchQuestions: async (id: string) => {
+            
+              const json = await getExerciseQuestions(Number(id));
+              const parse = JSON.parse(json);
+              if (parse) set({ questions: parse }, false, "FETCH_QUESTIONS");
+            
+          },
+          setQuestions: (parse:string)=>{
+            console.log(parse);
+            const formated = JSON.parse(parse);
+            
+            console.log(formated);
+            set({ questions: formated }, false, "SET_QUESTIONS");},
+          /*
           fetchQuestions: async (limit: number) => {
             const res = await fetch(`${API_URL}/data.json`);
             const json = await res.json();
@@ -31,7 +45,7 @@ export const useQuestionsStore = create<State>()(
               .sort(() => Math.random() - 0.5)
               .slice(0, limit);
             set({ questions }, false, "FETCH_QUESTIONS");
-          },
+          },*/
 
           selectAnswer: (questionId: number, answerChar: string) => {
             const { questions } = get();
@@ -96,3 +110,4 @@ export const useQuestionsStore = create<State>()(
     )
   )
 );
+

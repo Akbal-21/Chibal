@@ -1,12 +1,18 @@
 import { useQuestionsStore } from "../../../store/student/question";
-
+import { GetServerSideProps, NextPage } from "next";
+import { getExerciseQuestions } from "@/api/getJson";
+import { useState } from "react";
 const LIMIT_QUESTIONS = 10;
+interface Props {
+  slug: string;
+  json1: string;
+}
+export const Start:NextPage<Props> = ({slug,json1}) => {
+  const fetchQuestions = useQuestionsStore((state) => state.setQuestions);
 
-export const Start = () => {
-  const fetchQuestions = useQuestionsStore((state) => state.fetchQuestions);
-
-  const handleClick = () => {
-    fetchQuestions(LIMIT_QUESTIONS);
+  const handleClick = async () => {
+    console.log(json1)
+    fetchQuestions(json1);
   };
 
   return (
@@ -18,3 +24,17 @@ export const Start = () => {
 };
 
 export default Start;
+
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { slug = "" } = query as { slug: string };
+  console.log(slug);
+  const results: string | undefined = await getExerciseQuestions(Number(slug));
+  const json1 = results;
+  console.log(json1);
+  return {
+    props: {
+      json1
+    },
+  };
+};
