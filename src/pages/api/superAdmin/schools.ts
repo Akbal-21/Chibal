@@ -10,6 +10,8 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
     switch (req.method) {
         case "GET":
             return getAllSchools(req, res);
+        case "DELETE":
+            return deleteSchool(req, res);
     
             default:
             return res.status(400).json({ message: 'Bad request' })
@@ -46,4 +48,24 @@ async function getAllSchools(req: NextApiRequest, res: NextApiResponse<Data>) {
     }
     
     return res.status(200).json({ schools });
+}
+
+async function deleteSchool(req: NextApiRequest, res: NextApiResponse<Data>) {
+    const { School_id } = req.body
+    console.log(School_id);
+    
+    await db.prisma.$connect();
+
+    const deleteSc = await db.prisma.escuela.delete({
+        where: {
+            Escuela_id: Number(School_id)
+        }
+    });
+    
+    console.log(deleteSc);
+    
+
+    await db.prisma.$disconnect();
+    
+    return res.status(202);
 }

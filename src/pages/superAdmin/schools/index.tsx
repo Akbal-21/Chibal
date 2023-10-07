@@ -1,3 +1,4 @@
+import { chibalApi } from "@/api";
 import { FullScreenLoading, SuperAdminLayout } from "@/components";
 import { useSchool } from "@/hooks";
 import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai";
@@ -7,6 +8,15 @@ const SchoolTablePage = () => {
     const { schools, isError, isLoading } = useSchool("superAdmin/schools");
         console.log(schools);
         
+    const handleDelete = async (Escuela_id: number) => {
+      await chibalApi({
+        method: "DELETE",
+        url: "/superAdmin/schools",
+        data: {
+          School_id: Escuela_id
+        }
+      })
+    }
 
   return (
     <>
@@ -52,7 +62,7 @@ const SchoolTablePage = () => {
                         {school.Nombre}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                      {school.Administrador[0].Usuarios.Nombres}{" "}{school.Administrador[0].Usuarios.Apellidos}
+                      { school.Administrador[0] === undefined ? "Agregar administrador" : (school.Administrador[0].Usuarios.Nombres + school.Administrador[0].Usuarios.Apellidos) }
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -66,7 +76,7 @@ const SchoolTablePage = () => {
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-error m-1"
-                          
+                          onClick={(e) => handleDelete(school.Escuela_id)}
                         >
                           <AiFillDelete /> Elimiar
                         </button>

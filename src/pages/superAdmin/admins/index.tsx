@@ -1,12 +1,23 @@
+import { chibalApi } from "@/api";
 import { FullScreenLoading, SuperAdminLayout } from "@/components";
 import { useAdmin } from "@/hooks";
 import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai";
 
 
 const TeacherTablePage = () => {
-    const { admins, isError, isLoading } = useAdmin("superAdmin");
-        console.log(admins);
+  const { admins, isError, isLoading } = useAdmin("superAdmin");
+      console.log(admins);
         
+
+  const handleDelete = async (Usuario_id: number) => {
+    await chibalApi({
+      method: "DELETE",
+      url: "/superAdmin",
+      data: {
+        Usuario_id
+      }
+    })
+  }
 
   return (
     <>
@@ -58,7 +69,7 @@ const TeacherTablePage = () => {
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-secondary m-1"
-                          
+
                         >
                           <AiFillEdit /> Editar
                         </button>
@@ -66,7 +77,7 @@ const TeacherTablePage = () => {
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-error m-1"
-                          
+                          onClick={(e) => handleDelete(admin.Usuario_id)}
                         >
                           <AiFillDelete /> Elimiar
                         </button>

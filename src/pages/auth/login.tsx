@@ -50,7 +50,7 @@ const LoginPage = () => {
       return;
     }
     if (user?.roll === "SuperAdmin") {
-      router.replace("/super_admin");
+      router.replace("/superAdmin");
       return;
     }
 
