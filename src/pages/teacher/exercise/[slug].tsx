@@ -12,10 +12,9 @@ import {
   ITypeExercise,
   ITypePublisher,
 } from "@/interface/";
-import { useExerciseStore } from "@/store";
 import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
-import { GetServerSideProps } from "next";
-import { FC, useEffect, useState } from "react";
+import { GetServerSideProps, NextPage } from "next";
+import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
@@ -30,79 +29,85 @@ interface FormData {
   Estado: number;
 }
 interface Props {
-  exercise: IExercise;
+  exercises: IExercise;
   typeOfExercise: ITypeExercise[];
   incisos: ILine[];
   typeOfPublisher: ITypePublisher[];
 }
 
-const ExcersisePage: FC<Props> = ({
-  exercise,
+interface DataExercise {
+  solicitado: string;
+  typeExercise: string;
+  typeExerciseId: number | undefined;
+}
+
+const ExcersisePage: NextPage<Props> = ({
+  exercises,
   typeOfExercise,
   incisos,
   typeOfPublisher,
 }) => {
-  const [datePublic, setDatePublic] = useState<Date | null>(new Date());
-  const [dateLimit, setDateLimit] = useState<Date | null>(new Date());
+  const [dates, setDates] = useState<{
+    datePublic: Date | null;
+    dateLimit: Date | null;
+  }>({
+    datePublic: new Date(),
+    dateLimit: new Date(),
+  });
 
-  const [typeExercise, setTypeExercise] = useState("");
-  const [typeExcerciseId, setTypeExcerciseID] = useState<number>(0);
-  const [typePublisher, setTypePublisher] = useState("");
-  const [typePublisherId, setTypePublisherId] = useState(0);
+  // const [datePublic, setDatePublic] = useState<Date | null>(new Date());
+  // const [dateLimit, setDateLimit] = useState<Date | null>(new Date());
 
-  const { addExcercise, excercise, resetStore } = useExerciseStore();
+  const [typeExercise, setTypeExercise] = useState<ITypeExercise>();
+  const [typePublisher, setTypePublisher] = useState<ITypePublisher>();
+
+  const [addExercise, setAddExercise] = useState<DataExercise[]>([]);
+
   const [showError, setShowError] = useState(false);
 
   const [dataIncises, setDataIncises] = useState("");
 
   useEffect(() => {
-    resetStore();
+    setAddExercise([]);
     if (incisos.length > 0) {
-      const { TipoEjercicio_id, Estado_id } = exercise;
+      const { TipoEjercicio_id, Estado_id } = exercises;
+      setDates({
+        datePublic: new Date(exercises.FechaPublicacion),
+        dateLimit: new Date(exercises.FechaLimite),
+      });
 
-      setDatePublic(new Date(exercise.FechaPublicacion));
-      setDateLimit(new Date(exercise.FechaLimite));
+      // setDatePublic(new Date(exercises.FechaPublicacion));
+      // setDateLimit(new Date(exercises.FechaLimite));
 
       let typeEjercicio = "";
       let typePublish = "";
 
       if (Estado_id === 1) {
         typePublish = "Borrador";
-        setTypePublisher(typePublish);
+        setTypePublisher({ Estado_id: 1, Nombre: typePublish });
       }
 
       if (Estado_id === 2) {
         typePublish = "Publicado";
-        setTypePublisher(typePublish);
+        setTypePublisher({ Estado_id: 2, Nombre: typePublish });
       }
 
       if (TipoEjercicio_id === 1) {
         typeEjercicio = "Letras";
-        setTypeExercise(typeEjercicio);
+        setTypeExercise({ Tipo_id: 1, Nombre: typeEjercicio });
       }
       if (TipoEjercicio_id === 2) {
         typeEjercicio = "Numeros";
-        setTypeExercise(typeEjercicio);
+        setTypeExercise({ Tipo_id: 2, Nombre: typeEjercicio });
       }
       if (TipoEjercicio_id === 3) {
-        typeEjercicio = "Mixto";
-        setTypeExercise(typeEjercicio);
+        setTypeExercise({ Tipo_id: 3, Nombre: "Mixto" });
       }
       if (TipoEjercicio_id === 4) {
         typeEjercicio = "Deletreo";
-        setTypeExercise(typeEjercicio);
+        setTypeExercise({ Tipo_id: 4, Nombre: typeEjercicio });
       }
-
-      for (const key in incisos) {
-        const { LoSolicitado } = incisos[key];
-
-        const data = {
-          solicitado: LoSolicitado,
-          typeExercise: typeEjercicio,
-          typeExerciseId: TipoEjercicio_id,
-        };
-        addExcercise(data);
-      }
+      setExercisesFunction(incisos, typeEjercicio, Number(TipoEjercicio_id));
     }
   }, []);
 
@@ -114,20 +119,21 @@ const ExcersisePage: FC<Props> = ({
     setValue,
     watch,
   } = useForm<FormData>({
-    defaultValues: exercise,
+    defaultValues: exercises,
   });
 
   const onSubmit = (form: FormData) => {
-    setValue("TipoEjercicio_id", typeExcerciseId);
-    setValue("Estado", typePublisherId);
-    if (datePublic !== null) {
-      setValue("FechaPublicacion", datePublic.toDateString());
+    setValue("TipoEjercicio_id", typeExercise?.Tipo_id);
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    setValue("Estado", typePublisher!.Estado_id);
+    if (dates.datePublic !== null) {
+      setValue("FechaPublicacion", dates.datePublic.toDateString());
     }
-    if (dateLimit !== null) {
-      setValue("FechaLimite", dateLimit.toDateString());
+    if (dates.dateLimit !== null) {
+      setValue("FechaLimite", dates.dateLimit.toDateString());
     }
 
-    console.log({ form, excercise });
+    console.log({ form, addExercise });
   };
 
   let isCorrect: string | undefined;
@@ -137,77 +143,68 @@ const ExcersisePage: FC<Props> = ({
     // Separa la cadena por comas y crea un arreglo de palabras
     const item = cadenaSinEspacios.split(",");
 
-    if (typeExercise === "Numeros") {
+    if (typeExercise?.Nombre === "Numeros") {
       isCorrect = isTextNumber(dataIncises);
 
-      // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
-      if (!!isCorrect) {
-        setShowError(true);
-        setTimeout(() => setShowError(false), 3000);
-        console.log(isCorrect);
-
+      const error = setErrorFunction(isCorrect);
+      if (error === false) {
         return;
       }
 
-      for (const key in item) {
-        const data = {
-          solicitado: item[key],
-          typeExercise: typeExercise,
-          typeExerciseId: typeExcerciseId,
-        };
-        addExcercise(data);
-      }
-
-      console.log(item);
+      setExercisesFunction(item, typeExercise?.Nombre, typeExercise.Tipo_id);
     }
 
-    if (typeExercise === "Letras") {
+    if (typeExercise?.Nombre === "Letras") {
       isCorrect = isTextLetter(dataIncises);
 
-      // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
-      if (!!isCorrect) {
-        setShowError(true);
-        setTimeout(() => setShowError(false), 3000);
+      const error = setErrorFunction(isCorrect);
+      if (error === false) {
         return;
       }
-
-      for (const key in item) {
-        const data = {
-          solicitado: item[key],
-          typeExercise: typeExercise,
-          typeExerciseId: typeExcerciseId,
-        };
-        addExcercise(data);
-      }
-
-      console.log(item);
+      setExercisesFunction(item, typeExercise?.Nombre, typeExercise.Tipo_id);
       return;
     }
-    if (typeExercise === "Mixto") {
+    if (typeExercise?.Nombre === "Mixto") {
       isCorrect = isTextMix(dataIncises);
-
-      // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
-      if (!!isCorrect) {
-        setShowError(true);
-        setTimeout(() => setShowError(false), 3000);
+      const error = setErrorFunction(isCorrect);
+      if (error === false) {
         return;
       }
+      setExercisesFunction(item, typeExercise?.Nombre, typeExercise.Tipo_id);
 
-      for (const key in item) {
-        const data = {
-          solicitado: item[key],
-          typeExercise: typeExercise,
-          typeExerciseId: typeExcerciseId,
-        };
-        addExcercise(data);
-      }
-
-      console.log(item);
       return;
     }
   };
+
+  const setErrorFunction = (isCorrect: string | undefined) => {
+    // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
+    if (!!isCorrect) {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3000);
+      return false;
+    }
+  };
+
+  const setExercisesFunction = (
+    item: string[] | ILine[],
+    typeExercise: string,
+    typeExerciseId: number,
+  ) => {
+    for (const key in item) {
+      const { LoSolicitado } = incisos[key];
+      setAddExercise((prevExercises) => [
+        ...prevExercises,
+        {
+          solicitado: LoSolicitado,
+          typeExercise,
+          typeExerciseId,
+        },
+      ]);
+    }
+  };
+
   return (
-    <TeacherLayouth titel={`Ejercicio ${exercise.Ejercicios_id}`}>
+    <TeacherLayouth titel={`Ejercicio ${exercises.Ejercicios_id}`}>
       <div className="pt-11">
         <section className="bg-gray-2 rounded-xl">
           <div className="p-8 shadow-lg">
@@ -226,7 +223,6 @@ const ExcersisePage: FC<Props> = ({
                       </span>
                     )}
                     <br />
-                    {/* <label className="sr-only">Name</label> */}
                     <input
                       className="input input-solid max-w-full"
                       placeholder="Name"
@@ -249,8 +245,10 @@ const ExcersisePage: FC<Props> = ({
                             key={publish.Estado_id}
                             className="dropdown-item"
                             onClick={() => {
-                              setTypePublisher(publish.Nombre);
-                              setTypePublisherId(publish.Estado_id);
+                              setTypePublisher({
+                                Estado_id: publish.Estado_id,
+                                Nombre: publish.Nombre,
+                              });
                             }}
                           >
                             {publish.Nombre}
@@ -268,20 +266,21 @@ const ExcersisePage: FC<Props> = ({
                   <div className="dropdown">
                     {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
                     <label className="btn btn-solid-primary" tabIndex={0}>
-                      {!typeExercise ? "click" : typeExercise}
+                      {!typeExercise?.Nombre ? "click" : typeExercise.Nombre}
                     </label>
                     <ul className="dropdown-menu">
                       {typeOfExercise.map((item) => {
-                        //{item.Nombre === "Letras" || item.Nombre === "Numeros" && resetStore()}
                         return (
                           // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                           <li
                             key={item.Tipo_id}
                             className="dropdown-item"
                             onClick={() => {
-                              setTypeExercise(item.Nombre);
-                              setTypeExcerciseID(item.Tipo_id);
-                              resetStore();
+                              setTypeExercise({
+                                Tipo_id: item.Tipo_id,
+                                Nombre: item.Nombre,
+                              });
+                              setAddExercise([]);
                             }}
                           >
                             {item.Nombre}
@@ -298,8 +297,11 @@ const ExcersisePage: FC<Props> = ({
                     <BsFillCalendarFill />
                     <ReactDatePicker
                       className="input input-solid"
-                      selected={datePublic}
-                      onChange={(date) => setDatePublic(date)}
+                      selected={dates.datePublic}
+                      onChange={
+                        (date) => setDates({ ...dates, datePublic: date })
+                        // setDatePublic(date)
+                      }
                     />
                   </div>
                 </div>
@@ -310,8 +312,11 @@ const ExcersisePage: FC<Props> = ({
                     <BsFillCalendarFill />
                     <ReactDatePicker
                       className="input input-solid"
-                      selected={dateLimit}
-                      onChange={(date) => setDateLimit(date)}
+                      selected={dates.dateLimit}
+                      onChange={
+                        (date) => setDates({ ...dates, dateLimit: date })
+                        // setDateLimit(date)
+                      }
                     />
                   </div>
                 </div>
@@ -321,7 +326,7 @@ const ExcersisePage: FC<Props> = ({
                 <div className="divider divider-horizontal">
                   <h3 className="text-xl">Incisos del ejercicio</h3>
                 </div>
-                {excercise.length === 0 ? (
+                {addExercise.length === 0 ? (
                   <div className="flex justify-center items-center">
                     <h3>Agrege un inciso porfavor</h3>
                   </div>
@@ -331,7 +336,7 @@ const ExcersisePage: FC<Props> = ({
                       <h3 className="text-xl">
                         <b>Solicitado</b>
                       </h3>
-                      {excercise.map((item) => (
+                      {addExercise.map((item) => (
                         <h3 className="text-lg">{item.solicitado}</h3>
                       ))}
                     </div>
@@ -339,7 +344,7 @@ const ExcersisePage: FC<Props> = ({
                       <h3 className="text-xl">
                         <b>Tipo</b>
                       </h3>
-                      {excercise.map((item) => (
+                      {addExercise.map((item) => (
                         <h3 className="text-lg">{item.typeExercise}</h3>
                       ))}
                     </div>
@@ -357,7 +362,7 @@ const ExcersisePage: FC<Props> = ({
                     {(showError || errors.incisos) && (
                       <span className=" badge badge-error m-1">
                         Error: Dato incompatible con tipo de ejercicio{" "}
-                        {typeExercise}.
+                        {typeExercise?.Nombre}.
                       </span>
                     )}
                     <div className="form-control relative">
@@ -368,9 +373,9 @@ const ExcersisePage: FC<Props> = ({
                             : "input input-solid-error max-w-full"
                         }
                         placeholder={
-                          typeExercise === "Mixto"
+                          typeExercise?.Nombre === "Mixto"
                             ? "Ingrese los numeros y letras separados por , (coma)"
-                            : `Ingrese los ${typeExercise.toLocaleLowerCase()} separados por , (coma)`
+                            : `Ingrese los ${typeExercise?.Nombre.toLocaleLowerCase()} separados por , (coma)`
                         }
                         type="text"
                         {...register("incisos", {})}
@@ -410,12 +415,12 @@ const ExcersisePage: FC<Props> = ({
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
 
-  let exercise: IExercise | IExerciseDB | null;
+  let exercises: IExercise | IExerciseDB | null;
 
   let incisos: ILine | string;
 
   if (slug === "new") {
-    exercise = {
+    exercises = {
       NombreEjercicio: "",
       FechaLimite: new Date().toISOString(),
       FechaPublicacion: new Date().toISOString(),
@@ -424,7 +429,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   } else {
     // todo: hacer el chequeo de la info con el ID del ejercicio
     const datExercise = await getDataOfExercise(slug.toString());
-    exercise = JSON.parse(JSON.stringify(datExercise));
+    exercises = JSON.parse(JSON.stringify(datExercise));
     const datLine = await getLine(slug.toLocaleString());
     incisos = JSON.parse(JSON.stringify(datLine));
   }
@@ -434,7 +439,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const typeOfPublisher: ITypePublisher[] | undefined =
     await getTypePublisher();
 
-  if (!exercise || !typeOfExercise || !typeOfPublisher) {
+  if (!exercises || !typeOfExercise || !typeOfPublisher) {
     return {
       redirect: {
         destination: "/teacher/exercise",
@@ -445,7 +450,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      exercise,
+      exercises,
       typeOfExercise,
       incisos,
       typeOfPublisher,
