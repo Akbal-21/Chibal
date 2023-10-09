@@ -19,7 +19,7 @@ interface UsuarioResultados {
 
 const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
   const resultadosAgrupados: Record<string, UsuarioResultados> = {};
-
+  const NombreEjercicio = cabecera[0]?.NombreEjercicio? cabecera[0].NombreEjercicio: ""
   results.forEach((row) => {
     const userId = row.Alumnos.Usuarios.Usuarios_id;
     if (!resultadosAgrupados[userId]) {
@@ -70,6 +70,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
   
       // Agregar el nombre del grupo, horario del turno y nivel del grado
       const infoGrupo = [];
+      
       if (cab.Grupos) {
         if (cab.Grupos.NombreGrupo) {
           infoGrupo.push(`Grupo: ${cab.Grupos.NombreGrupo}`);
@@ -120,7 +121,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
     <TeacherLayouth titel="Resultados de los Ejercicios">
       <div className="pt-11">
         <h2 className="mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl text-center">
-          Resultados del Ejercicio
+          Resultados del Ejercicio: {NombreEjercicio}
         </h2>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 ">
@@ -152,7 +153,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
                 return (
                   <tr
                     key={userId}
-                    className="bg-white border-b  hover:bg-gray-200 "
+                    className="bg-white border-b  hover:bg-gray-100 "
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       {usuario.usuario}

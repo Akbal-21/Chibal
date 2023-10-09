@@ -8,16 +8,16 @@ export const StudentNavbar = () => {
     <div className="navbar bg-coral rounded-lg">
       <div className="navbar-start">
         <Link href={"/"} className="navbar-item">
-          <b className="text-lg text-slate-200">
-          Chiba'l
-          </b>
+          <h1 className="text-white text-2xl">
+            <b>Chiba'l</b>
+          </h1>
         </Link>
       </div>
       <div className="navbar-end">
         <Link href={"/"} className="navbar-item">
-          <b className="text-base text-slate-200">
-          {`Hola ${user?.Nombres} `}
-          </b>
+          <h1 className="text-white text-xl">
+            <b>{`Hola ${user?.Nombres} `}</b>
+          </h1>
         </Link>
       </div>
     </div>

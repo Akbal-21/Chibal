@@ -33,7 +33,7 @@ const config: Config = {
             my_sin: "#c8a8e9",
             golden_fizz: "#fdf72b",
             screamin_green: "#3cfd5b",
-            coral: "#e5989b",
+            coral: "#461b92",
             school_yellow: "#ffd900",
             green: "#00ff00",
             Cerulean: "#00bfff",
