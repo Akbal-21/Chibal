@@ -12,9 +12,7 @@ const GroupPage = () => {
   const route = useRouter();
 
   const { user } = useLoginUser();
-  const { escuela, isError, isLoading } = useGroup(
-    `teacher/${user?.Usuarios_id}`,
-  );
+  const { escuela, isLoading } = useGroup(`teacher/${user?.Usuarios_id}`);
 
   const handleEdit = (Grupos_id: number) => {
     route.replace(`/teacher/group/${Grupos_id}`);
