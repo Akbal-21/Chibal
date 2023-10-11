@@ -3,10 +3,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { ReactNode, useEffect, useState } from "react";
 
 import { StudentLayout } from "@/components";
-import { Question, Start } from "@/components/student";
+import { Question, Results, Start } from "@/components/student";
 import { useQuestionsData } from "@/hooks/student/useQuestionsData";
 import { useQuestionsStore } from "@/store/student/question";
-import Results from "./Results";
 
 // El componente App se exporta como valor por defecto, por lo que no se necesita "import { App }"
 interface Props {

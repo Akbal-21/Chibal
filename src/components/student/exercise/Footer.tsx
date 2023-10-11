@@ -1,5 +1,5 @@
-import { useQuestionsStore } from "../../../store/student/question";
 import { useQuestionsData } from "../../../hooks/student/useQuestionsData";
+import { useQuestionsStore } from "../../../store/student/question";
 
 export const Footer = () => {
   const { correct, incorrect, unanswered } = useQuestionsData();
@@ -10,7 +10,7 @@ export const Footer = () => {
       <strong>{`✅ ${correct} correctas - ❌ ${incorrect} incorrectas - ❓ ${unanswered} sin responder`}</strong>
       <div style={{ marginTop: "16px" }}>
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-        <button onClick={() => reset()}>Resetear juego</button>
+        {/* <button onClick={() => reset()}>Resetear juego</button> */}
       </div>
     </footer>
   );

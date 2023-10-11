@@ -13,6 +13,13 @@ export const StudentNavbar = () => {
           </h1>
         </Link>
       </div>
+      <div className="navbar-center">
+        <Link href={"/student"} className="navbar-item">
+          <h1 className="text-white text-xl">
+            <b>Ejercicios</b>
+          </h1>
+        </Link>
+      </div>
       <div className="navbar-end">
         <Link href={"/"} className="navbar-item">
           <h1 className="text-white text-xl">

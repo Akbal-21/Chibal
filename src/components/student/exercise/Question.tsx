@@ -13,6 +13,7 @@ export const Question = () => {
     useQuestionsStore();
   const info: IQuestion = questions[currentQuestion];
   // console.log(info.code);
+  let modelIndex: 0 | 1 = 0;
 
   useQuestionsStore();
   const [predictValue, setPredictValue] = useState("");
@@ -25,26 +26,21 @@ export const Question = () => {
   // !Refactorizar desde aca
   const [model, setModel] = useState<LayersModel>();
   const [imageUrl, setImageUrl] = useState("");
-  const [isDigitMode, setIsDigitMode] = useState<boolean>(true); // Estado para el modo de predicción
   const canvasRef = useRef<SignatureCanvas>(null);
-
   // Se carga el modelo
   useEffect(() => {
-    loadModel(info.code);
+    loadModel(info);
   }, [info]);
 
   // Función para cargar el modelo según el modo actual
-  const loadModel = async (typeExercise: string) => {
+  const loadModel = async (info: IQuestion) => {
+    const typeExercise = info.code;
     if (typeExercise === "Letra") {
-      setIsDigitMode(false);
-    } else {
-      setIsDigitMode(true);
+      modelIndex = 1;
+    } else if (typeExercise === "Número") {
+      modelIndex = 0;
     }
-    console.log(typeExercise);
-    // typeExercise === "Letra" ? setIsDigitMode(false) : setIsDigitMode(true);
-
-    const modelIndex = isDigitMode ? 1 : 0;
-
+    // const modelIndex = isDigitMode ? 1 : 0;
     const modelCharge = await loadLayersModel(modelUrls[modelIndex]);
     setModel(modelCharge);
   };
@@ -94,6 +90,7 @@ export const Question = () => {
 
   // * Función para cambiar entre números y letras
   // const toggleMode = () => {
+  // modelIndex = !modelIndex
   //   setIsDigitMode(!isDigitMode);
   // };
 

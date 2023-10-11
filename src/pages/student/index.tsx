@@ -1,16 +1,23 @@
 import { FullScreenLoading, StudentLayout } from "@/components";
 import { useExercise } from "@/hooks";
 import { useLoginUser } from "@/store/auth";
+import { useRouter } from "next/router";
 
 const StudentPage = () => {
   const { user } = useLoginUser();
   console.log(user);
-
+  const route = useRouter();
   const { exercise, isError, isLoading } = useExercise(
-    `student/${user?.Usuarios_id}`
+    `student/${user?.Usuarios_id}`,
   );
 
   console.log(exercise);
+
+  const handleDoExercise = (id: number) => {
+    console.log(id);
+    route.replace(`student/exercise/${id}`);
+    return;
+  };
 
   return (
     <StudentLayout titel="Ejercicios">
@@ -73,15 +80,13 @@ const StudentPage = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap ">
                           {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                          <button className="btn btn-secondary mx-1">
-                            Ver
-                          </button>
-                          {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                           <button
-                            className="btn btn-error mx-1"
-                            disabled={exercise.Estado_id === 1 ? false : true}
+                            className="btn btn-secondary mx-1"
+                            onClick={() =>
+                              handleDoExercise(exercise.Ejercicios_id)
+                            }
                           >
-                            Ver otra vez
+                            Resolver
                           </button>
                         </td>
                       </tr>
