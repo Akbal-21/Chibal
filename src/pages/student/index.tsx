@@ -23,7 +23,7 @@ const StudentPage = () => {
     <StudentLayout titel="Ejercicios">
       <div className="grid grid-cols-1 items-center w-full">
         <div className="p-1 mt-20 relative flex justify-center items-center">
-          {isLoading ? (
+          {/* {isLoading ? (
             <FullScreenLoading />
           ) : (
             <div className="grid grid-cols-1">
@@ -79,9 +79,9 @@ const StudentPage = () => {
                           {String(exercise.FechaLimite).split("T")[0]}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap ">
-                          {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                           <button
                             className="btn btn-secondary mx-1"
+                            
                             onClick={() =>
                               handleDoExercise(exercise.Ejercicios_id)
                             }
@@ -95,7 +95,7 @@ const StudentPage = () => {
                 </table>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </StudentLayout>
