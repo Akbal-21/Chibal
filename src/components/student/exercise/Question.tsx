@@ -40,7 +40,6 @@ export const Question = () => {
     } else if (typeExercise === "Número") {
       modelIndex = 0;
     }
-    // const modelIndex = isDigitMode ? 1 : 0;
     const modelCharge = await loadLayersModel(modelUrls[modelIndex]);
     setModel(modelCharge);
   };
