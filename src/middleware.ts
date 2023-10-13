@@ -6,15 +6,15 @@ export async function middleware(req: NextRequest) {
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const user: any = structuredClone(session?.user);
-  console.log(user);
+  console.log(user?.roll);
 
-  if (req.nextUrl.pathname.startsWith("/teacher") && user.role !== "Maestro") {
+  if (req.nextUrl.pathname.startsWith("/teacher") && user?.roll !== "Maestro") {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  if (req.nextUrl.pathname.startsWith("/student") && user.role !== "Alumno") {
+  if (req.nextUrl.pathname.startsWith("/student") && user?.roll !== "Alumno") {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
@@ -28,5 +28,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/:path", "/student/:path", "/teacher/:path"],
+  matcher: ["/student/:path*", "/teacher/:path*", "/"],
 };
