@@ -8,6 +8,12 @@ export async function middleware(req: NextRequest) {
   const user: any = structuredClone(session?.user);
   console.log(user?.roll);
 
+  if (!session) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
+  }
+
   if (req.nextUrl.pathname.startsWith("/student") && user?.roll !== "Alumno") {
     const url = req.nextUrl.clone();
     url.pathname = "/";
@@ -35,12 +41,6 @@ export async function middleware(req: NextRequest) {
   ) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
-
-  if (!session) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/auth/login";
     return NextResponse.redirect(url);
   }
 }
