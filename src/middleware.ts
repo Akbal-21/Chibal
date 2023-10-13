@@ -8,13 +8,31 @@ export async function middleware(req: NextRequest) {
   const user: any = structuredClone(session?.user);
   console.log(user?.roll);
 
+  if (req.nextUrl.pathname.startsWith("/student") && user?.roll !== "Alumno") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+
   if (req.nextUrl.pathname.startsWith("/teacher") && user?.roll !== "Maestro") {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  if (req.nextUrl.pathname.startsWith("/student") && user?.roll !== "Alumno") {
+  if (
+    req.nextUrl.pathname.startsWith("/admin") &&
+    user?.roll !== "Administrador"
+  ) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+
+  if (
+    req.nextUrl.pathname.startsWith("/superAdmin") &&
+    user?.roll !== "SuperAdmin"
+  ) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
@@ -28,5 +46,11 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/student/:path*", "/teacher/:path*", "/"],
+  matcher: [
+    "/student/:path*",
+    "/teacher/:path*",
+    "/admin/:path*",
+    "/superAdmin/:path*",
+    "/",
+  ],
 };
