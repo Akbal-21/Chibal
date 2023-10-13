@@ -1,21 +1,32 @@
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
-  // const { isLoggedIn } = useLoginUser();
+export async function middleware(req: NextRequest) {
+  const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  // console.log(isLoggedIn);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const user: any = structuredClone(session?.user);
+  console.log(user);
 
-  // if (!isLoggedIn) {
-  if (req.nextUrl.pathname.startsWith("/admin/teacher/")) {
-    console.log("Hola");
-
-    // return NextResponse.redirect(new URL("/auth/login", req.url));
+  if (req.nextUrl.pathname.startsWith("/teacher") && user.role !== "Maestro") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
   }
-  // }
 
-  return NextResponse.next();
+  if (req.nextUrl.pathname.startsWith("/student") && user.role !== "Alumno") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+
+  if (!session) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
+  }
 }
 
 export const config = {
-  matcher: ["/admin/teacher/:path"],
+  matcher: ["/:path", "/student/:path", "/teacher/:path"],
 };

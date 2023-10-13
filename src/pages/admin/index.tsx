@@ -1,12 +1,12 @@
-import { AdminLayouth } from "@/components";
+import { SigInLayout } from "@/components";
 
 const AdminPage = () => {
   return (
-    <AdminLayouth titel={"Bienvenido"}>
+    <SigInLayout titel={"Bienvenido"}>
       <div>
         <h3>Hola </h3>
       </div>
-    </AdminLayouth>
+    </SigInLayout>
   );
 };
 

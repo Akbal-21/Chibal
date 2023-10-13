@@ -1,11 +1,11 @@
 import { chibalApi } from "@/api";
-import { TeacherLayouth } from "@/components";
+import { SigInLayout } from "@/components";
+import { AuthContext } from "@/context";
 import { getDataGroup } from "@/db/teacher";
 import { IDataGroup } from "@/interface";
-import { useLoginUser } from "@/store/auth";
 import { isEmail } from "@/utils";
 import { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface Props {
@@ -47,7 +47,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   const [addStudent, setAddStudent] = useState<dataStudent[]>([]);
   console.log({ dataGroup, slug });
 
-  const { user } = useLoginUser();
+  const { user } = useContext(AuthContext);
   console.log(user);
 
   const [studentState, setStudentState] = useState<StudentState>({
@@ -142,7 +142,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   };
 
   return (
-    <TeacherLayouth
+    <SigInLayout
       titel={
         slug === "new" ? "Crear un nuevo Grupo" : `Editar el grupo ${slug}`
       }
@@ -321,7 +321,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
           </div>
         </section>
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 

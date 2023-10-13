@@ -1,11 +1,10 @@
 import { getExerciseQuestions } from "@/api/getJson";
-import { GetServerSideProps, NextPage } from "next";
-import { ReactNode, useEffect, useState } from "react";
-
-import { StudentLayout } from "@/components";
+import { SigInLayout } from "@/components";
 import { Question, Results, Start } from "@/components/student";
 import { useQuestionsData } from "@/hooks/student/useQuestionsData";
 import { useQuestionsStore } from "@/store/student/question";
+import { GetServerSideProps, NextPage } from "next";
+import { ReactNode, useEffect, useState } from "react";
 
 // El componente App se exporta como valor por defecto, por lo que no se necesita "import { App }"
 interface Props {
@@ -30,14 +29,14 @@ const solve: NextPage<Props> = ({ results, slug }) => {
   }, [questions, unanswered, slug, results]);
 
   return (
-    <StudentLayout titel={"Resuelve el ejercicio"}>
+    <SigInLayout titel={"Resuelve el ejercicio"}>
       <div>
         <div className="mx-auto max-w-sm">
           {/* Contenido del componente renderizado condicionalmente */}
           {componentToRender}
         </div>
       </div>
-    </StudentLayout>
+    </SigInLayout>
   );
 };
 

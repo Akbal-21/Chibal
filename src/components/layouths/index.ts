@@ -1,2 +1,2 @@
-export * from "./AuthLayouth";
-export * from "./SigInLayouth";
+export * from "./AuthLayout";
+export * from "./SigInLayout";

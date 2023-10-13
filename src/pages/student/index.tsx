@@ -1,17 +1,17 @@
-import { FullScreenLoading, StudentLayout } from "@/components";
+import { FullScreenLoading, SigInLayout } from "@/components";
+import { AuthContext } from "@/context";
 import { useExercise } from "@/hooks";
-import { useLoginUser } from "@/store/auth";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 
 const StudentPage = () => {
-  const { user } = useLoginUser();
-  console.log(user);
+  // const { user } = useLoginUser();
+  const { user } = useContext(AuthContext);
+
   const route = useRouter();
   const { exercise, isError, isLoading } = useExercise(
     `student/${user?.Usuarios_id}`,
   );
-
-  console.log(exercise);
 
   const handleDoExercise = (id: number) => {
     console.log(id);
@@ -20,7 +20,7 @@ const StudentPage = () => {
   };
 
   return (
-    <StudentLayout titel="Ejercicios">
+    <SigInLayout titel="Ejercicios">
       <div className="grid grid-cols-1 items-center w-full">
         <div className="p-1 mt-20 relative flex justify-center items-center">
           {isLoading ? (
@@ -65,7 +65,10 @@ const StudentPage = () => {
                   </thead>
                   <tbody>
                     {exercise.map((exercise, index) => (
-                      <tr className="bg-white border-b  hover:bg-gray-50">
+                      <tr
+                        className="bg-white border-b  hover:bg-gray-50"
+                        key={exercise.Ejercicios_id}
+                      >
                         <td className="px-6 py-4 ">{index + 1}</td>
                         <td className="px-6 py-4 ">
                           {exercise.NombreEjercicio}
@@ -98,7 +101,7 @@ const StudentPage = () => {
           )}
         </div>
       </div>
-    </StudentLayout>
+    </SigInLayout>
   );
 };
 

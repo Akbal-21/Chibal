@@ -1,4 +1,4 @@
-import { TeacherLayouth } from "@/components";
+import { SigInLayout } from "@/components";
 import {
   getDataOfExercise,
   getLine,
@@ -204,7 +204,7 @@ const ExcersisePage: NextPage<Props> = ({
   };
 
   return (
-    <TeacherLayouth titel={`Ejercicio ${exercises.Ejercicios_id}`}>
+    <SigInLayout titel={`Ejercicio ${exercises.Ejercicios_id}`}>
       <div className="pt-11">
         <section className="bg-gray-2 rounded-xl">
           <div className="p-8 shadow-lg">
@@ -408,7 +408,7 @@ const ExcersisePage: NextPage<Props> = ({
           </div>
         </section>
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 
