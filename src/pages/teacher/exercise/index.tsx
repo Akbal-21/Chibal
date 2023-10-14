@@ -11,8 +11,8 @@ const ExcercisePage = () => {
 
   const { user } = useLoginUser();
 
-  const { exercise, isError, isLoading } = useExercise(
-    `teacher/exercise/${user?.Usuarios_id}`
+  const { exercise, isLoading } = useExercise(
+    `teacher/exercise/${user?.Usuarios_id}`,
   );
 
   const handleEdith = (Ejercicios_id: number) => {

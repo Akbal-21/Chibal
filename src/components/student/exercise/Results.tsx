@@ -1,9 +1,9 @@
-import { useQuestionsStore } from "../../../store/student/question";
 import { useQuestionsData } from "../../../hooks/student/useQuestionsData";
+import { useQuestionsStore } from "../../../store/student/question";
 
 export const Results = () => {
   const { correct, incorrect } = useQuestionsData();
-  const reset = useQuestionsStore((state) => state.reset);
+  const { reset } = useQuestionsStore();
 
   return (
     <div style={{ marginTop: "16px" }}>

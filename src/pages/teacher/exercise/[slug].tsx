@@ -427,7 +427,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
     incisos = "";
   } else {
-    // todo: hacer el chequeo de la info con el ID del ejercicio
     const datExercise = await getDataOfExercise(slug.toString());
     exercises = JSON.parse(JSON.stringify(datExercise));
     const datLine = await getLine(slug.toLocaleString());

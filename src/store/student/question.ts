@@ -1,11 +1,10 @@
-import { create } from "zustand";
-import { type Question } from "@/interface/student/Question";
-import { persist, devtools } from "zustand/middleware";
 import { getExerciseQuestions } from "@/api/getJson";
-import { AppProps } from "next/app";
+import { type IQuestion } from "@/interface/student/Question";
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 interface State {
-  setQuestions: (parse:string)=> void;
-  questions: Question[];
+  setQuestions: (parse: string) => void;
+  questions: IQuestion[];
   currentQuestion: number;
   fetchQuestions: (id: string) => Promise<void>;
   selectAnswer: (questionId: number, answerChar: string) => void;
@@ -24,18 +23,17 @@ export const useQuestionsStore = create<State>()(
           currentQuestion: 0,
 
           fetchQuestions: async (id: string) => {
-            
-              const json = await getExerciseQuestions(Number(id));
-              const parse = JSON.parse(json);
-              if (parse) set({ questions: parse }, false, "FETCH_QUESTIONS");
-            
+            const json = await getExerciseQuestions(Number(id));
+            const parse = JSON.parse(json);
+            if (parse) set({ questions: parse }, false, "FETCH_QUESTIONS");
           },
-          setQuestions: (parse:string)=>{
+          setQuestions: (parse: string) => {
             console.log(parse);
             const formated = JSON.parse(parse);
-            
+
             console.log(formated);
-            set({ questions: formated }, false, "SET_QUESTIONS");},
+            set({ questions: formated }, false, "SET_QUESTIONS");
+          },
           /*
           fetchQuestions: async (limit: number) => {
             const res = await fetch(`${API_URL}/data.json`);
@@ -53,7 +51,7 @@ export const useQuestionsStore = create<State>()(
             const newQuestions = structuredClone(questions);
             // encontramos el índice de la pregunta
             const questionIndex = newQuestions.findIndex(
-              (q) => q.id === questionId
+              (q) => q.id === questionId,
             );
             // obtenemos la información de la pregunta
             const questionInfo = newQuestions[questionIndex];
@@ -94,7 +92,7 @@ export const useQuestionsStore = create<State>()(
               set(
                 { currentQuestion: previousQuestion },
                 false,
-                "GO_PREVIOUS_QUESTION"
+                "GO_PREVIOUS_QUESTION",
               );
             }
           },
@@ -106,8 +104,7 @@ export const useQuestionsStore = create<State>()(
       },
       {
         name: "questions",
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
-

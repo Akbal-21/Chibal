@@ -1,5 +1,5 @@
 import { ILine, ITypeExercise, ITypePublisher } from "@/interface";
-import { db } from ".."
+import { db } from "..";
 
 export const getTypeofExercise = async () => {
   await db.prisma.$connect();
@@ -43,7 +43,12 @@ export const getLine = async (Ejercicios_id: string) => {
     where: {
       EjercicioID: Number(Ejercicios_id),
     },
+    orderBy: {
+      Incisos_id: "asc",
+    },
   });
+
+  console.log(line);
 
   return line;
 };
