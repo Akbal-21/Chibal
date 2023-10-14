@@ -4,11 +4,10 @@ import { useAdmin } from "@/hooks";
 import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai";
 
 
-const TeacherTablePage = () => {
+const AdminTablePage = () => {
   const { admins, isError, isLoading } = useAdmin("superAdmin");
       console.log(admins);
         
-
   const handleDelete = async (Usuario_id: number) => {
     await chibalApi({
       method: "DELETE",
@@ -23,10 +22,6 @@ const TeacherTablePage = () => {
     <>
       <SuperAdminLayout titel="CRUD Maestro">
         <div>
-          <div className="text-center">
-            <h1 className="text-4xl">Escuela: Hola</h1>
-          </div>
-
           <div className="p-1 mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
@@ -106,4 +101,4 @@ const TeacherTablePage = () => {
 };
 
 
-export default TeacherTablePage;
+export default AdminTablePage;

@@ -19,8 +19,6 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 
 async function getAllSchools(req: NextApiRequest, res: NextApiResponse<Data>) {
-    console.log("Antes de conectar a db");
-    
     await db.prisma.$connect();
 
     const schools: ISchool[] = await db.prisma.escuela.findMany({
@@ -39,7 +37,6 @@ async function getAllSchools(req: NextApiRequest, res: NextApiResponse<Data>) {
             }
         }
     });
-    console.log(schools);
     
     await db.prisma.$disconnect();
 

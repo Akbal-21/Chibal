@@ -5,26 +5,23 @@ import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai"
 
 
 const SchoolTablePage = () => {
-    const { schools, isError, isLoading } = useSchool("superAdmin/schools");
-        console.log(schools);
-        
-    const handleDelete = async (Escuela_id: number) => {
-      await chibalApi({
-        method: "DELETE",
-        url: "/superAdmin/schools",
-        data: {
-          School_id: Escuela_id
-        }
-      })
-    }
+  const { schools, isError, isLoading } = useSchool("superAdmin/schools");
+      console.log(schools);
+      
+  const handleDelete = async (Escuela_id: number) => {
+    await chibalApi({
+      method: "DELETE",
+      url: "/superAdmin/schools",
+      data: {
+        School_id: Escuela_id
+      }
+    })
+  }
 
   return (
     <>
       <SuperAdminLayout titel="CRUD Maestro">
         <div>
-          <div className="text-center">
-            <h1 className="text-4xl">Escuela: Hola</h1>
-          </div>
 
           <div className="p-1 mt-20 relative flex justify-center items-center">
         {isLoading ? (

@@ -20,8 +20,6 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 
 async function getAllAdmins(req: NextApiRequest, res: NextApiResponse<Data>) {
-    console.log("Antes de conectar a db");
-    
     await db.prisma.$connect();
 
     const admins: IAdmin[] = await db.prisma.administrador.findMany({
@@ -45,7 +43,6 @@ async function getAllAdmins(req: NextApiRequest, res: NextApiResponse<Data>) {
             }
         }
     });
-    console.log(admins);
     
     await db.prisma.$disconnect();
 
