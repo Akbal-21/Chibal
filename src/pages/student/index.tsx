@@ -8,6 +8,8 @@ const StudentPage = () => {
   // const { user } = useLoginUser();
   const { user } = useContext(AuthContext);
 
+  console.log({ user });
+
   const route = useRouter();
   const { exercise, isError, isLoading } = useExercise(
     `student/${user?.Usuarios_id}`,
