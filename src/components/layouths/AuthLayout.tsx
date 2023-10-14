@@ -13,7 +13,7 @@ export const AuthLayouth: FC<Props> = ({ titel, children }) => {
         <title>{titel}</title>
       </Head>
       <main>
-        <div className="flex justify-center items-center h-[calc(100vh - 200px)]">
+        <div className="grid justify-center items-center h-[calc(100vh - 200px)]">
           {children}
         </div>
       </main>

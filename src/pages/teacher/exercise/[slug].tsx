@@ -281,7 +281,6 @@ const ExcersisePage: NextPage<Props> = ({
                                   Estado_id: publish.Estado_id,
                                   Nombre: publish.Nombre,
                                 });
-                                setAddExercise([]);
                               }}
                             >
                               {publish.Nombre}
