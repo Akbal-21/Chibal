@@ -9,13 +9,8 @@ import {
 
 const AdminTablePage = () => {
   const { admins, isError, isLoading } = useAdmin("superAdmin");
-<<<<<<< HEAD
-      console.log(admins);
-        
-=======
   console.log(admins);
 
->>>>>>> origin/auth
   const handleDelete = async (Usuario_id: number) => {
     await chibalApi({
       method: "DELETE",
@@ -105,9 +100,4 @@ const AdminTablePage = () => {
   );
 };
 
-<<<<<<< HEAD
-
 export default AdminTablePage;
-=======
-export default TeacherTablePage;
->>>>>>> origin/auth

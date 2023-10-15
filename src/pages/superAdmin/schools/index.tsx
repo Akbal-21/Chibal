@@ -9,29 +9,17 @@ import {
 
 const SchoolTablePage = () => {
   const { schools, isError, isLoading } = useSchool("superAdmin/schools");
-<<<<<<< HEAD
-      console.log(schools);
-      
-=======
   console.log(schools);
 
->>>>>>> origin/auth
   const handleDelete = async (Escuela_id: number) => {
     await chibalApi({
       method: "DELETE",
       url: "/superAdmin/schools",
       data: {
-<<<<<<< HEAD
-        School_id: Escuela_id
-      }
-    })
-  }
-=======
         School_id: Escuela_id,
       },
     });
   };
->>>>>>> origin/auth
 
   return (
     <>
