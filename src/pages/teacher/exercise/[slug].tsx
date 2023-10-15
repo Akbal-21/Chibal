@@ -8,7 +8,7 @@ import {
 import {
   DataExerciseStgring,
   IExercise,
-  IExerciseDB,
+  IExerciseTeacherDB,
   ILine,
   ITypeExercise,
   ITypePublisher,
@@ -430,7 +430,7 @@ const ExcersisePage: NextPage<Props> = ({
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
 
-  let exercises: IExercise | IExerciseDB | null;
+  let exercises: IExercise | IExerciseTeacherDB | null;
 
   let incisos: ILine[] | string;
 
