@@ -33,3 +33,10 @@ export interface IDataStudentDB {
   Correo: string;
   Contrasena?: string;
 }
+
+export interface IStudentData{
+  Usuarios_id: number;
+  Nombres: string;
+  Apellidos: string;
+  Correo: string;
+}

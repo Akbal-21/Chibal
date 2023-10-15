@@ -1,6 +1,7 @@
 import { AddStudent, SigInLayout } from "@/components";
 import { getDataGroup } from "@/db/teacher";
 import { IDataGroup } from "@/interface";
+import { useStudentsStore } from "@/store";
 import { GetServerSideProps, NextPage } from "next";
 
 interface Props {
@@ -10,6 +11,15 @@ interface Props {
 
 const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
   console.log(slug, dataGroup);
+  const {
+    students,
+    fetchStudents, // carga alumnos del grupo (dataGroup) al localsession
+    setState,
+    reset,
+    addNewStudent,
+    getStudentInfo,
+    deleteStudent,
+  } = useStudentsStore();
 
   return (
     <SigInLayout titel="Agregar Alumnos">
@@ -19,6 +29,18 @@ const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
             <form className="space-y-4" noValidate>
               <AddStudent />
             </form>
+            <div>
+              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+              <button
+                className="btn btn-success mt-6 w-full"
+                //* llamar a alguna funcion
+                //onClick={() => fetchStudents(dataGroup)}
+                //onClick={() => reset()}
+                onClick={() => console.log(getStudentInfo("8"))}
+              >
+                funcion de Storage
+              </button>
+            </div>
           </div>
         </section>
       </div>
