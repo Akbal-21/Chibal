@@ -1,6 +1,6 @@
 import { FullScreenLoading, SigInLayout } from "@/components";
 import { AuthContext } from "@/context";
-import { useExercise } from "@/hooks";
+import { useExerciseTeacher } from "@/hooks";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
@@ -12,7 +12,7 @@ const ExcercisePage = () => {
 
   const { user } = useContext(AuthContext);
 
-  const { exercise, isLoading } = useExercise(
+  const { exercise, isLoading } = useExerciseTeacher(
     `teacher/exercise/${user?.Usuarios_id}`,
   );
 
@@ -93,14 +93,14 @@ const ExcercisePage = () => {
                         <button
                           className="btn btn-secondary mx-1"
                           onClick={() => handleEdith(exercise.Ejercicios_id)}
-                          disabled={exercise.Estado_id === 1 ? false : true}
+                          disabled={exercise.Estado_id !== 1}
                         >
                           Editar
                         </button>
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-error mx-1"
-                          disabled={exercise.Estado_id === 1 ? false : true}
+                          disabled={exercise.Estado_id !== 1}
                           onClick={() => handleDelete(exercise.Ejercicios_id)}
                         >
                           Eliminar
@@ -108,7 +108,7 @@ const ExcercisePage = () => {
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-primary mx-1"
-                          disabled={exercise.Estado_id === 1 ? false : true}
+                          disabled={exercise.Estado_id === 1}
                           onClick={() =>
                             handleShowResults(exercise.Ejercicios_id)
                           }

@@ -9,44 +9,44 @@ datasource db {
 }
 
 model Administrador {
-  Usuario_id Int      @id
-  Escuela_id Int?
-  Turno_id   Int?
-  Escuela    Escuela? @relation(fields: [Escuela_id], references: [Escuela_id], onDelete: NoAction, onUpdate: NoAction)
-  Turno      Turno?   @relation(fields: [Turno_id], references: [Turno_id], onDelete: NoAction, onUpdate: NoAction)
-  Usuarios   Usuarios @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+  Usuario_id Int       @id
+  Usuarios   Usuarios  @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+  Escuela    Escuela[]
 }
 
 model Alumnos {
-  Usuario_id Int          @id
-  Grupo_id   Int?
-  Grupos     Grupos?      @relation(fields: [Grupo_id], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
-  Usuarios   Usuarios     @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
-  Respuestas Respuestas[]
+  Usuario_id         Int                  @id
+  Grupo_id           Int?
+  Grupos             Grupos?              @relation(fields: [Grupo_id], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
+  Usuarios           Usuarios             @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+  Alumnos_Ejercicios Alumnos_Ejercicios[]
+  Respuestas         Respuestas[]
 }
 
 model Ejercicios {
-  Ejercicios_id    Int           @id @default(autoincrement())
-  NombreEjercicio  String        @db.VarChar
-  MaestroID        Int?
-  GrupoID          Int?
-  TipoEjercicio_id Int
-  FechaPublicacion DateTime      @db.Date
-  FechaLimite      DateTime?     @db.Date
-  Estado_id        Int
-  Estado           Estado        @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
-  Grupos           Grupos?       @relation(fields: [GrupoID], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
-  Maestros         Maestros?     @relation(fields: [MaestroID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
-  TipoEjercicio    TipoEjercicio @relation(fields: [TipoEjercicio_id], references: [Tipo_id], onDelete: NoAction, onUpdate: NoAction)
-  Incisos          Incisos[]
+  Ejercicios_id      Int                  @id @default(autoincrement())
+  NombreEjercicio    String               @db.VarChar
+  MaestroID          Int?
+  GrupoID            Int?
+  TipoEjercicio_id   Int?
+  FechaPublicacion   DateTime?            @db.Date
+  FechaLimite        DateTime             @default(now()) @db.Date
+  Estado_id          Int?
+  Alumnos_Ejercicios Alumnos_Ejercicios[]
+  Estado             Estado?              @relation(fields: [Estado_id], references: [Estado_id], onDelete: NoAction, onUpdate: NoAction)
+  Grupos             Grupos?              @relation(fields: [GrupoID], references: [Grupos_id], onDelete: NoAction, onUpdate: NoAction)
+  Maestros           Maestros?            @relation(fields: [MaestroID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  TipoEjercicio      TipoEjercicio?       @relation(fields: [TipoEjercicio_id], references: [Tipo_id], onDelete: NoAction, onUpdate: NoAction)
+  Incisos            Incisos[]
 }
 
 model Escuela {
-  Escuela_id    Int             @id @default(autoincrement())
-  Nombre        String          @db.VarChar
-  Administrador Administrador[]
-  Grupos        Grupos[]
-  Maestros      Maestros[]
+  Escuela_id       Int            @id @default(autoincrement())
+  Nombre           String         @db.VarChar
+  Administrador_id Int?
+  Administrador    Administrador? @relation(fields: [Administrador_id], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  Grupos           Grupos[]
+  Maestros         Maestros[]
 }
 
 model Estado {
@@ -96,7 +96,7 @@ model Maestros {
 model Respuestas {
   AlumnoID  Int
   Imagen    String? @db.VarChar
-  Puntaje   Int?
+  Puntaje   Int
   Respuesta String? @db.VarChar
   Inciso_id Int
   Alumnos   Alumnos @relation(fields: [AlumnoID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
@@ -117,10 +117,9 @@ model TipoEjercicio {
 }
 
 model Turno {
-  Turno_id      Int             @id @default(autoincrement())
-  Horario       String          @db.VarChar
-  Administrador Administrador[]
-  Grupos        Grupos[]
+  Turno_id Int      @id @default(autoincrement())
+  Horario  String   @db.VarChar
+  Grupos   Grupos[]
 }
 
 model Usuarios {
@@ -133,4 +132,14 @@ model Usuarios {
   Alumnos       Alumnos?
   Maestros      Maestros?
   SuperAdmin    SuperAdmin?
+}
+
+model Alumnos_Ejercicios {
+  AlumnoID    Int
+  EjercicioID Int
+  Estado      Int?       @default(0)
+  Alumnos     Alumnos    @relation(fields: [AlumnoID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  Ejercicios  Ejercicios @relation(fields: [EjercicioID], references: [Ejercicios_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([AlumnoID, EjercicioID])
 }

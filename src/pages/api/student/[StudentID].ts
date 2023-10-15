@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { IExerciseDB } from "@/interface";
+import { IExerciseStudentDB } from "@/interface";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data =
@@ -7,7 +7,7 @@ type Data =
       message: string;
     }
   | {
-      dataExercise: IExerciseDB[];
+      dataExercise: IExerciseStudentDB[];
     };
 
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -30,29 +30,25 @@ async function getExercisesByStudent(
 
   await db.prisma.$connect();
   //Primero obtener el grupo del niño y despues lso ejercicios segun el grupo
-  const grupoId = await db.prisma.alumnos.findUnique({
-    where: {
-      Usuario_id: Number(StudentID),
-    },
-    select: {
-      Grupo_id: true,
-    },
-  });
-  console.log(grupoId);
 
-  const dataExercise = await db.prisma.ejercicios.findMany({
-    where: {
-      GrupoID: grupoId?.Grupo_id,
-      Estado_id: 2,
-    },
-    include: {
-      Incisos: {
-        select: {
-          Incisos_id: true,
+  const dataExercise: IExerciseStudentDB[] =
+    await db.prisma.alumnos_Ejercicios.findMany({
+      where: {
+        AlumnoID: Number(StudentID),
+        Ejercicios: {
+          Estado_id: {
+            not: 1,
+          },
         },
       },
-    },
-  });
+      select: {
+        AlumnoID: true,
+        Estado: true,
+        Ejercicios: true,
+      },
+    });
+
+  console.log(dataExercise);
 
   await db.prisma.$disconnect();
   console.log(dataExercise);

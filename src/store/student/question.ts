@@ -3,12 +3,12 @@ import { type IQuestion } from "@/interface/student/Question";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 interface State {
-  setQuestions: (parse: string) => void;
   questions: IQuestion[];
   currentQuestion: number;
 }
 
 interface ActionsState {
+  setQuestions: (parse: string) => void;
   fetchQuestions: (id: string) => Promise<void>;
   selectAnswer: (questionId: number, answerChar: string) => void;
   goNextQuestion: () => void;

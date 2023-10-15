@@ -10,7 +10,7 @@ export const checkUserEmailPassword = async (
   await db.prisma.$connect();
 
   const user = await db.prisma.usuarios.findUnique({
-    where: { Correo: email },
+    where: { Correo: String(email) },
     select: {
       Usuarios_id: true,
       Nombres: true,

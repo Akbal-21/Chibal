@@ -19,14 +19,29 @@ export interface ITypePublisher {
   Nombre: string;
 }
 
-export interface IExerciseDB {
+export interface IExerciseStudentDB {
+  Ejercicios: {
+    Ejercicios_id: number;
+    NombreEjercicio: string;
+    MaestroID: number | null;
+    GrupoID: number | null;
+    TipoEjercicio_id: number | null;
+    FechaPublicacion: Date | null;
+    FechaLimite: Date;
+    Estado_id: number | null;
+  };
+  Estado: number | null;
+  AlumnoID: number;
+}
+
+export interface IExerciseTeacherDB {
   Ejercicios_id: number;
   NombreEjercicio: string;
   MaestroID: number | null;
   GrupoID: number | null;
   TipoEjercicio_id: number | null;
-  FechaPublicacion: Date;
-  FechaLimite: Date | null;
+  FechaPublicacion: Date | null;
+  FechaLimite: Date;
   Estado_id: number | null;
 }
 

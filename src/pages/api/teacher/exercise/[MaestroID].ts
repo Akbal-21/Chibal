@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { IExerciseDB } from "@/interface";
+import { IExerciseTeacherDB } from "@/interface";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data =
@@ -7,7 +7,7 @@ type Data =
       message: string;
     }
   | {
-      dataExercise: IExerciseDB[];
+      dataExercise: IExerciseTeacherDB[];
     };
 
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -29,11 +29,12 @@ async function getAllExercisesbyUser(
 
   await db.prisma.$connect();
 
-  const dataExercise: IExerciseDB[] = await db.prisma.ejercicios.findMany({
-    where: {
-      MaestroID: Number(MaestroID),
-    },
-  });
+  const dataExercise: IExerciseTeacherDB[] =
+    await db.prisma.ejercicios.findMany({
+      where: {
+        MaestroID: Number(MaestroID),
+      },
+    });
 
   await db.prisma.$disconnect();
 

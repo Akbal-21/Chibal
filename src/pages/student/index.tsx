@@ -1,20 +1,22 @@
 import { FullScreenLoading, SigInLayout } from "@/components";
 import { AuthContext } from "@/context";
-import { useExercise } from "@/hooks";
+import { useExerciseStudent } from "@/hooks";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
 const StudentPage = () => {
   // const { user } = useLoginUser();
   const { user } = useContext(AuthContext);
+  const fechaActual = new Date();
 
   console.log({ user });
 
   const route = useRouter();
-  const { exercise, isError, isLoading } = useExercise(
+  const { exercise, isError, isLoading } = useExerciseStudent(
     `student/${user?.Usuarios_id}`,
   );
 
+  console.log({ fechaActual, exercise });
   const handleDoExercise = (id: number) => {
     console.log(id);
     route.replace(`student/exercise/${id}`);
@@ -49,12 +51,6 @@ const StudentPage = () => {
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Fecha a Publicar
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
                         Fecha Limite de entrega
                       </th>
                       <th
@@ -69,26 +65,32 @@ const StudentPage = () => {
                     {exercise.map((exercise, index) => (
                       <tr
                         className="bg-white border-b  hover:bg-gray-50"
-                        key={exercise.Ejercicios_id}
+                        key={exercise.Ejercicios.Ejercicios_id}
                       >
                         <td className="px-6 py-4 ">{index + 1}</td>
                         <td className="px-6 py-4 ">
-                          {exercise.NombreEjercicio}
+                          {exercise.Ejercicios.NombreEjercicio}
                         </td>
                         <td className="px-6 py-4 ">
-                          {exercise.Estado_id === 1
-                            ? "El ejercicio es un Borrador"
-                            : String(exercise.FechaPublicacion).split("T")[0]}
-                        </td>
-                        <td className="px-6 py-4 ">
-                          {String(exercise.FechaLimite).split("T")[0]}
+                          {
+                            String(exercise.Ejercicios.FechaLimite).split(
+                              "T",
+                            )[0]
+                          }
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap ">
                           {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                           <button
                             className="btn btn-secondary mx-1"
                             onClick={() =>
-                              handleDoExercise(exercise.Ejercicios_id)
+                              handleDoExercise(
+                                exercise.Ejercicios.Ejercicios_id,
+                              )
+                            }
+                            disabled={
+                              exercise.Estado === 0 ||
+                              exercise.Ejercicios.FechaLimite.getDate() >
+                                fechaActual.getDate()
                             }
                           >
                             Resolver
