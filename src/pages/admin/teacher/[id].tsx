@@ -1,5 +1,5 @@
 import { chibalApi } from "@/api";
-import { AdminLayouth } from "@/components";
+import { SigInLayout } from "@/components";
 import { getAllTeachers } from "@/db/admin";
 import { ITeacher } from "@/interface";
 import { GetServerSideProps, NextPage } from "next";
@@ -26,7 +26,7 @@ const TeacherTablePage: NextPage<Props> = ({ dataTeachers }) => {
 
   return (
     <>
-      <AdminLayouth titel="CRUD Maestro">
+      <SigInLayout titel="CRUD Maestro">
         <div>
           <div className="text-center">
             <h1 className="text-4xl">Escuela: Hola</h1>
@@ -96,7 +96,7 @@ const TeacherTablePage: NextPage<Props> = ({ dataTeachers }) => {
             </div>
           </div>
         </div>
-      </AdminLayouth>
+      </SigInLayout>
     </>
   );
 };

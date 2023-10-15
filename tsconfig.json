@@ -28,8 +28,9 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/pages/api/superAdmin"  ],
+    "**/*.tsx",
+    "src/pages/api/superAdmin"
+  ],
   "exclude": [
     "node_modules"
   ]

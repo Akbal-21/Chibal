@@ -1,13 +1,13 @@
 import { AuthLayouth } from "@/components/layouths";
-import { useLoginUser } from "@/store/auth";
+import { AuthContext } from "@/context";
 import { isEmail } from "@/utils";
+import { GetServerSideProps } from "next";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { SiMaildotru } from "react-icons/si";
-
-// ~ Icons
 
 type FormData = {
   email: string;
@@ -17,7 +17,8 @@ type FormData = {
 const LoginPage = () => {
   const router = useRouter();
 
-  const { loginUser, user } = useLoginUser();
+  // const { loginUser, user } = useLoginUser();
+  const { loginUser, user } = useContext(AuthContext);
 
   //*Formulario
   const {
@@ -32,37 +33,21 @@ const LoginPage = () => {
   // *funcion del form
   const onLoginUser = async ({ email, password }: FormData) => {
     // await login(email, password);
-    const isValidLogin = await loginUser(email, password);
-    if (!isValidLogin) {
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
-      return;
-    }
-    console.log(user);
 
-    if (user?.roll === "Alumno") {
-      router.replace("/student");
-      return;
-    }
+    // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
+    console.log(!!!signIn);
+    await signIn("credentials", { email, password });
 
-    if (user?.roll === "Administrador") {
-      router.replace("/admin");
-      return;
-    }
-    if (user?.roll === "SuperAdmin") {
-      router.replace("/superAdmin");
-      return;
-    }
-
-    if (user?.roll === "Maestro") {
-      router.replace("/teacher");
-      return;
-    }
+    // if (!signIn) {
+    //   setShowError(true);
+    //   setTimeout(() => setShowError(false), 3000);
+    //   return;
+    // }
   };
 
   return (
     <AuthLayouth titel={"Inicio de sesión"}>
-      <div className="flex min-h-screen flex-col items-center justify-between p-[calc(100%/4)] ">
+      <div className="grid min-h-screen grtid-col items-center justify-between p-[calc(100vh/3)] ">
         <div className="bg-my_sin w-[400px] p-2 rounded-md">
           <h1 className="text-center text-xl ">Inicio de sesión</h1>
           {showError && (
@@ -138,6 +123,53 @@ const LoginPage = () => {
       </div>
     </AuthLayouth>
   );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const user: any = structuredClone(session?.user);
+  console.log(user);
+
+  if (user?.roll === "Alumno") {
+    return {
+      redirect: {
+        destination: "/student",
+        permanent: false,
+      },
+    };
+  }
+  if (user?.roll === "Administrador") {
+    return {
+      redirect: {
+        destination: "/admin",
+        permanent: false,
+      },
+    };
+  }
+  if (user?.roll === "SuperAdmin") {
+    return {
+      redirect: {
+        destination: "/superAdmin",
+        permanent: false,
+      },
+    };
+  }
+  if (user?.roll === "Maestro") {
+    return {
+      redirect: {
+        destination: "/teacher",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default LoginPage;

@@ -128,7 +128,7 @@ export const Question = () => {
           <FaArrowRight />
         </button>
       </div>
-      <div className="bg-white shadow-md p-4">
+      <div className="bg-white shadow-md p-4 rounded-md">
         <h1 className="text-xl font-bold">{info ? info.question : ""}</h1>
 
         <h4>{info ? info.code : ""}</h4>
@@ -142,8 +142,8 @@ export const Question = () => {
               minWidth={8}
               maxWidth={8}
               canvasProps={{
-                width: 200,
-                height: 200,
+                width: 300,
+                height: 250,
                 style: { border: "2px solid #000" },
                 title: "Dibuja",
               }}

@@ -1,7 +1,8 @@
-import { FullScreenLoading, TeacherLayouth } from "@/components";
+import { FullScreenLoading, SigInLayout } from "@/components";
+import { AuthContext } from "@/context";
 import { useExercise } from "@/hooks";
-import { useLoginUser } from "@/store/auth";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 const ExcercisePage = () => {
   const route = useRouter();
@@ -9,7 +10,7 @@ const ExcercisePage = () => {
     return route.replace("/teacher/exercise/new");
   };
 
-  const { user } = useLoginUser();
+  const { user } = useContext(AuthContext);
 
   const { exercise, isLoading } = useExercise(
     `teacher/exercise/${user?.Usuarios_id}`,
@@ -29,7 +30,7 @@ const ExcercisePage = () => {
   };
 
   return (
-    <TeacherLayouth titel="Ejercicios">
+    <SigInLayout titel="Ejercicios">
       <div className="p-1 mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
@@ -73,7 +74,10 @@ const ExcercisePage = () => {
                 </thead>
                 <tbody>
                   {exercise.map((exercise, index) => (
-                    <tr className="bg-white border-b  hover:bg-gray-50">
+                    <tr
+                      className="bg-white border-b  hover:bg-gray-50"
+                      key={exercise.Ejercicios_id}
+                    >
                       <td className="px-6 py-4 ">{index + 1}</td>
                       <td className="px-6 py-4 ">{exercise.NombreEjercicio}</td>
                       <td className="px-6 py-4 ">
@@ -129,7 +133,7 @@ const ExcercisePage = () => {
           </div>
         )}
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 

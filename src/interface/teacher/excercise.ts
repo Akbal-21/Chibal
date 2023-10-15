@@ -35,3 +35,9 @@ export interface ILine {
   LoSolicitado: string;
   EjercicioID: number | null;
 }
+
+export interface DataExerciseStgring {
+  solit: string;
+  typeExercise: string;
+  typeExerciseId: number | undefined;
+}

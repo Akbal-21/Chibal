@@ -1,4 +1,4 @@
-import { TeacherLayouth } from "@/components";
+import { SigInLayout } from "@/components";
 import {
   getDataOfExercise,
   getLine,
@@ -6,6 +6,7 @@ import {
   getTypeofExercise,
 } from "@/db/teacher";
 import {
+  DataExerciseStgring,
   IExercise,
   IExerciseDB,
   ILine,
@@ -35,12 +36,6 @@ interface Props {
   typeOfPublisher: ITypePublisher[];
 }
 
-interface DataExercise {
-  solicitado: string;
-  typeExercise: string;
-  typeExerciseId: number | undefined;
-}
-
 const ExcersisePage: NextPage<Props> = ({
   exercises,
   typeOfExercise,
@@ -48,20 +43,16 @@ const ExcersisePage: NextPage<Props> = ({
   typeOfPublisher,
 }) => {
   const [dates, setDates] = useState<{
-    datePublic: Date | null;
     dateLimit: Date | null;
   }>({
-    datePublic: new Date(),
     dateLimit: new Date(),
   });
-
-  // const [datePublic, setDatePublic] = useState<Date | null>(new Date());
-  // const [dateLimit, setDateLimit] = useState<Date | null>(new Date());
+  let datePublic = new Date();
 
   const [typeExercise, setTypeExercise] = useState<ITypeExercise>();
   const [typePublisher, setTypePublisher] = useState<ITypePublisher>();
 
-  const [addExercise, setAddExercise] = useState<DataExercise[]>([]);
+  const [addExercise, setAddExercise] = useState<DataExerciseStgring[]>([]);
 
   const [showError, setShowError] = useState(false);
 
@@ -70,44 +61,47 @@ const ExcersisePage: NextPage<Props> = ({
   useEffect(() => {
     setAddExercise([]);
     if (incisos.length > 0) {
-      const { TipoEjercicio_id, Estado_id } = exercises;
+      const { TipoEjercicio_id } = exercises;
+      datePublic = new Date(exercises.FechaPublicacion);
       setDates({
-        datePublic: new Date(exercises.FechaPublicacion),
         dateLimit: new Date(exercises.FechaLimite),
       });
-
-      // setDatePublic(new Date(exercises.FechaPublicacion));
-      // setDateLimit(new Date(exercises.FechaLimite));
 
       let typeEjercicio = "";
       let typePublish = "";
 
-      if (Estado_id === 1) {
+      if (exercises.Estado_id === 1) {
         typePublish = "Borrador";
         setTypePublisher({ Estado_id: 1, Nombre: typePublish });
       }
 
-      if (Estado_id === 2) {
+      if (exercises.Estado_id === 2) {
         typePublish = "Publicado";
         setTypePublisher({ Estado_id: 2, Nombre: typePublish });
       }
 
-      if (TipoEjercicio_id === 1) {
+      if (exercises.TipoEjercicio_id === 1) {
         typeEjercicio = "Letras";
-        setTypeExercise({ Tipo_id: 1, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 1, Nombre: "Letras" });
       }
-      if (TipoEjercicio_id === 2) {
+      if (exercises.TipoEjercicio_id === 2) {
         typeEjercicio = "Numeros";
-        setTypeExercise({ Tipo_id: 2, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 2, Nombre: "Numeros" });
       }
-      if (TipoEjercicio_id === 3) {
+      if (exercises.TipoEjercicio_id === 3) {
+        typeEjercicio = "Mixto";
         setTypeExercise({ Tipo_id: 3, Nombre: "Mixto" });
       }
-      if (TipoEjercicio_id === 4) {
+      if (exercises.TipoEjercicio_id === 4) {
         typeEjercicio = "Deletreo";
-        setTypeExercise({ Tipo_id: 4, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 4, Nombre: "Deletreo" });
       }
-      setExercisesFunction(incisos, typeEjercicio, Number(TipoEjercicio_id));
+
+      setExercisesFunctionILine(
+        incisos,
+        typeEjercicio,
+        Number(TipoEjercicio_id),
+      );
     }
   }, []);
 
@@ -126,9 +120,7 @@ const ExcersisePage: NextPage<Props> = ({
     setValue("TipoEjercicio_id", typeExercise?.Tipo_id);
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     setValue("Estado", typePublisher!.Estado_id);
-    if (dates.datePublic !== null) {
-      setValue("FechaPublicacion", dates.datePublic.toDateString());
-    }
+    setValue("FechaPublicacion", datePublic.toDateString());
     if (dates.dateLimit !== null) {
       setValue("FechaLimite", dates.dateLimit.toDateString());
     }
@@ -142,6 +134,7 @@ const ExcersisePage: NextPage<Props> = ({
 
     // Separa la cadena por comas y crea un arreglo de palabras
     const item = cadenaSinEspacios.split(",");
+    console.log("paso 1");
 
     if (typeExercise?.Nombre === "Numeros") {
       isCorrect = isTextNumber(dataIncises);
@@ -151,7 +144,11 @@ const ExcersisePage: NextPage<Props> = ({
         return;
       }
 
-      setExercisesFunction(item, typeExercise?.Nombre, typeExercise.Tipo_id);
+      setExercisesFunctionString(
+        item,
+        typeExercise?.Nombre,
+        typeExercise.Tipo_id,
+      );
     }
 
     if (typeExercise?.Nombre === "Letras") {
@@ -161,7 +158,11 @@ const ExcersisePage: NextPage<Props> = ({
       if (error === false) {
         return;
       }
-      setExercisesFunction(item, typeExercise?.Nombre, typeExercise.Tipo_id);
+      setExercisesFunctionString(
+        item,
+        typeExercise?.Nombre,
+        typeExercise.Tipo_id,
+      );
       return;
     }
     if (typeExercise?.Nombre === "Mixto") {
@@ -170,7 +171,11 @@ const ExcersisePage: NextPage<Props> = ({
       if (error === false) {
         return;
       }
-      setExercisesFunction(item, typeExercise?.Nombre, typeExercise.Tipo_id);
+      setExercisesFunctionString(
+        item,
+        typeExercise?.Nombre,
+        typeExercise.Tipo_id,
+      );
 
       return;
     }
@@ -184,9 +189,8 @@ const ExcersisePage: NextPage<Props> = ({
       return false;
     }
   };
-
-  const setExercisesFunction = (
-    item: string[] | ILine[],
+  const setExercisesFunctionILine = (
+    item: ILine[],
     typeExercise: string,
     typeExerciseId: number,
   ) => {
@@ -195,7 +199,25 @@ const ExcersisePage: NextPage<Props> = ({
       setAddExercise((prevExercises) => [
         ...prevExercises,
         {
-          solicitado: LoSolicitado,
+          solit: LoSolicitado,
+          typeExercise,
+          typeExerciseId,
+        },
+      ]);
+    }
+  };
+
+  const setExercisesFunctionString = (
+    item: string[],
+    typeExercise: string,
+    typeExerciseId: number,
+  ) => {
+    for (const key in item) {
+      const solit = item[key];
+      setAddExercise((prevExercises) => [
+        ...prevExercises,
+        {
+          solit,
           typeExercise,
           typeExerciseId,
         },
@@ -204,7 +226,7 @@ const ExcersisePage: NextPage<Props> = ({
   };
 
   return (
-    <TeacherLayouth titel={`Ejercicio ${exercises.Ejercicios_id}`}>
+    <SigInLayout titel={`Ejercicio ${exercises.Ejercicios_id}`}>
       <div className="pt-11">
         <section className="bg-gray-2 rounded-xl">
           <div className="p-8 shadow-lg">
@@ -236,34 +258,42 @@ const ExcersisePage: NextPage<Props> = ({
                   <div>
                     Publicacion:
                     <br />
-
-                    <select className="select select-solid-primary">
-                      {typeOfPublisher.map((publish) => {
-                        return (
-                          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                          <option
-                            key={publish.Estado_id}
-                            className="dropdown-item"
-                            onClick={() => {
-                              setTypePublisher({
-                                Estado_id: publish.Estado_id,
-                                Nombre: publish.Nombre,
-                              });
-                            }}
-                          >
-                            {publish.Nombre}
-                          </option>
-                        );
-                      })}
-                    </select>
+                    <div className="dropdown w-full">
+                      {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                      <label className="btn btn-solid-primary" tabIndex={0}>
+                        {!typePublisher?.Nombre
+                          ? "click"
+                          : typePublisher.Nombre}
+                      </label>
+                      <ul className="dropdown-menu">
+                        {typeOfPublisher.map((publish) => {
+                          return (
+                            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                            <li
+                              key={publish.Estado_id}
+                              className="dropdown-item"
+                              onClick={() => {
+                                setTypePublisher({
+                                  Estado_id: publish.Estado_id,
+                                  Nombre: publish.Nombre,
+                                });
+                              }}
+                            >
+                              {publish.Nombre}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   Tipo de Ejercicio:
-                  <div className="dropdown">
+                  <br />
+                  <div className="dropdown w-full">
                     {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
                     <label className="btn btn-solid-primary" tabIndex={0}>
                       {!typeExercise?.Nombre ? "click" : typeExercise.Nombre}
@@ -288,21 +318,6 @@ const ExcersisePage: NextPage<Props> = ({
                         );
                       })}
                     </ul>
-                  </div>
-                </div>
-
-                <div>
-                  Fecha a publicar:
-                  <div className="form-control relative">
-                    <BsFillCalendarFill />
-                    <ReactDatePicker
-                      className="input input-solid"
-                      selected={dates.datePublic}
-                      onChange={
-                        (date) => setDates({ ...dates, datePublic: date })
-                        // setDatePublic(date)
-                      }
-                    />
                   </div>
                 </div>
 
@@ -337,7 +352,7 @@ const ExcersisePage: NextPage<Props> = ({
                         <b>Solicitado</b>
                       </h3>
                       {addExercise.map((item) => (
-                        <h3 className="text-lg">{item.solicitado}</h3>
+                        <h3 className="text-lg">{item.solit}</h3>
                       ))}
                     </div>
                     <div className="w-full text-center">
@@ -408,7 +423,7 @@ const ExcersisePage: NextPage<Props> = ({
           </div>
         </section>
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 
@@ -417,7 +432,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   let exercises: IExercise | IExerciseDB | null;
 
-  let incisos: ILine | string;
+  let incisos: ILine[] | string;
 
   if (slug === "new") {
     exercises = {
@@ -425,7 +440,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       FechaLimite: new Date().toISOString(),
       FechaPublicacion: new Date().toISOString(),
     };
-    incisos = "";
+    incisos = [];
   } else {
     const datExercise = await getDataOfExercise(slug.toString());
     exercises = JSON.parse(JSON.stringify(datExercise));

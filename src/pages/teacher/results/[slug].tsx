@@ -1,10 +1,10 @@
-import { GetServerSideProps, NextPage } from "next";
+import { SigInLayout } from "@/components";
 import { getExerciseAnswers } from "@/db/teacher/answers";
 import { getExerciseInfo } from "@/db/teacher/cabecera";
-import { TeacherLayouth } from "@/components";
 import { IAnswer, IPDFCabecera } from "@/interface";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { GetServerSideProps, NextPage } from "next";
 
 interface Props {
   results: IAnswer[];
@@ -19,7 +19,9 @@ interface UsuarioResultados {
 
 const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
   const resultadosAgrupados: Record<string, UsuarioResultados> = {};
-  const NombreEjercicio = cabecera[0]?.NombreEjercicio? cabecera[0].NombreEjercicio: ""
+  const NombreEjercicio = cabecera[0]?.NombreEjercicio
+    ? cabecera[0].NombreEjercicio
+    : "";
   results.forEach((row) => {
     const userId = row.Alumnos.Usuarios.Usuarios_id;
     if (!resultadosAgrupados[userId]) {
@@ -63,14 +65,18 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
     if (cabecera) {
       const marginLeft = 15;
       const marginTop = 15;
-      const cab=cabecera[0]
+      const cab = cabecera[0];
       // Agregar el nombre del ejercicio
       doc.setFontSize(16);
-      doc.text(`Ejercicio: ${cab.NombreEjercicio}` || '', marginLeft, marginTop);
-  
+      doc.text(
+        `Ejercicio: ${cab.NombreEjercicio}` || "",
+        marginLeft,
+        marginTop,
+      );
+
       // Agregar el nombre del grupo, horario del turno y nivel del grado
       const infoGrupo = [];
-      
+
       if (cab.Grupos) {
         if (cab.Grupos.NombreGrupo) {
           infoGrupo.push(`Grupo: ${cab.Grupos.NombreGrupo}`);
@@ -83,7 +89,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
         }
       }
       doc.setFontSize(12);
-      doc.text(infoGrupo.join(' | '), marginLeft, marginTop + 10);
+      doc.text(infoGrupo.join(" | "), marginLeft, marginTop + 10);
     }
 
     autoTable(doc, {
@@ -118,7 +124,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
   };
 
   return (
-    <TeacherLayouth titel="Resultados de los Ejercicios">
+    <SigInLayout titel="Resultados de los Ejercicios">
       <div className="pt-11">
         <h2 className="mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl text-center">
           Resultados del Ejercicio: {NombreEjercicio}
@@ -183,7 +189,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
           Exportar tabla a PDF
         </button>
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 
@@ -199,7 +205,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   return {
     props: {
       results,
-      cabecera
+      cabecera,
     },
   };
 };

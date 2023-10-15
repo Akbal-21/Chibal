@@ -1,7 +1,8 @@
-import { FullScreenLoading, TeacherLayouth } from "@/components";
+import { FullScreenLoading, SigInLayout } from "@/components";
+import { AuthContext } from "@/context";
 import { useGroup } from "@/hooks";
-import { useLoginUser } from "@/store/auth";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import {
   AiFillDelete,
   AiFillEdit,
@@ -11,7 +12,7 @@ import {
 const GroupPage = () => {
   const route = useRouter();
 
-  const { user } = useLoginUser();
+  const { user } = useContext(AuthContext);
   const { escuela, isLoading } = useGroup(`teacher/${user?.Usuarios_id}`);
 
   const handleEdit = (Grupos_id: number) => {
@@ -28,7 +29,7 @@ const GroupPage = () => {
   };
 
   return (
-    <TeacherLayouth titel="Grupos">
+    <SigInLayout titel="Grupos">
       <div className="p-1 mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
@@ -95,7 +96,7 @@ const GroupPage = () => {
           </div>
         )}
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 

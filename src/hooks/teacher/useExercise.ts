@@ -7,6 +7,7 @@ interface dataExercises {
 
 export const useExercise = (url: string, config: SWRConfiguration = {}) => {
   const { data, error } = useSWR<dataExercises>(`/api/${url}`, config);
+  console.log({ data });
 
   const dataEx = data?.dataExercise;
 

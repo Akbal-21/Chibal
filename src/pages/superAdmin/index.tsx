@@ -1,12 +1,12 @@
-import { SuperAdminLayout } from "@/components"
+import { SigInLayout } from "@/components";
 
 const SuperAdminPage = () => {
   return (
-    <SuperAdminLayout titel={ "Bienvenido" }>
+    <SigInLayout titel={"Bienvenido"}>
       <div>
         <h3>SuperAdminPage</h3>
       </div>
-    </SuperAdminLayout>
+    </SigInLayout>
   );
 };
 

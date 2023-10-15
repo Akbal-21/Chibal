@@ -1,12 +1,12 @@
-import { TeacherLayouth } from "@/components";
+import { SigInLayout } from "@/components";
 
 const TeacherPage = () => {
   return (
-    <TeacherLayouth titel="Bienvenido">
+    <SigInLayout titel="Bienvenido">
       <div>
         <h3>TeacherPage</h3>
       </div>
-    </TeacherLayouth>
+    </SigInLayout>
   );
 };
 
