@@ -1,20 +1,6 @@
-import {
-  getDataOfExercise,
-  getLine,
-  getTypePublisher,
-  getTypeofExercise,
-} from "@/db/teacher";
-import {
-  IExercise,
-  IExerciseDB,
-  ILine,
-  ITypeExercise,
-  ITypePublisher,
-} from "@/interface/";
+import { IExercise, ILine, ITypeExercise, ITypePublisher } from "@/interface/";
 import { useExerciseStore } from "@/store";
-import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
-import { GetServerSideProps } from "next";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 
@@ -80,51 +66,4 @@ const ExcersisePage: FC<Props> = ({
 
   return jsonData;
 };
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { slug = "" } = query;
-
-  let exercise: IExercise | IExerciseDB | null;
-
-  let incisos: ILine | string;
-
-  if (slug === "new") {
-    exercise = {
-      NombreEjercicio: "",
-      FechaLimite: new Date().toISOString(),
-      FechaPublicacion: new Date().toISOString(),
-    };
-    incisos = "";
-  } else {
-    // todo: hacer el chequeo de la info con el ID del ejercicio
-    const datExercise = await getDataOfExercise(slug.toString());
-    exercise = JSON.parse(JSON.stringify(datExercise));
-    const datLine = await getLine(slug.toLocaleString());
-    incisos = JSON.parse(JSON.stringify(datLine));
-  }
-
-  const typeOfExercise = await getTypeofExercise();
-
-  const typeOfPublisher: ITypePublisher[] | undefined =
-    await getTypePublisher();
-
-  if (!exercise || !typeOfExercise || !typeOfPublisher) {
-    return {
-      redirect: {
-        destination: "/student/exercise",
-        permanent: false,
-      },
-    };
-  }
-  console.log(typeof incisos);
-  console.log(incisos);
-  return {
-    props: {
-      exercise,
-      typeOfExercise,
-      incisos,
-      typeOfPublisher,
-    },
-  };
-};
-
 export default ExcersisePage;
