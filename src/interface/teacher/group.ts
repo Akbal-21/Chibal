@@ -18,3 +18,18 @@ export interface IDataGroup {
   NombreGrupo: string;
   Grado_id: number | null;
 }
+
+export interface IStudentDataGroup {
+  Nombres: string;
+  Apellidos: string;
+  Correo: string;
+  Contrasena: string;
+}
+
+export interface IDataStudentDB {
+  Usuarios_id?: number;
+  Nombres: string;
+  Apellidos: string;
+  Correo: string;
+  Contrasena?: string;
+}

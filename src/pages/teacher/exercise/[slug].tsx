@@ -62,7 +62,6 @@ const ExcersisePage: NextPage<Props> = ({
     setAddExercise([]);
     if (incisos.length > 0) {
       const { TipoEjercicio_id } = exercises;
-      console.log(exercises);
       datePublic = new Date(exercises.FechaPublicacion);
       setDates({
         dateLimit: new Date(exercises.FechaLimite),
@@ -83,23 +82,20 @@ const ExcersisePage: NextPage<Props> = ({
 
       if (exercises.TipoEjercicio_id === 1) {
         typeEjercicio = "Letras";
-        setTypeExercise({ Tipo_id: 1, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 1, Nombre: "Letras" });
       }
       if (exercises.TipoEjercicio_id === 2) {
         typeEjercicio = "Numeros";
-        setTypeExercise({ Tipo_id: 2, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 2, Nombre: "Numeros" });
       }
       if (exercises.TipoEjercicio_id === 3) {
-        console.log("entro");
         typeEjercicio = "Mixto";
-        setTypeExercise({ Tipo_id: 3, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 3, Nombre: "Mixto" });
       }
       if (exercises.TipoEjercicio_id === 4) {
         typeEjercicio = "Deletreo";
-        setTypeExercise({ Tipo_id: 4, Nombre: typeEjercicio });
+        setTypeExercise({ Tipo_id: 4, Nombre: "Deletreo" });
       }
-
-      console.log(typeExercise?.Nombre);
 
       setExercisesFunctionILine(
         incisos,

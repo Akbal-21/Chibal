@@ -29,6 +29,7 @@ export const checkUserEmailPassword = async (
   if (!user) {
     return null;
   }
+  console.log(user);
 
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
   if (!bcrypt.compareSync(password, user.Contrasena!)) {

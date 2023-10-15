@@ -6,6 +6,9 @@ interface State {
   setQuestions: (parse: string) => void;
   questions: IQuestion[];
   currentQuestion: number;
+}
+
+interface ActionsState {
   fetchQuestions: (id: string) => Promise<void>;
   selectAnswer: (questionId: number, answerChar: string) => void;
   goNextQuestion: () => void;
@@ -13,7 +16,7 @@ interface State {
   reset: () => void;
 }
 
-export const useQuestionsStore = create<State>()(
+export const useQuestionsStore = create<State & ActionsState>()(
   devtools(
     persist(
       (set, get) => {
@@ -34,16 +37,6 @@ export const useQuestionsStore = create<State>()(
             console.log(formated);
             set({ questions: formated }, false, "SET_QUESTIONS");
           },
-          /*
-          fetchQuestions: async (limit: number) => {
-            const res = await fetch(`${API_URL}/data.json`);
-            const json = await res.json();
-
-            const questions = json
-              .sort(() => Math.random() - 0.5)
-              .slice(0, limit);
-            set({ questions }, false, "FETCH_QUESTIONS");
-          },*/
 
           selectAnswer: (questionId: number, answerChar: string) => {
             const { questions } = get();
