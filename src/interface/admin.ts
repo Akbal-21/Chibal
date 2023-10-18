@@ -9,5 +9,5 @@ export interface IAdmin{
         Nombres: string;
         Apellidos: string;
     };
-    Usuario_id: number;
+    Usuario_id?: number;
 }
