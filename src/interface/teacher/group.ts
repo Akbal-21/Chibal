@@ -15,6 +15,10 @@ export interface IDataGroup {
   Grado: {
     Nivel: string;
   } | null;
+  Turno: {
+    Turno_id: number;
+    Horario: string;
+  } | null;
   NombreGrupo: string;
   Grado_id: number | null;
 }
@@ -34,9 +38,18 @@ export interface IDataStudentDB {
   Contrasena?: string;
 }
 
-export interface IStudentData{
+export interface IStudentData {
   Usuarios_id: number;
   Nombres: string;
   Apellidos: string;
   Correo: string;
+}
+
+export interface ICreateNewGroup {
+  Grupos_id: number;
+  Escuela_id: number | null;
+  NombreGrupo: string;
+  Maestro_id: number | null;
+  Turno_id: number | null;
+  Grado_id: number | null;
 }

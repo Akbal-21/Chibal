@@ -32,10 +32,6 @@ const LoginPage = () => {
 
   // *funcion del form
   const onLoginUser = async ({ email, password }: FormData) => {
-    // await login(email, password);
-
-    // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
-    console.log(!!!signIn);
     await signIn("credentials", { email, password });
 
     // if (!signIn) {

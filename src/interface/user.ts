@@ -14,3 +14,11 @@ export interface IUserStore {
   Correo: string;
   Contrasena?: string;
 }
+
+export interface IUserPost {
+  Usuarios_id: number;
+  Nombres: string;
+  Apellidos: string;
+  Correo: string;
+  Contrasena: string;
+}

@@ -20,6 +20,7 @@ export const getDataGroup = async (idUser: string) => {
           },
         },
       },
+      Turno: true,
       NombreGrupo: true,
       Grado_id: true,
       Grado: {

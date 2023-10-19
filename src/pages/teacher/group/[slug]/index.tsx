@@ -1,8 +1,8 @@
 import { chibalApi } from "@/api";
-import { SigInLayout } from "@/components";
-import { AuthContext } from "@/context";
+import { SigInLayout, TableStudents } from "@/components";
+import { AuthContext, GroupContext } from "@/context";
 import { getDataGroup } from "@/db/teacher";
-import { IDataGroup, IDataStudentDB } from "@/interface";
+import { IDataGroup } from "@/interface";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -19,77 +19,103 @@ interface FormData {
 }
 
 const levelsSchool = [
-  { id: 1, grado: "1ro Primaria" },
-  { id: 2, grado: "3ro Preescolar" },
+  { id_Level: 1, grado: "1ro Primaria" },
+  { id_Level: 2, grado: "3ro Preescolar" },
 ];
 
 const schoolShift = [
-  { id: 1, turno: "Matutino" },
-  { id: 2, turno: "Vespertino" },
+  { id_Shift: 1, turno: "Matutino" },
+  { id_Shift: 2, turno: "Vespertino" },
 ];
 
 const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
-  const [addStudent, setAddStudent] = useState<IDataStudentDB[]>([]);
+  // const [addStudent, setAddStudent] = useState<IDataStudentDB[]>([]);
+
+  const [levelGroup, setLevelGroup] = useState({
+    id_Level: 0,
+    level: "",
+  });
+
+  const [shiftGroup, setShiftGroup] = useState({
+    id_Shift: 0,
+    horario: "",
+  });
+
+  const [nameGroup, setNameGroup] = useState("");
+
   const { user } = useContext(AuthContext);
+  const { addStudent, students, resetStudents } = useContext(GroupContext);
   const router = useRouter();
   const navigateTo = (url: string) => {
     router.push(url);
   };
 
-  console.log(user?.roll);
-
+  console.log(dataGroup);
   let nivel;
-  let groupName;
 
-  if (dataGroup.length > 0) {
-    const { Grado, NombreGrupo } = dataGroup[0];
-    if (!Grado) {
-      return;
-    }
-    nivel = Grado.Nivel;
-    groupName = NombreGrupo;
-    console.log(dataGroup);
+  useEffect(() => {
+    resetStudents();
+    if (dataGroup.length === 1) {
+      const { Grado, NombreGrupo, Grado_id, Turno } = dataGroup[0];
+      if (!Grado || !Grado_id) {
+        return;
+      }
 
-    useEffect(() => {
-      setAddStudent([]);
+      nivel = Grado.Nivel;
 
-      console.log(dataGroup[0].Alumnos);
+      setNameGroup(NombreGrupo);
+
+      setLevelGroup({
+        id_Level: Grado_id,
+        level: Grado.Nivel,
+      });
+
+      setShiftGroup({
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        id_Shift: Turno!.Turno_id,
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        horario: Turno!.Horario,
+      });
 
       for (const key in dataGroup[0].Alumnos) {
-        const data = dataGroup[0].Alumnos[key].Usuarios;
-        const { Apellidos, Correo, Nombres, Usuarios_id } = data;
-        setAddStudent((prevStudent) => [
-          ...prevStudent,
-          {
-            Usuarios_id,
-            Nombres,
-            Apellidos,
-            Correo,
-          },
-        ]);
+        const student = dataGroup[0].Alumnos[key].Usuarios;
+
+        addStudent(student);
       }
-    }, []);
-  }
+    }
+  }, []);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: { groupName, nivel },
+    defaultValues: { groupName: nameGroup, nivel },
   });
 
   const onSubmit = async (form: FormData) => {
     const teacher = user?.Usuarios_id;
-    console.log({ addStudent, form });
+    const { id_Level } = levelGroup;
+    const { id_Shift } = shiftGroup;
+    let res;
+    if (slug !== "new") {
+      res = await chibalApi({
+        method: "PUT",
+        url: "/teacher/newGroup/addGroup",
+        data: { nameGroup, teacher, id_Level, id_Shift, slug },
+      });
+    } else {
+      res = await chibalApi({
+        method: "POST",
+        url: "/teacher/newGroup/addGroup",
+        data: { nameGroup, teacher, id_Level, id_Shift },
+      });
 
-    const res = await chibalApi({
-      method: "POST",
-      url: "/teacher/newGroup",
-      data: { addStudent, form, teacher },
-    });
-
-    console.log(res);
+      const id_group = res.data.newGroup.Grupos_id;
+      navigateTo(`/teacher/group/${id_group}/editStudent`);
+      return;
+    }
+    console.log(res.data.newGroup.Grupos_id);
   };
 
   return (
@@ -114,115 +140,119 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                     <input
                       className="input input-solid max-w-full"
                       placeholder="1A"
-                      type="text"
+                      value={nameGroup}
+                      onChange={(e) => setNameGroup(e.target.value)}
                     />
                   </div>
 
                   <div>
-                    Grado
-                    <select className="select select-secondary">
-                      {levelsSchool.map((level) => (
-                        <option
-                          key={level.id}
-                          // {...register("nivel")}
-                        >
-                          {level.grado}
-                        </option>
-                      ))}
-                    </select>
+                    Tipo de Ejercicio:
+                    <br />
+                    <div className="dropdown w-full">
+                      {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                      <label className="btn btn-solid-primary" tabIndex={0}>
+                        {!levelGroup.level
+                          ? "Seleccione un grado"
+                          : levelGroup.level}
+                      </label>
+                      <div className="w-full">
+                        <ul className="dropdown-menu w-full">
+                          {levelsSchool.map((level) => {
+                            return (
+                              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                              <li
+                                key={level.id_Level}
+                                className="dropdown-item"
+                                onClick={() =>
+                                  setLevelGroup({
+                                    id_Level: level.id_Level,
+                                    level: level.grado,
+                                  })
+                                }
+                              >
+                                {level.grado}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
-                    Turno
-                    <select className="select select-secondary">
-                      {schoolShift.map((shift) => (
-                        <option key={shift.id} {...register("turno")}>
-                          {shift.turno}
-                        </option>
-                      ))}
-                    </select>
+                    Tipo de Ejercicio:
+                    <br />
+                    <div className="dropdown w-full">
+                      {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                      <label className="btn btn-solid-primary" tabIndex={0}>
+                        {!shiftGroup.horario
+                          ? "Seleccione un grado"
+                          : shiftGroup.horario}
+                      </label>
+                      <div className="w-full">
+                        <ul className="dropdown-menu w-full">
+                          {schoolShift.map((shift) => {
+                            return (
+                              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                              <li
+                                key={shift.id_Shift}
+                                className="dropdown-item"
+                                onClick={() =>
+                                  setShiftGroup({
+                                    id_Shift: shift.id_Shift,
+                                    horario: shift.turno,
+                                  })
+                                }
+                              >
+                                {shift.turno}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* //*listado de alumnos */}
               <div>
-                {addStudent.length <= 0 ? (
-                  slug !== "new" && (
-                    <div>
-                      <div className="divider divider-horizontal">
-                        Agregar Alumnos
-                      </div>
-                      <div className="grid gap-4 w-full">
-                        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                        <button className="btn btn-success">
-                          <b className="text-center text-xl">Agregar Alumnos</b>
-                        </button>
-                      </div>
-                    </div>
-                  )
-                ) : (
+                {students.length === 0 && slug !== "new" ? (
                   <div>
                     <div className="divider divider-horizontal">
-                      Editar Alumnos
+                      Agregar Alumnos
                     </div>
                     <div className="grid gap-4 w-full">
                       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                      <button
-                        className="btn btn-success"
-                        onClick={() =>
-                          navigateTo(`/teacher/group/${slug}/editStudent`)
-                        }
-                      >
-                        <b className="text-center text-xl">Editar alumnos</b>
+                      <button className="btn btn-success">
+                        <b className="text-center text-xl">Agregar Alumnos</b>
                       </button>
                     </div>
-                    <div className="divider divider-horizontal">
-                      Lista de Alumnos
-                    </div>
-
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                      <table className="w-full text-sm text-left text-gray-500 ">
-                        <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              #
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Nombre
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Apellido
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Correo
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {addStudent.map((student, index: number) => (
-                            <tr
-                              key={student.Usuarios_id}
-                              className="bg-white border-b  hover:bg-gray-50"
-                            >
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {index + 1}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {student.Nombres}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {student.Apellidos}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {student.Correo}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
                   </div>
+                ) : (
+                  slug !== "new" && (
+                    <div>
+                      <div className="divider divider-horizontal">
+                        Editar Alumnos
+                      </div>
+                      <div className="grid gap-4 w-full">
+                        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                        <button
+                          className="btn btn-success"
+                          onClick={() =>
+                            navigateTo(`/teacher/group/${slug}/editStudent`)
+                          }
+                        >
+                          <b className="text-center text-xl">Editar alumnos</b>
+                        </button>
+                      </div>
+                      <div className="divider divider-horizontal">
+                        Lista de Alumnos
+                      </div>
+
+                      <TableStudents />
+                    </div>
+                  )
                 )}
               </div>
               {slug === "new" ? (

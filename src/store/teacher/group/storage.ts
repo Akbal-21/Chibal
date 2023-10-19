@@ -8,7 +8,7 @@ interface StudentsState {
 interface StudentActions {
   reset: () => void;
   setState: (newStudents: IStudentData[]) => void;
-  fetchStudents: (dataGroup: IDataGroup[] | undefined) => void;
+  addStudentsArray: (dataGroup: IDataGroup[] | undefined) => void;
   addNewStudent: (student: IStudentData) => void;
   getStudentInfo: (studentId: string) => IStudentData | undefined;
   deleteStudent: (studentId: string) => void;
@@ -21,7 +21,7 @@ export const useStudentsStore = create<StudentsState & StudentActions>()(
         return {
           students: [],
 
-          fetchStudents: (dataGroup: IDataGroup[] | undefined) => {
+          addStudentsArray: (dataGroup: IDataGroup[] | undefined) => {
             let studentsArray: IStudentData[];
             if (dataGroup !== undefined) {
               const studentsDataG = dataGroup[0].Alumnos.map((alumno) => ({
@@ -51,7 +51,7 @@ export const useStudentsStore = create<StudentsState & StudentActions>()(
 
           getStudentInfo: (studentId: string) => {
             const student = get().students.find(
-              (s) => s.Usuarios_id === Number(studentId)
+              (s) => s.Usuarios_id === Number(studentId),
             );
             return student;
           },
@@ -59,7 +59,7 @@ export const useStudentsStore = create<StudentsState & StudentActions>()(
           deleteStudent: (studentId: string) => {
             set((state) => {
               const updatedStudents = state.students.filter(
-                (s) => s.Usuarios_id !== Number(studentId)
+                (s) => s.Usuarios_id !== Number(studentId),
               );
               return { students: updatedStudents };
             });
@@ -68,7 +68,7 @@ export const useStudentsStore = create<StudentsState & StudentActions>()(
       },
       {
         name: "studentsStorage",
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
