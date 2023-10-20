@@ -14,6 +14,8 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
   switch (req.method) {
     case "POST":
       return addNewStudent(req, res);
+    case "DELETE":
+      return deleteGroup(req, res);
 
     default:
       return res.status(400).json({ message: "Bad Request" });
@@ -72,4 +74,24 @@ async function addNewStudent(req: NextApiRequest, res: NextApiResponse<Data>) {
   console.log(student);
 
   return res.status(200).json({ student });
+}
+async function deleteGroup(req: NextApiRequest, res: NextApiResponse<Data>) {
+  const id_Group = req.body;
+
+  await db.prisma.$connect();
+
+  const result = await db.prisma.grupos.delete({
+    where: {
+      Grupos_id: id_Group,
+    },
+  });
+  console.log({ result });
+
+  if (!result) {
+    return res.status(400).json({ message: "Bad Requerst" });
+  }
+
+  await db.prisma.$disconnect();
+
+  return res.status(200).json({ message: "Hola" });
 }

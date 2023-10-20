@@ -7,13 +7,16 @@ export const Results = () => {
 
   return (
     <div style={{ marginTop: "16px" }}>
-      <h1>¡Tus resultados</h1>
-
-      <strong>
-        <p>✅ {correct} correctas</p>
-        <p>❌ {incorrect} incorrectas</p>
+      <strong className=" text-center">
+        <p>
+          Tus respuestas se han enviado correctamente
+          <br />
+          <h1 className="text-6xl">😜</h1>
+        </p>
+        {/* <p>✅ {correct} correctas</p>
+        <p>❌ {incorrect} incorrectas</p> */}
       </strong>
-
+      <br />
       <div style={{ marginTop: "16px" }}>
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button onClick={() => reset()}>¡Empezar de nuevo!</button>
@@ -22,3 +25,8 @@ export const Results = () => {
   );
 };
 export default Results;
+
+// <div className="grid grid-cols-1 items-center">
+//   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+//   <button className="btn btn-secondary">Regresar a inicio</button>
+// </div>;
