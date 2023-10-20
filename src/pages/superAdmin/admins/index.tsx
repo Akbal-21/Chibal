@@ -1,6 +1,7 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
 import { useAdmin } from "@/hooks";
+import { useRouter } from "next/router";
 import {
   AiFillDelete,
   AiFillEdit,
@@ -20,6 +21,12 @@ const AdminTablePage = () => {
       },
     });
   };
+
+  const route = useRouter();
+    const handleNew = () => {
+        return route.replace("/superAdmin/admins/new");
+      };
+
 
   return (
     <>
@@ -84,7 +91,7 @@ const AdminTablePage = () => {
                 </div>
                 <div className="px-4 w-full">
                   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                  <button className="btn btn-primary w-36">
+                  <button className="btn btn-primary w-36" onClick={handleNew}>
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>

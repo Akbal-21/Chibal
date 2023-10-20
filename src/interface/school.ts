@@ -28,3 +28,8 @@ export interface ISchool{
   Escuela_id: number;
   Nombre: string;
 }
+
+export interface ISchoolName{
+  Escuela_id: number;
+  Nombre: string;
+}

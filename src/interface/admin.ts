@@ -8,6 +8,7 @@ export interface IAdmin{
     Usuarios: {
         Nombres: string;
         Apellidos: string;
+        Correo: string;
     };
     Usuario_id?: number;
 }
