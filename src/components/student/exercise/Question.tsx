@@ -121,9 +121,11 @@ export const Question = () => {
   };
 
   const handleNextQuestion = async () => {
+    goNextQuestion();
     const url = await handleSaveCloudinary();
     const prob = await predict();
     const { id } = questions[currentQuestion];
+    handleClear();
     const id_User = user?.Usuarios_id;
     console.log({ url, prob, id });
     await chibalApi({
@@ -136,9 +138,7 @@ export const Question = () => {
         id_User,
       },
     });
-
-    goNextQuestion();
-    handleClear();
+    return;
   };
 
   return (

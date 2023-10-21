@@ -5,8 +5,10 @@ import { IAnswer, IPDFCabecera } from "@/interface";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
 
 interface Props {
+  slug: string;
   results: IAnswer[];
   cabecera: IPDFCabecera[];
 }
@@ -17,7 +19,8 @@ interface UsuarioResultados {
   fallos: string[];
 }
 
-const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
+const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera }) => {
+  const router = useRouter();
   const resultadosAgrupados: Record<string, UsuarioResultados> = {};
   const NombreEjercicio = cabecera[0]?.NombreEjercicio
     ? cabecera[0].NombreEjercicio
@@ -46,8 +49,6 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
       }
     });
   });
-
-  console.log(cabecera);
 
   const exportToPDF = () => {
     if (Object.keys(resultadosAgrupados).length === 0) {
@@ -123,6 +124,11 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
     doc.save("tabla_resultados.pdf");
   };
 
+  const handleResultsByStudent = (userId: string) => {
+    router.replace(`/teacher/results/${slug}/${userId}`);
+    console.log({ userId });
+  };
+
   return (
     <SigInLayout titel="Resultados de los Ejercicios">
       <div className="pt-11">
@@ -144,6 +150,9 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Promedio del Puntaje
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Ver resultados
                 </th>
               </tr>
             </thead>
@@ -170,9 +179,17 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {usuario.fallos.join(", ")}
                     </td>
-
                     <td className="px-6 py-4 whitespace-nowrap">
                       {promedioPuntaje}%
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                      <button
+                        className=" btn btn-secondary"
+                        onClick={() => handleResultsByStudent(userId)}
+                      >
+                        Ver resultados
+                      </button>
                     </td>
                   </tr>
                 );
@@ -183,7 +200,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ results, cabecera }) => {
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button
           onClick={exportToPDF}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          className="btn btn-primary font-bold mt-3"
           disabled={Object.keys(resultadosAgrupados).length === 0}
         >
           Exportar tabla a PDF
@@ -204,6 +221,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const cabecera: IPDFCabecera[] = JSON.parse(JSON.stringify(c));
   return {
     props: {
+      slug,
       results,
       cabecera,
     },
