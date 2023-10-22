@@ -7,21 +7,77 @@ import { useContext } from "react";
 const StudentPage = () => {
   // const { user } = useLoginUser();
   const { user } = useContext(AuthContext);
-  const fechaActual = new Date();
+  const fechaLocal = new Date();
+  // Obtiene el desplazamiento de zona horaria del cliente en minutos
 
   console.log({ user });
 
   const route = useRouter();
   const { exercise, isError, isLoading } = useExerciseStudent(
-    `student/${user?.Usuarios_id}`,
+    `student/${user?.Usuarios_id}`
   );
 
-  console.log({ fechaActual, exercise });
-  const handleDoExercise = (id: number) => {
+  console.log({ exercise });
+  const handleDoExercise = (id: number, tipo: number | null) => {
     console.log(id);
-    route.replace(`student/exercise/${id}`);
+    if (tipo === 1 || tipo === 2 || tipo === 3)
+      route.replace(`student/exercise/${id}`);
+    else if (tipo === 4) route.replace(`student/spelling/${id}`);
     return;
   };
+
+  function fun(FechaLimite: Date): boolean | undefined {
+    const z = new Date(String(FechaLimite).split("T")[0]).getTime();
+    const y =
+      fechaLocal.getTime() -
+      fechaLocal.getTimezoneOffset() * 60 * 1000 -
+      3600 * 1000 * 24;
+
+    return z - y < 0;
+  }
+
+  function fun1(FechaLimite: Date): string {
+    const debug = true;
+    if (!debug) return "";
+    const z = new Date(String(FechaLimite).split("T")[0]).getTime();
+
+    const y =
+      fechaLocal.getTime() -
+      fechaLocal.getTimezoneOffset() * 60 * 1000 -
+      3600 * 1000 * 24;
+    let tiempoRestante = z - y;
+
+    if (tiempoRestante < 0) {
+      // La fecha ya pasó, muestra el tiempo transcurrido
+      tiempoRestante *= -1;
+      const dias = Math.floor(tiempoRestante / (24 * 60 * 60 * 1000));
+      const horas = Math.floor(
+        (tiempoRestante % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
+      );
+      const minutos = Math.floor(
+        (tiempoRestante % (60 * 60 * 1000)) / (60 * 1000)
+      );
+
+      return `Tiempo transcurrido: 
+      ${dias ? `${dias} días` : ""} 
+      ${horas ? `${horas} horas` : ""} 
+      ${minutos ? `${minutos} minutos` : ""}`;
+    } else {
+      // La fecha aún no ha llegado, muestra el tiempo restante
+      const dias = Math.floor(tiempoRestante / (24 * 60 * 60 * 1000));
+      const horas = Math.floor(
+        (tiempoRestante % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
+      );
+      const minutos = Math.floor(
+        (tiempoRestante % (60 * 60 * 1000)) / (60 * 1000)
+      );
+
+      return `Tiempo restante: 
+      ${dias ? `${dias} días` : ""} 
+      ${horas ? `${horas} horas` : ""} 
+      ${minutos ? `${minutos} minutos` : ""}`;
+    }
+  }
 
   return (
     <SigInLayout titel="Ejercicios">
@@ -85,16 +141,15 @@ const StudentPage = () => {
                             onClick={() =>
                               handleDoExercise(
                                 exercise.Ejercicios.Ejercicios_id,
+                                exercise.Ejercicios.TipoEjercicio_id
                               )
                             }
-                            disabled={
-                              exercise.Estado === 0 ||
-                              exercise.Ejercicios.FechaLimite.getDate() >
-                                fechaActual.getDate()
-                            }
+                            disabled={fun(exercise.Ejercicios.FechaLimite)}
                           >
                             Resolver
                           </button>
+                          <br />
+                          {fun1(exercise.Ejercicios.FechaLimite)}
                         </td>
                       </tr>
                     ))}
