@@ -24,16 +24,17 @@ async function updateShifting(req: NextApiRequest, res: NextApiResponse) {
   console.log(req.body);
   const { shift, Inciso_id, id_Student } = req.body as {
     shift: number;
-    id_Student: number;
+    id_Student: string;
     Inciso_id: number;
   };
+  // const studentID =()
 
   await db.prisma.$connect();
   console.log("Hola");
 
-  const updateShift = await db.prisma.respuestas.update({
+  const updateShift: UpdateShift = await db.prisma.respuestas.update({
     where: {
-      AlumnoID_Inciso_id: { AlumnoID: id_Student, Inciso_id: Inciso_id },
+      AlumnoID_Inciso_id: { AlumnoID: Number(id_Student), Inciso_id },
     },
     data: {
       Puntaje: shift,

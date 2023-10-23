@@ -1,22 +1,21 @@
 import { chibalApi } from "@/api";
-import { AuthContext } from "@/context";
 import { LineByStudentID } from "@/interface";
-import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 interface Props {
   lineStudent: LineByStudentID;
+  id_Student: string;
 }
 
-export const CheckResults: FC<Props> = ({ lineStudent }) => {
+export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
   const [isUpdate, setIsUpdate] = useState<boolean>(true);
   const [shift, setShift] = useState<number>(0);
+  // const [id_stud, setid_stud] = useState(second)
 
-  const { user } = useContext(AuthContext);
   useEffect(() => {
     setShift(lineStudent.Puntaje);
   }, []);
 
   const onChangeUpdate = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setShift(Number(e.target.value));
     setIsUpdate(false);
   };
@@ -26,7 +25,6 @@ export const CheckResults: FC<Props> = ({ lineStudent }) => {
       return alert("No se puede poner mas de 100 o menos de 0");
     }
     const { Inciso_id } = lineStudent;
-    const id_Student = user?.Usuarios_id;
     const update = await chibalApi({
       method: "PUT",
       url: "/teacher/exercise/updateShift",
@@ -45,19 +43,21 @@ export const CheckResults: FC<Props> = ({ lineStudent }) => {
 
   return (
     <tr className="bg-white border-b  hover:bg-gray-100 ">
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 whitespace-nowrap">
         <img
           src={String(lineStudent.Imagen)}
-          alt="Nose"
-          width={35}
-          height={35}
+          alt="Letra escrita por el alumno"
+          width={50}
+          height={50}
         />
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">{lineStudent.Respuesta}</td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
+        {lineStudent.Respuesta}
+      </td>
+      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         {lineStudent.Incisos.LoSolicitado}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         <input
           type="number"
           className="input input-primary"
@@ -65,7 +65,7 @@ export const CheckResults: FC<Props> = ({ lineStudent }) => {
           onChange={(e) => onChangeUpdate(e)}
         />
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button
           className="btn btn-secondary"

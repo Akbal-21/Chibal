@@ -39,6 +39,7 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
               {lineByStudent.map((lineStudent, index) => (
                 <CheckResults
                   lineStudent={lineStudent}
+                  id_Student={id}
                   key={lineStudent.Inciso_id}
                 />
               ))}
