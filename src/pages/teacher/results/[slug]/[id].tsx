@@ -1,4 +1,4 @@
-import { SigInLayout } from "@/components";
+import { CheckResults, SigInLayout } from "@/components";
 import { getAllLinesByStudent } from "@/db/teacher";
 import { LineByStudentID } from "@/interface";
 import { GetServerSideProps, NextPage } from "next";
@@ -37,33 +37,10 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
             </thead>
             <tbody>
               {lineByStudent.map((lineStudent, index) => (
-                <tr
-                  className="bg-white border-b  hover:bg-gray-100 "
+                <CheckResults
+                  lineStudent={lineStudent}
                   key={lineStudent.Inciso_id}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <img
-                      src={String(lineStudent.Imagen)}
-                      alt="Nose"
-                      width={35}
-                      height={35}
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {lineStudent.Respuesta}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {lineStudent.Incisos.LoSolicitado}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="number"
-                      className="input input-primary"
-                      value={lineStudent.Puntaje}
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">Hola</td>
-                </tr>
+                />
               ))}
             </tbody>
           </table>
