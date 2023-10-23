@@ -2,7 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* .root{
   @apply text-black
 } */
+
+/* Estilos para pantallas mayores a 640px (tablas horizontales) */
+
+/* Estilos para pantallas menores o iguales a 640px (tablas verticales) */
+@media (min-width: 641px) {
+  
+  
+  thead {
+    display: none;
+  }
+  tbody {
+    display: flex;    
+  }
+
+  tbody tr  {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  
+  tbody th {
+    display: none;
+  }
+  
+  tbody:first-child th {
+    display: block !important; /* Opcional: asegura que el primer th esté visible */
+  }
+  tr td {
+    display: table-cell;
+  }
+}
+
+/* Estilos para la vista vertical */
+@media (max-width: 640px) {
+  thead tr th {
+    display: none;
+  }
+  thead tr td {
+    display: table-cell;
+  }
+}

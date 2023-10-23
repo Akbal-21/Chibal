@@ -43,7 +43,7 @@ const LoginPage = () => {
 
   return (
     <AuthLayouth titel={"Inicio de sesión"}>
-      <div className="grid min-h-screen grtid-col items-center justify-between p-[calc(100vh/3)] ">
+      <div className="grid min-h-screen grtid-col items-center justify-between ">
         <div className="bg-my_sin w-[400px] p-2 rounded-md">
           <h1 className="text-center text-xl ">Inicio de sesión</h1>
           {showError && (

@@ -2,6 +2,7 @@ import { FullScreenLoading, SigInLayout } from "@/components";
 import { AuthContext } from "@/context";
 import { useExerciseTeacher } from "@/hooks";
 import { useRouter } from "next/router";
+import React from "react";
 import { useContext } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 const ExcercisePage = () => {
@@ -13,7 +14,7 @@ const ExcercisePage = () => {
   const { user } = useContext(AuthContext);
 
   const { exercise, isLoading } = useExerciseTeacher(
-    `teacher/exercise/${user?.Usuarios_id}`,
+    `teacher/exercise/${user?.Usuarios_id}`
   );
 
   const handleEdith = (Ejercicios_id: number) => {
@@ -35,61 +36,72 @@ const ExcercisePage = () => {
         {isLoading ? (
           <FullScreenLoading />
         ) : (
-          <div className="grid grid-cols-custom-2">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-              <table className="w-full text-sm text-left text-gray-500">
-                <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
+          <div className="flex flex-wrap items-center justify-center flex-col">
+            <div className="w-full pb-8 text-right">
+              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+              <button className="btn btn-primary w-48 " onClick={handleNew}>
+                <b className="text-xl">
+                  <AiOutlineUsergroupAdd />
+                </b>
+                <b>Crear nuevo Ejercicio</b>
+              </button>
+            </div>
+            <div className="relative overflow-x-auto shadow-md rounded-lg w-full">
+              <table className="w-full flex-row flex-no-wrap text-sm text-left text-gray-500">
+                <thead className=" text-gray-700 uppercase  ">
+                  <tr className="flex-col flex-no wrap bg-gray-200">
+                    <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
                       #
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
                       Nombre del ejercicio
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
                       Fecha a Publicar
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
                       Fecha Limite de entrega
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
+                    <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider max-sm:pb-24 ">
                       Acciones
                     </th>
                   </tr>
                 </thead>
-                <tbody>
                   {exercise.map((exercise, index) => (
-                    <tr
-                      className="bg-white border-b  hover:bg-gray-50"
-                      key={exercise.Ejercicios_id}
-                    >
-                      <td className="px-6 py-4 ">{index + 1}</td>
-                      <td className="px-6 py-4 ">{exercise.NombreEjercicio}</td>
-                      <td className="px-6 py-4 ">
-                        {exercise.Estado_id === 1
+                <tbody className="max-sm:flex-1 ">
+                    <React.Fragment key={exercise.Ejercicios_id}>
+                      <tr className="flex-col flex-no wrap items-center bg-white border-b  hover:bg-gray-50">
+                        <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                          #
+                        </th>
+                        <td className="px-6 py-4 ">{index+1}</td>
+                      </tr>
+                      <tr className="flex-col flex-no wrap items-center bg-white border-b  hover:bg-gray-50">
+                        <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                          Nombre
+                        </th>
+                        <td className="px-6 py-4 ">{exercise.NombreEjercicio}</td>
+                      </tr>
+                      <tr className="flex-col flex-no wrap items-center bg-white border-b  hover:bg-gray-50">
+                        <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                          Fecha de la Publicación
+                        </th>
+                        <td className="px-6 py-4 ">{exercise.Estado_id === 1
                           ? "El ejercicio es un Borrador"
-                          : String(exercise.FechaPublicacion).split("T")[0]}
-                      </td>
-                      <td className="px-6 py-4 ">
-                        {String(exercise.FechaLimite).split("T")[0]}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap ">
-                        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                          : String(exercise.FechaPublicacion).split("T")[0]}</td>
+                      </tr>
+                      <tr className="flex-col flex-no wrap items-center bg-white border-b  hover:bg-gray-50">
+                        <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                          Fecha Limite de Entrega
+                        </th>
+                        <td className="px-6 py-4 ">{String(exercise.FechaLimite).split("T")[0]}</td>
+                      </tr>
+                      <tr className="flex-col flex-no wrap items-center bg-white border-b  hover:bg-gray-50">
+                        <th className="px-6 py-4 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                          Acciones
+                        </th>
+                        <td className="px-6 py-4 max-sm:inline-grid">
+                          {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-secondary mx-1"
                           onClick={() => handleEdith(exercise.Ejercicios_id)}
@@ -115,20 +127,13 @@ const ExcercisePage = () => {
                         >
                           Mostrar Resultados
                         </button>
-                      </td>
-                    </tr>
-                  ))}
+                          
+                        </td>
+                      </tr>
+                    </React.Fragment>
                 </tbody>
+                  ))}
               </table>
-            </div>
-            <div className="px-4 w-full">
-              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-              <button className="btn btn-primary w-48" onClick={handleNew}>
-                <b className="text-xl">
-                  <AiOutlineUsergroupAdd />
-                </b>
-                <b>Crear nuevo Ejercicio</b>
-              </button>
             </div>
           </div>
         )}

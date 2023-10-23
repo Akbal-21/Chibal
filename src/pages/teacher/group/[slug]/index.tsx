@@ -115,7 +115,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
       navigateTo(`/teacher/group/${id_group}/editStudent`);
       return;
     }
-    console.log(res.data.newGroup.Grupos_id);
+    console.log(res.data.newGroup?.Grupos_id);
   };
 
   return (
