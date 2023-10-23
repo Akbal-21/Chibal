@@ -56,3 +56,21 @@ export interface DataExerciseStgring {
   typeExercise: string;
   typeExerciseId: number | undefined;
 }
+
+export interface LineByStudentID {
+  Incisos: {
+    LoSolicitado: string;
+  };
+  Imagen: string | null;
+  Puntaje: number;
+  Respuesta: string | null;
+  Inciso_id: number;
+}
+
+export interface UpdateShift {
+  AlumnoID: number;
+  Imagen: string | null;
+  Puntaje: number;
+  Respuesta: string | null;
+  Inciso_id: number;
+}

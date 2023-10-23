@@ -30,8 +30,6 @@ const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
     router.replace(`/teacher/group/${slug}`);
   };
 
-  console.log(slug, dataGroup);
-
   return (
     <SigInLayout titel="Agregar Alumnos">
       <div className="pt-10">
