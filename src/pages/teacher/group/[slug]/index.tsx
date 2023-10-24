@@ -141,7 +141,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                       className="input input-solid max-w-full"
                       placeholder="1A"
                       value={nameGroup}
-                      onChange={(e) => setNameGroup(e.target.value)}
+                      onChange={(e) => setNameGroup(e.target.value.replaceAll(" ",""))}
                     />
                   </div>
 
