@@ -134,8 +134,6 @@ const ExcersisePage: NextPage<Props> = ({
 
     // Separa la cadena por comas y crea un arreglo de palabras
     const item = cadenaSinEspacios.split(",");
-    console.log("paso 1");
-
     if (typeExercise?.Nombre === "Numeros") {
       isCorrect = isTextNumber(dataIncises);
 

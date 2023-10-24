@@ -50,7 +50,6 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
     router.push(url);
   };
 
-  console.log(dataGroup);
   let nivel;
 
   useEffect(() => {
@@ -86,7 +85,6 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   }, []);
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
@@ -97,6 +95,10 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
     const teacher = user?.Usuarios_id;
     const { id_Level } = levelGroup;
     const { id_Shift } = shiftGroup;
+    if (nameGroup.length <2) {
+      alert("El nombre debe de tener mas de 2 caractertes ")
+      return
+    }
     let res;
     if (slug !== "new") {
       res = await chibalApi({
@@ -115,7 +117,6 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
       navigateTo(`/teacher/group/${id_group}/editStudent`);
       return;
     }
-    console.log(res.data.newGroup.Grupos_id);
   };
 
   return (
@@ -146,7 +147,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                   </div>
 
                   <div>
-                    Tipo de Ejercicio:
+                    Grado del grupo:
                     <br />
                     <div className="dropdown w-full">
                       {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}

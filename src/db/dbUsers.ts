@@ -23,13 +23,11 @@ export const checkUserEmailPassword = async (
       SuperAdmin: true,
     },
   });
-
   await db.prisma.$disconnect();
 
   if (!user) {
     return null;
   }
-  console.log(user);
 
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
   if (!bcrypt.compareSync(password, user.Contrasena!)) {
