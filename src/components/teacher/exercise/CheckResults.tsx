@@ -12,9 +12,6 @@ export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
   // const [id_stud, setid_stud] = useState(second)
 
   useEffect(() => {
-    if (!lineStudent?.Puntaje) {
-      return;
-    }
     setShift(lineStudent.Puntaje);
   }, []);
 

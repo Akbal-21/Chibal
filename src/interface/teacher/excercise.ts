@@ -62,7 +62,7 @@ export interface LineByStudentID {
     LoSolicitado: string;
   };
   Imagen: string | null;
-  Puntaje: number | null;
+  Puntaje: number;
   Respuesta: string | null;
   Inciso_id: number;
 }
