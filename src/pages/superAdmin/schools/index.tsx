@@ -1,6 +1,8 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
 import { useSchool } from "@/hooks";
+import { ISchoolName } from "@/interface";
+import { useRouter } from "next/router";
 import {
   AiFillDelete,
   AiFillEdit,
@@ -9,7 +11,7 @@ import {
 
 const SchoolTablePage = () => {
   const { schools, isError, isLoading } = useSchool("superAdmin/schools");
-  console.log(schools);
+  //console.log(schools);
 
   const handleDelete = async (Escuela_id: number) => {
     await chibalApi({
@@ -19,6 +21,16 @@ const SchoolTablePage = () => {
         School_id: Escuela_id,
       },
     });
+  };
+
+  const route = useRouter();
+  const handleNew = () => {
+      return route.replace("/superAdmin/schools/new");
+    };
+  const handleEdit = ( admin_id: number ) => {
+    //console.log(admin_id)
+    return route.replace( `/superAdmin/schools/${admin_id}`);
+    
   };
 
   return (
@@ -62,14 +74,15 @@ const SchoolTablePage = () => {
                             {school.Nombre}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {school.Administrador[0] === undefined
-                              ? "Agregar administrador"
-                              : school.Administrador[0].Usuarios.Nombres +
-                                school.Administrador[0].Usuarios.Apellidos}
+                            {!school.Administrador
+                              ? "No asignado"
+                              : school.Administrador.Usuarios.Nombres +
+                                school.Administrador.Usuarios.Apellidos}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1">
+                            <button className="btn btn-secondary m-1"
+                            onClick={(e) => handleEdit(school.Escuela_id)}>
                               <AiFillEdit /> Editar
                             </button>
 
@@ -88,7 +101,8 @@ const SchoolTablePage = () => {
                 </div>
                 <div className="px-4 w-full">
                   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                  <button className="btn btn-primary w-28">
+                  <button className="btn btn-primary w-28"
+                  onClick={(e) => handleNew}>
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>

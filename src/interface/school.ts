@@ -30,7 +30,7 @@ export interface ISchool{
 }
 
 export interface ISchoolName{
-    Escuela_id: number;
+    Escuela_id?: number;
     Nombre: string;
     //Administrador_id: number | null;
 }

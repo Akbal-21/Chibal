@@ -28,8 +28,8 @@ const AdminTablePage = () => {
     };
   const handleEdit = ( admin_id: number ) => {
     //console.log(admin_id)
-    route.replace( `/superAdmin/admins/${admin_id}`);
-    return;
+    return route.replace( `/superAdmin/admins/${admin_id}`);
+    
   };
     
 
@@ -73,7 +73,7 @@ const AdminTablePage = () => {
                             {admin.Usuarios.Nombres} {admin.Usuarios.Apellidos}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Escuela?.Nombre}
+                            {admin.Escuela ? admin.Escuela.Nombre : "Asignar escuela"}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}

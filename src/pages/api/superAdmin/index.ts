@@ -38,13 +38,34 @@ async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
             },
             Escuela:{
                 select:{
+                    Escuela_id: true,
                     Nombre: true
                 }
             }
         }
+        // select:{
+        //     Usuarios_id: true,
+        //     Nombres: true,
+        //     Apellidos: true,
+        //     Administrador: {
+        //         select:{
+        //             Escuela:{
+        //                 select:{
+        //                     Escuela_id: true,
+        //                     Nombre: true
+        //                 }
+        //             }
+        //         }
+        //     },
+            
+        // },
+        
+        
     });
     
     await db.prisma.$disconnect();
+
+    console.log(admins)
 
     if (!admins) {
         return res.status(404).json({ message: "Bad Request" });

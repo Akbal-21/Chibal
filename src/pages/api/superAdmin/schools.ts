@@ -12,6 +12,10 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
             return getAllSchools(req, res);
         case "DELETE":
             return deleteSchool(req, res);
+        case "PUT":
+            return updateSchool(req, res);
+        case "POST":
+            return newSchool(req, res);
     
             default:
             return res.status(400).json({ message: 'Bad request' })
@@ -65,4 +69,40 @@ async function deleteSchool(req: NextApiRequest, res: NextApiResponse<Data>) {
     await db.prisma.$disconnect();
     
     return res.status(202);
+}
+
+async function updateSchool(req: NextApiRequest, res: NextApiResponse<Data>){
+    const { escul } = req.body;
+    //console.log("Desde api:")
+    //console.log(administrator)
+    await db.prisma.$connect();
+
+    console.log(escul);
+
+    const updatedSchool = await db.prisma.escuela.update({
+        where:{
+            Escuela_id: escul.Escuela_id
+        },
+        data:{
+            Nombre: escul.Nombre
+        }
+    });
+
+    await db.prisma.$disconnect();
+    //console.log(updatedAdmin)
+    return res.status( 202 );
+}
+
+async function newSchool(req: NextApiRequest, res: NextApiResponse<Data>){
+    const { escul } = req.body;
+
+    await db.prisma.$connect();
+
+    const newScul = await db.prisma.escuela.create({
+        data:escul
+    });
+
+    await db.prisma.$disconnect();
+    //console.log(updatedAdmin)
+    return res.status( 202 );
 }

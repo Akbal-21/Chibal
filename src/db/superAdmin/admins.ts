@@ -54,6 +54,6 @@ export const getAdminSchool = async ( id: number ) => {
     });
 
     await db.prisma.$disconnect()
-    //console.log(school)
+    console.log(school)
     return school[0]
 }

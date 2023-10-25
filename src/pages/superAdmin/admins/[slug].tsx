@@ -7,22 +7,17 @@ import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
 interface FormData {
     Nombres?: string;
     Apellidos?: string;
     Correo?: string;
     Escuela?: ISchoolName;
 }
-
 interface Props {
     admin: IAdminInsert
-    schools: ISchoolName[]
-    admin_school: ISchoolName
 }
 
-
-const EditAdminPage: NextPage<Props> = ({ admin, schools, admin_school }) => {
+const EditAdminPage: NextPage<Props> = ({ admin }) => {
 
     const {
         register,
@@ -34,15 +29,12 @@ const EditAdminPage: NextPage<Props> = ({ admin, schools, admin_school }) => {
     } = useForm<FormData>();
 
     const [administrator, setAdministrator] = useState<IAdminInsert>();
-    const [escuela, setEscuela] = useState<ISchoolName>();
-
 
     useEffect( () => {
-        if (admin && schools && admin_school) {
+        if ( admin ) {
             setValue('Nombres', admin.Nombres);
             setValue('Apellidos', admin.Apellidos);
             setValue('Correo', admin.Correo);
-            //setValue('Escuela', Escuela ? Escuela : undefined);
           }
     }, [] );
 
@@ -137,30 +129,7 @@ const EditAdminPage: NextPage<Props> = ({ admin, schools, admin_school }) => {
                                             })}/>
                                         </label>
                                     </div>
-                                    <div>
-                                        <div className="dropdown w-full">
-                                            {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
-                                            <label className="btn btn-solid-primary" tabIndex={0}>
-                                                Escuela
-                                            </label>
-                                            <ul className="dropdown-menu">
-                                                {schools.map( ( school ) => {
-                                                    return(
-                                                        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-<li key={school.Escuela_id}
-                                                        className="dropdown-item"
-                                                        onClick={() => {
-                                                            setEscuela({
-                                                                Escuela_id: school.Escuela_id,
-                                                                Nombre: school.Nombre
-                                                            });
-                                                        }}
-                                                        >{ school.Nombre }</li>
-                                                    );
-                                                } ) }
-                                            </ul>
-                                        </div>
-                                        </div>
+                                    
                                 </div>
                                 <div className="mt-4">
                                     <button
@@ -182,10 +151,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const { slug = "" } = query;
 
     let admin: IAdminInsert | null;
-    let schools: ISchoolName[];
-    let admin_school: ISchoolName | null;
 
-    
     if (slug === "new") {
         admin = {
             Nombres: "",
@@ -193,7 +159,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
             Correo: "",
             Contrasena: "123456" //Calcular hash
         }
-        admin_school = null;
     } else {
         const datadmin = await getAdminData( slug.toString() );
         admin = JSON.parse( JSON.stringify( datadmin ) );
@@ -206,9 +171,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
                 }
             };
         }
-        admin_school = await getAdminSchool(admin.Usuarios_id);
     }
-    schools = await getSchools();
     
     if( !admin ){
         return {
@@ -222,8 +185,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return{
         props:{
             admin,
-            schools,
-            admin_school
         }
     };
 };
