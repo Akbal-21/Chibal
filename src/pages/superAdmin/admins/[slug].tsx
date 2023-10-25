@@ -1,26 +1,28 @@
+import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
-import { getAdminData, getSchools } from "@/db/superAdmin";
-import { IAdmin, ISchoolName } from "@/interface";
+import { getAdminData, getSchools, saveAdmin, getAdminSchool } from "@/db/superAdmin";
+import { IAdmin, IAdminInsert, ISchoolName } from "@/interface";
 import schools from "@/pages/api/superAdmin/schools";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface FormData {
-    Nombre?: string;
+    Nombres?: string;
     Apellidos?: string;
     Correo?: string;
-    Escuela?: string;
+    Escuela?: ISchoolName;
 }
 
 interface Props {
-    admin: IAdmin
+    admin: IAdminInsert
     schools: ISchoolName[]
+    admin_school: ISchoolName
 }
 
 
-const EditAdminPage: NextPage<Props> = ({ admin, schools }) => {
+const EditAdminPage: NextPage<Props> = ({ admin, schools, admin_school }) => {
 
     const {
         register,
@@ -31,23 +33,72 @@ const EditAdminPage: NextPage<Props> = ({ admin, schools }) => {
         watch,
     } = useForm<FormData>();
 
-    const [administrator, setAdministrator] = useState<IAdmin>();
+    const [administrator, setAdministrator] = useState<IAdminInsert>();
     const [escuela, setEscuela] = useState<ISchoolName>();
 
 
-    const onSubmit = (form: FormData) => {
-        setValue( "Nombre", administrator?.Usuarios.Nombres );
-        setValue( "Apellidos", administrator?.Usuarios.Apellidos );
-        setValue( "Correo", administrator?.Usuarios.Correo );
-        setValue( "Escuela", administrator?.Escuela?.Nombre );
+    useEffect( () => {
+        if (admin && schools && admin_school) {
+            setValue('Nombres', admin.Nombres);
+            setValue('Apellidos', admin.Apellidos);
+            setValue('Correo', admin.Correo);
+            //setValue('Escuela', Escuela ? Escuela : undefined);
+          }
+    }, [] );
 
+
+    const handleEdit = async ( administrator: IAdminInsert ) => {
+        await chibalApi({
+            method: "PUT",
+            url: "/superAdmin",
+            data: {
+                administrator
+            }
+          });
+        const route = useRouter();
+        return route.replace( "/superAdmin/admins" );
+    }
+
+    const handleNew = async ( administrator: IAdminInsert ) => {
+        await chibalApi({
+            method: "POST",
+            url: "/superAdmin",
+            data: {
+                administrator
+            }
+          });
+        const route = useRouter();
+        return route.replace( "/superAdmin/admins" );
+    }
+
+    const onSubmit = (form: FormData) => {
+        const values = getValues();
+        setAdministrator({
+            Usuarios_id: admin.Usuarios_id,
+            Nombres: String(values.Nombres),
+            Apellidos: String(values.Apellidos),
+            Correo: String(values.Correo),
+            Contrasena: admin.Contrasena
+            //Escuela: escuela
+        });
+        //setEscuela(admin_school);
         //? Aquí se hace el insert en base de datos?
-        console.log({ form, escuela })
+        if(administrator){
+            if( administrator.Usuarios_id ){
+                console.log("Editar")
+                handleEdit( administrator );
+            }else{
+                console.log("Crear")
+                handleNew( administrator );
+            }
+            //saveAdmin( administrator ); //<--- Esto va en API
+        }
+        //console.log({ administrator, escuela })
     };
 
     
     return(
-        <SigInLayout titel={`Administrador ${admin.Usuario_id}`}>
+        <SigInLayout titel={`Administrador ${admin.Usuarios_id}`}>
             <div className="pt-11">
                 <section className="bg-gray-2 reounded-xl">
                     <div className="p-8 shadow-lg">
@@ -60,7 +111,7 @@ const EditAdminPage: NextPage<Props> = ({ admin, schools }) => {
                                     <div>
                                         <label>
                                             Nombre
-                                            <input type="text" className="input input-solid max-w-full" {...register("Nombre", {
+                                            <input type="text" className="input input-solid max-w-full" {...register("Nombres", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 3, message: "Mínimo 3 caracteres"  }
                                             })}/>
@@ -95,7 +146,8 @@ const EditAdminPage: NextPage<Props> = ({ admin, schools }) => {
                                             <ul className="dropdown-menu">
                                                 {schools.map( ( school ) => {
                                                     return(
-                                                        <li key={school.Escuela_id}
+                                                        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+<li key={school.Escuela_id}
                                                         className="dropdown-item"
                                                         onClick={() => {
                                                             setEscuela({
@@ -129,26 +181,35 @@ const EditAdminPage: NextPage<Props> = ({ admin, schools }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const { slug = "" } = query;
 
-    let admin: IAdmin | null;
+    let admin: IAdminInsert | null;
     let schools: ISchoolName[];
+    let admin_school: ISchoolName | null;
 
-    schools = await getSchools();
-
+    
     if (slug === "new") {
         admin = {
-            Escuela: null,
-            Turno: null,
-            Usuarios: {
-                Nombres: "",
-                Apellidos: "",
-                Correo: ""
-            }
+            Nombres: "",
+            Apellidos: "",
+            Correo: "",
+            Contrasena: "123456" //Calcular hash
         }
+        admin_school = null;
     } else {
         const datadmin = await getAdminData( slug.toString() );
         admin = JSON.parse( JSON.stringify( datadmin ) );
+        //console.log(admin)
+        if(!admin?.Usuarios_id){
+            return {
+                redirect:{
+                    destination: "/superAdmin/admins",
+                    permanent: false
+                }
+            };
+        }
+        admin_school = await getAdminSchool(admin.Usuarios_id);
     }
-
+    schools = await getSchools();
+    
     if( !admin ){
         return {
             redirect:{
@@ -161,7 +222,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return{
         props:{
             admin,
-            schools
+            schools,
+            admin_school
         }
     };
 };

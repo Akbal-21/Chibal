@@ -24,12 +24,13 @@ export interface ISchool{
         Nombres: string;
         Apellidos: string;
     };
-  }[];
+  } | null;
   Escuela_id: number;
   Nombre: string;
 }
 
 export interface ISchoolName{
-  Escuela_id: number;
-  Nombre: string;
+    Escuela_id: number;
+    Nombre: string;
+    //Administrador_id: number | null;
 }

@@ -23,14 +23,19 @@ const AdminTablePage = () => {
   };
 
   const route = useRouter();
-    const handleNew = () => {
-        return route.replace("/superAdmin/admins/new");
-      };
-
+  const handleNew = () => {
+      return route.replace("/superAdmin/admins/new");
+    };
+  const handleEdit = ( admin_id: number ) => {
+    //console.log(admin_id)
+    route.replace( `/superAdmin/admins/${admin_id}`);
+    return;
+  };
+    
 
   return (
     <>
-      <SigInLayout titel="CRUD Maestro">
+      <SigInLayout titel="CRUD super administrador">
         <div>
           <div className="p-1 mt-20 relative flex justify-center items-center">
             {isLoading ? (
@@ -72,7 +77,7 @@ const AdminTablePage = () => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1">
+                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Usuario_id) )}>
                               <AiFillEdit /> Editar
                             </button>
 

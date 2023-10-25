@@ -1,9 +1,7 @@
 export interface IAdmin{
     Escuela: {
+        Escuela_id: number
         Nombre: string;
-    } | null;
-    Turno: {
-        Horario: string;
     } | null;
     Usuarios: {
         Nombres: string;
@@ -11,4 +9,13 @@ export interface IAdmin{
         Correo: string;
     };
     Usuario_id?: number;
+}
+
+
+export interface IAdminInsert{
+    Usuarios_id?: number;
+    Nombres: string;
+    Apellidos: string;
+    Correo: string;
+    Contrasena: string;
 }
