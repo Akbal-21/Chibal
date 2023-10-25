@@ -31,8 +31,9 @@ async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
     select: {
       Usuarios: {
         select: {
-          Apellidos: true,
+          Usuarios_id: true,
           Nombres: true,
+          Apellidos: true,
         },
       },
       Escuela: {
@@ -42,22 +43,14 @@ async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
         },
       },
     },
-
-    // select: {
-    //   Escuela_id: true,
-    //   Nombre: true,
-    //   Administrador: {
-    //     select: {
-    //       Usuarios: {
-    //         select: {
-    //           Nombres: true,
-    //           Apellidos: true,
-    //           Usuarios_id: true,
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
+    // include:{
+    //   Escuela:{
+    //   select:
+    //   {
+    //     Administrador:true,
+    //   }
+    //   }
+    // }
   });
 
   await db.prisma.$disconnect();
@@ -70,6 +63,7 @@ async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
 
   return res.status(200).json({ admins });
 }
+
 async function deleteAdmin(req: NextApiRequest, res: NextApiResponse<Data>) {
   const { Usuario_id } = req.body;
   console.log(Usuario_id);
