@@ -27,22 +27,37 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
   await db.prisma.$connect();
 
-  const admins = await db.prisma.escuela.findMany({
+  const admins = await db.prisma.administrador.findMany({
     select: {
-      Escuela_id: true,
-      Nombre: true,
-      Administrador: {
+      Usuarios: {
         select: {
-          Usuarios: {
-            select: {
-              Nombres: true,
-              Apellidos: true,
-              Usuarios_id: true,
-            },
-          },
+          Apellidos: true,
+          Nombres: true,
+        },
+      },
+      Escuela: {
+        select: {
+          Escuela_id: true,
+          Nombre: true,
         },
       },
     },
+
+    // select: {
+    //   Escuela_id: true,
+    //   Nombre: true,
+    //   Administrador: {
+    //     select: {
+    //       Usuarios: {
+    //         select: {
+    //           Nombres: true,
+    //           Apellidos: true,
+    //           Usuarios_id: true,
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   });
 
   await db.prisma.$disconnect();
