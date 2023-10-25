@@ -71,7 +71,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                   placeholder="Nombres"
                   {...register("names", {
                     required: "Este campo es requerido",
-                    minLength: { value: 3, message: "Minimo 3 caracteres" },
+                    minLength: { value: 3, message: "Mínimo 3 caracteres" },
                   })}
                 />
                 <span className="absolute inset-y-0 left-3 inline-flex items-center">
@@ -99,7 +99,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                   placeholder="Apellidos"
                   {...register("lastsNames", {
                     required: "Este campo es requerido",
-                    minLength: { value: 3, message: "Minimo 3 caracteres" },
+                    minLength: { value: 3, message: "Mínimo 3 caracteres" },
                   })}
                 />
                 <span className="absolute inset-y-0 left-3 inline-flex items-center">
@@ -154,7 +154,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                 placeholder="Enter password"
                 {...register("password", {
                   required: "Este campo es requerido",
-                  minLength: { value: 6, message: "Minimo 6 caracteres" },
+                  minLength: { value: 6, message: "Mínimo 6 caracteres" },
                 })}
               />
 

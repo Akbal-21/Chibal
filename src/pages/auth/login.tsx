@@ -41,7 +41,7 @@ const LoginPage = () => {
           )}
           <form onSubmit={handleSubmit(onLoginUser)} noValidate>
             {/* email */}
-            <label className="form-label text-lg">Coreo electonico</label>
+            <label className="form-label text-lg">Correo electrónico</label>
             {errors.email && (
               <span className=" badge badge-error m-1">
                 {errors.email.message}
@@ -86,7 +86,7 @@ const LoginPage = () => {
                 placeholder="Enter password"
                 {...register("password", {
                   required: "Este campo es requerido",
-                  minLength: { value: 6, message: "Minimo 6 caracteres" },
+                  minLength: { value: 6, message: "Mínimo 6 caracteres" },
                 })}
               />
 
