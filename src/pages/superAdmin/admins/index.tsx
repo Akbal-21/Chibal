@@ -61,36 +61,39 @@ const AdminTablePage = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {admins.map((admin, index: number) => (
-                        <tr
-                          key={admin.Usuario_id}
+                      {admins.map((admin, index: number) => {
+                        admin.Administrador !== null && (
+                          <tr
+                          key={admin.Administrador?.Usuarios.Usuarios_id}
                           className="bg-white border-b  hover:bg-gray-50"
-                        >
+                          >
                           <td className="px-6 py-4 whitespace-nowrap">
                             {index + 1}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Usuarios.Nombres} {admin.Usuarios.Apellidos}
+                            {admin.Administrador?.Usuarios.Nombres} {admin.Administrador?.Usuarios.Apellidos}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Escuela ? admin.Escuela.Nombre : "Asignar escuela"}
+                            {admin.Nombre ? admin.Nombre : "Asignar escuela"}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Usuario_id) )}>
+                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Administrador?.Usuarios.Usuarios_id) )}>
                               <AiFillEdit /> Editar
                             </button>
 
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                             <button
                               className="btn btn-error m-1"
-                              onClick={(e) => handleDelete(admin.Usuario_id)}
+                              onClick={(e) => handleDelete(admin.Administrador?.Usuarios.Usuarios_id)}
                             >
                               <AiFillDelete /> Elimiar
                             </button>
                           </td>
                         </tr>
-                      ))}
+                        )
+                      }
+                      )}
                     </tbody>
                   </table>
                 </div>
