@@ -4,8 +4,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data =
   | {
-      message: string;
-    }
+    message: string;
+  }
   | { admins: IAdmin[] };
 
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -27,22 +27,32 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
   await db.prisma.$connect();
 
-  const admins = await db.prisma.escuela.findMany({
+  const admins = await db.prisma.administrador.findMany({
+
     select: {
-      Escuela_id: true,
-      Nombre: true,
-      Administrador: {
+      Usuarios: {
         select: {
-          Usuarios: {
-            select: {
-              Nombres: true,
-              Apellidos: true,
-              Usuarios_id: true,
-            },
-          },
-        },
+          Usuarios_id: true,
+          Nombres: true,
+          Apellidos: true
+        }
       },
+      Escuela:{
+        select:{
+          Escuela_id:true,
+          Nombre:true
+        }
+      }
     },
+    // include:{
+    //   Escuela:{
+    //   select:
+    //   {
+    //     Administrador:true,
+    //   }
+    //   }
+    // }
+    
   });
 
   await db.prisma.$disconnect();
