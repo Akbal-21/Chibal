@@ -48,10 +48,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.2.2",
+    "@playwright/test": "^1.39.0",
     "@types/bcryptjs": "2.4.4",
     "@types/formidable": "2.0.4",
     "@types/js-cookie": "3.0.4",
     "@types/jsonwebtoken": "9.0.3",
+    "@types/node": "^20.8.9",
     "@types/react-datepicker": "4.19.0",
     "@types/react-signature-canvas": "1.0.3",
     "prisma": "5.4.1"
