@@ -5,6 +5,7 @@ import { ITeacher } from "@/interface";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import bcrypt from "bcryptjs";
 import { useForm } from "react-hook-form";
 
 interface Props {
@@ -38,16 +39,18 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
       }
 }, [] );
 
+  const route = useRouter();
   const handleEdit = async (teacher: ITeacher) => {
-    await chibalApi({
+    console.log("API?")
+    const resp = await chibalApi({
       method: "PUT",
       url: "/admin",
       data: {
         teacher
       }
     });
-    const route = useRouter();
-    return route.replace( "/admin" );
+    route.replace( "/admin" );
+    return;
   };
 
   const handleNew = async ( teacher: ITeacher ) => {
@@ -56,7 +59,6 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
       url: "/admin",
       data: { teacher },
     });
-    const route = useRouter();
     return route.replace( "/admin" );
   };
 
@@ -157,7 +159,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         Nombres: "",
         Apellidos: "",
         Correo: "",
-        Contrasena: "123456" //Calcular hash
+        Contrasena: bcrypt.hashSync("123456") //Calcular hash
       }
     }
   }else{

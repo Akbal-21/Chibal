@@ -24,15 +24,18 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 
 async function deleteTeacher(req: NextApiRequest, res: NextApiResponse<Data>) {
   const { Usuario_id } = req.body as { Usuario_id: number };
-  console.log(Usuario_id);
 
-  // await db.prisma.$connect()
+  await db.prisma.$connect()
 
-  // const user = await db.prisma.
+  const user = await db.prisma.maestros.delete({
+    where: {
+      Usuario_id: Number(Usuario_id)
+    },
+  });
 
-  // await db.prisma.$disconnect()
+  await db.prisma.$disconnect()
 
-  return res.status(200).json({ message: "Hola" });
+  return res.status(200).json({ message: "Maestro eliminado" });
 }
 
 async function getAllTeachers(req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -78,13 +81,13 @@ async function updateTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
 
   await db.prisma.$disconnect();
 
-  return res.status( 202 );
+  return res.status( 200 ).json( { message: "Usuario actualizado" } );
 }
 
 async function newTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
   const { teacher } = req.body
   await db.prisma.$connect();
-
+  
   console.log(teacher)
   const newTeacher = await db.prisma.usuarios.create({
     data:{
@@ -93,9 +96,10 @@ async function newTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
         create:{
           Usuario_id: teacher.Usuario_id
         }
-    }
+      }
     }
   });
-
+  
   await db.prisma.$disconnect();
+  return res.status( 200 ).json( { message: "Usuario creado" } );
 }
