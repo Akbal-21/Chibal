@@ -43,17 +43,6 @@ async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
         },
       },
     },
-<<<<<<< HEAD
-    // include:{
-    //   Escuela:{
-    //   select:
-    //   {
-    //     Administrador:true,
-    //   }
-    //   }
-    // }
-=======
->>>>>>> origin/Jalando
   });
 
   await db.prisma.$disconnect();
