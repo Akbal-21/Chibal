@@ -9,9 +9,9 @@ datasource db {
 }
 
 model Administrador {
-  Usuario_id Int       @id
-  Usuarios   Usuarios  @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
-  Escuela    Escuela[]
+  Usuario_id Int      @id
+  Usuarios   Usuarios @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+  Escuela    Escuela?
 }
 
 model Alumnos {
@@ -21,6 +21,16 @@ model Alumnos {
   Usuarios           Usuarios             @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
   Alumnos_Ejercicios Alumnos_Ejercicios[]
   Respuestas         Respuestas[]
+}
+
+model Alumnos_Ejercicios {
+  AlumnoID    Int
+  EjercicioID Int
+  Estado      Int?       @default(0)
+  Alumnos     Alumnos    @relation(fields: [AlumnoID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
+  Ejercicios  Ejercicios @relation(fields: [EjercicioID], references: [Ejercicios_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([AlumnoID, EjercicioID])
 }
 
 model Ejercicios {
@@ -43,7 +53,7 @@ model Ejercicios {
 model Escuela {
   Escuela_id       Int            @id @default(autoincrement())
   Nombre           String         @db.VarChar
-  Administrador_id Int?
+  Administrador_id Int?           @unique
   Administrador    Administrador? @relation(fields: [Administrador_id], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
   Grupos           Grupos[]
   Maestros         Maestros[]
@@ -132,14 +142,4 @@ model Usuarios {
   Alumnos       Alumnos?
   Maestros      Maestros?
   SuperAdmin    SuperAdmin?
-}
-
-model Alumnos_Ejercicios {
-  AlumnoID    Int
-  EjercicioID Int
-  Estado      Int?       @default(0)
-  Alumnos     Alumnos    @relation(fields: [AlumnoID], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
-  Ejercicios  Ejercicios @relation(fields: [EjercicioID], references: [Ejercicios_id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@id([AlumnoID, EjercicioID])
 }
