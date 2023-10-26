@@ -33,6 +33,7 @@ const AdminTablePage = () => {
   };
     
 
+
   return (
     <>
       <SigInLayout titel="CRUD super administrador">
@@ -62,11 +63,12 @@ const AdminTablePage = () => {
                     </thead>
                     <tbody>
                       {admins.map((admin, index: number) => {
-                        admin.Administrador !== null && (
-                          <tr
-                          key={admin.Administrador?.Usuarios.Usuarios_id}
-                          className="bg-white border-b  hover:bg-gray-50"
-                          >
+                        if( admin.Administrador !== null ){
+                          return (
+                            <tr
+                            key={admin.Administrador?.Usuarios.Usuarios_id}
+                            className="bg-white border-b  hover:bg-gray-50"
+                            >
                           <td className="px-6 py-4 whitespace-nowrap">
                             {index + 1}
                           </td>
@@ -93,8 +95,9 @@ const AdminTablePage = () => {
                         </tr>
                         )
                       }
+                      }
                       )}
-                    </tbody>
+                      </tbody>
                   </table>
                 </div>
                 <div className="px-4 w-full">

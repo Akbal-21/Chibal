@@ -1,10 +1,12 @@
 export interface ITeacher {
+  Usuario_id?: number;
   Usuarios: {
-    Nombres: string;
-    Apellidos: string;
+      Nombres: string;
+      Apellidos: string;
+      Correo: string;
+      Contrasena?: string;
   };
-  Usuario_id: number;
-}
+};
 
 export interface IGrade {
   Maestros: {

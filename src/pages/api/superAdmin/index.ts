@@ -3,7 +3,6 @@ import { IAdmin, IAdminInsert } from '@/interface';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Usuarios_id from '../teacher/[Usuarios_id]';
 
-
 type Data = {
     message: string
 } | { admins: IAdmin[] }

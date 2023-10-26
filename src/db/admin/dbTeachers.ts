@@ -3,34 +3,30 @@ import { db } from "..";
 
 export const getAllTeachers = async (idUser: string) => {
   // let informacionGrupos;
-
   await db.prisma.$connect();
-  const dataTeachers: ITeacher[] = await db.prisma.maestros.findMany({
-    select: {
+
+  const dataTeacher: ITeacher | null = await db.prisma.maestros.findUnique({
+    select:{
       Usuario_id: true,
-      Usuarios: {
-        select: {
+      Usuarios:{
+        select:{
           Nombres: true,
           Apellidos: true,
-        },
-      },
+          Correo: true,
+          Contrasena: true
+        }
+      }
     },
-    where: {
-      Escuela: {
-        Administrador: {
-          some: {
-            Usuario_id: Number(idUser),
-          },
-        },
-      },
-    },
+    where:{
+      Usuario_id: Number( idUser )
+    }
   });
 
   await db.prisma.$disconnect();
 
-  if (!dataTeachers) {
+  if (!dataTeacher) {
     return;
   }
 
-  return dataTeachers;
+  return dataTeacher;
 };
