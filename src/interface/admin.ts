@@ -18,3 +18,11 @@ export interface IAdminInsert{
     Correo: string;
     Contrasena: string;
 }
+
+export interface IAdminList{
+    Usuarios: {
+        Nombres: string;
+        Apellidos: string;
+    };
+    Usuario_id: number;
+}

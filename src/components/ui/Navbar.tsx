@@ -34,17 +34,11 @@ export const Navbar = () => {
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <h1
               className="text-white text-xl navbar-item"
-              onClick={() => navigateTo(`/admin/teacher/${user?.Usuarios_id}`)}
+              onClick={() => navigateTo("/admin")}
             >
               <b>Maestros</b>
             </h1>
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-            <h1
-              className="text-white text-xl navbar-item"
-              onClick={() => navigateTo("/")}
-            >
-              <b>Escuela</b>
-            </h1>
+            
           </>
         ) : user?.roll === "Maestro" ? (
           <>

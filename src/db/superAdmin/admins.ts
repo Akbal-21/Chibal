@@ -57,3 +57,24 @@ export const getAdminSchool = async ( id: number ) => {
     console.log(school)
     return school[0]
 }
+
+export const getAllAdminNames = async () =>{
+    await db.prisma.$connect();
+
+    const admins = await db.prisma.administrador.findMany({
+        select:{
+            Usuario_id: true,
+            Usuarios:{
+                select:{
+                    Nombres: true,
+                    Apellidos: true
+                }
+            }
+        }
+    });
+
+    await db.prisma.$disconnect();
+
+    console.log(admins);
+    return admins
+}

@@ -25,8 +25,9 @@ const SchoolTablePage = () => {
 
   const route = useRouter();
   const handleNew = () => {
-      return route.replace("/superAdmin/schools/new");
-    };
+    console.log("niu");
+    return route.replace("/superAdmin/schools/new");
+  };
   const handleEdit = ( admin_id: number ) => {
     //console.log(admin_id)
     return route.replace( `/superAdmin/schools/${admin_id}`);
@@ -102,7 +103,7 @@ const SchoolTablePage = () => {
                 <div className="px-4 w-full">
                   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                   <button className="btn btn-primary w-28"
-                  onClick={(e) => handleNew}>
+                  onClick={(e) => handleNew()}>
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>

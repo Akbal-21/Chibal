@@ -10,7 +10,6 @@ import {
 
 const AdminTablePage = () => {
   const { admins, isError, isLoading } = useAdmin("superAdmin");
-  console.log(admins);
 
   const handleDelete = async (Usuario_id: number | undefined) => {
     await chibalApi({
@@ -32,8 +31,6 @@ const AdminTablePage = () => {
     
   };
     
-
-
   return (
     <>
       <SigInLayout titel="CRUD super administrador">

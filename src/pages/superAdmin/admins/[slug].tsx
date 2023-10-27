@@ -7,6 +7,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import bcrypt from "bcryptjs";
 interface FormData {
     Nombres?: string;
     Apellidos?: string;
@@ -157,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
             Nombres: "",
             Apellidos: "",
             Correo: "",
-            Contrasena: "123456" //Calcular hash
+            Contrasena: bcrypt.hashSync("123456") //Calcular hash
         }
     } else {
         const datadmin = await getAdminData( slug.toString() );

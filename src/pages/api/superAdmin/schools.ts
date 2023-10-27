@@ -7,12 +7,14 @@ type Data = {
 } | { schools: ISchool[] }
 
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
+    console.log(req.method)
     switch (req.method) {
         case "GET":
             return getAllSchools(req, res);
         case "DELETE":
             return deleteSchool(req, res);
         case "PUT":
+            console.log("put")
             return updateSchool(req, res);
         case "POST":
             return newSchool(req, res);
@@ -68,41 +70,47 @@ async function deleteSchool(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     await db.prisma.$disconnect();
     
-    return res.status(202);
+    return res.status(200).json( { message: "Escuela eliminada" } );
 }
 
 async function updateSchool(req: NextApiRequest, res: NextApiResponse<Data>){
-    const { escul } = req.body;
+    console.log(req.body)
+    const { Escuela_id, Nombre, Administrador_id } = req.body;
     //console.log("Desde api:")
     //console.log(administrator)
     await db.prisma.$connect();
 
-    console.log(escul);
+    // console.log(escul);
 
     const updatedSchool = await db.prisma.escuela.update({
         where:{
-            Escuela_id: escul.Escuela_id
+            Escuela_id
         },
         data:{
-            Nombre: escul.Nombre
+            Nombre,
+            Administrador_id
         }
     });
 
     await db.prisma.$disconnect();
     //console.log(updatedAdmin)
-    return res.status( 202 );
+    return res.status( 200 ).json({ message: "Escuela actualizada" });
 }
 
 async function newSchool(req: NextApiRequest, res: NextApiResponse<Data>){
-    const { escul } = req.body;
-
+    console.log(req.body);
+    const { Nombre, Administrador_id } = req.body;
+    console.log(Administrador_id);
     await db.prisma.$connect();
 
     const newScul = await db.prisma.escuela.create({
-        data:escul
+        data:{
+            Nombre,
+            Administrador_id: Administrador_id ? Administrador_id : null
+        }
     });
 
     await db.prisma.$disconnect();
     //console.log(updatedAdmin)
-    return res.status( 202 );
+    return res.status( 200 ).json({ message: "Escuela creada" });
 }

@@ -6,7 +6,18 @@ export const getSchoolData = async ( school_id: string ) => {
     const adminData = await db.prisma.escuela.findUnique({
         select:{
             Escuela_id: true,
-            Nombre: true
+            Nombre: true,
+            Administrador_id: true,
+            Administrador:{
+                select:{
+                    Usuarios:{
+                        select:{
+                            Nombres: true,
+                            Apellidos: true
+                        }
+                    }
+                }
+            }
         },
         where:{
             Escuela_id: Number(school_id)

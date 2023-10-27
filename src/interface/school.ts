@@ -31,10 +31,21 @@ export interface ISchool{
   Nombre: string;
 }
 
-
-
 export interface ISchoolName{
     Escuela_id?: number;
     Nombre: string;
-    //Administrador_id: number | null;
+    //Administrador_id: number;
 }
+
+export interface ISchoolAdmin{
+    Escuela_id?: number;
+    Nombre: string;
+    Administrador_id?: number;
+    Administrador?: {
+      Usuarios: {
+          Nombres: string;
+          Apellidos: string;
+      };
+    };
+}
+

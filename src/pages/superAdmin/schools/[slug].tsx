@@ -1,22 +1,24 @@
 import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
-import { getSchoolData } from "@/db/superAdmin";
-import { ISchoolName } from "@/interface";
+import { getAllAdminNames, getSchoolData } from "@/db/superAdmin";
+import { IAdminList, ISchoolAdmin } from "@/interface";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface Props{
-    school: ISchoolName
+    school: ISchoolAdmin
+    admins: IAdminList[]
 }
 
 interface FormData{
-    nombre: string,
-    admin: string
+    idEscuela?: number,
+    nombreEscuela: string,
+    adminId?: number,
 }
 
-const EditSchoolPage: NextPage<Props> = ({ school }) => {
+const EditSchoolPage: NextPage<Props> = ({ school, admins }) => {
     const {
         register,
         handleSubmit,
@@ -27,55 +29,69 @@ const EditSchoolPage: NextPage<Props> = ({ school }) => {
     } = useForm<FormData>();
 
     useEffect( () => {
-        if ( school ) {
-            setValue('nombre', school.Nombre);
-            
-          }
+        
+        console.log(school.Administrador_id);
+        if ( school.Administrador_id ) {
+
+            setValue( 'idEscuela', school.Escuela_id );
+            setValue( 'nombreEscuela', school.Nombre );
+            setValue( 'adminId', school.Administrador_id );
+            setAdministrador( {
+                idAdministrador: school.Administrador_id,
+                nombreAdministrador: `${school.Administrador?.Usuarios.Nombres} ${school.Administrador?.Usuarios.Apellidos}`
+            } );
+            console.log(administrador);
+        }
     }, [] );
 
-    const [escuela, setEscuela] = useState<ISchoolName>();
+    const [administrador, setAdministrador] = useState<{
+        nombreAdministrador?: string;
+        idAdministrador: number;
+    }>({
+        nombreAdministrador: "",
+        idAdministrador: 0
+    });
 
-    const handleEdit = async ( escul: ISchoolName ) => {
-        console.log(escul);
+    const route = useRouter();
+    const handleEdit = async (  ) => {
+        const values = getValues();
         await chibalApi({
             method: "PUT",
             url: "/superAdmin/schools",
             data: {
-                escul
+                Escuela_id: values.idEscuela,
+                Nombre: values.nombreEscuela,
+                Administrador_id: administrador.idAdministrador
             }
           });
-        const route = useRouter();
         return route.replace( "/superAdmin/schools" );
     }
 
-    const handleNew = async ( escul: ISchoolName ) => {
-        console.log(escul);
+    const handleNew = async () => {
+        const values = getValues();
         await chibalApi({
             method: "POST",
             url: "/superAdmin/schools",
             data: {
-                escul
+                Nombre: values.nombreEscuela,
             }
           });
-        const route = useRouter();
         return route.replace( "/superAdmin/schools" );
     }
 
     const onSubmit = (form: FormData) => {
+        setValue( "adminId", administrador.idAdministrador );
+        
         const values = getValues();
-        setEscuela({
-            Escuela_id: school.Escuela_id,
-            Nombre: values.nombre
-        });
-        if(escuela){
-            if( escuela.Escuela_id ){
-                console.log("Editar")
-                handleEdit( escuela );
-            }else{
-                console.log("Crear")
-                handleNew( escuela );
-            }
-            //saveAdmin( administrator ); //<--- Esto va en API
+
+        console.log(values);
+
+        if( values.idEscuela ){
+            console.log("Editar");
+            handleEdit();
+        }else{
+            console.log("Crear");
+            handleNew();
         }
     }
 
@@ -93,21 +109,41 @@ const EditSchoolPage: NextPage<Props> = ({ school }) => {
                                     <div>
                                         <label>
                                             Nombre
-                                            <input type="text" className="input input-solid max-w-full" {...register("nombre", {
+                                            <input type="text" className="input input-solid max-w-full" {...register("nombreEscuela", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 3, message: "Mínimo 3 caracteres"  }
                                             })}/>
                                         </label>
                                     </div>
-                                    <div>
-                                        <label>
-                                            Administrador
-                                            <input type="text" className="input input-solid max-w-full" {...register("admin", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 5, message: "Mínimo 5 caracteres"  }
-                                            })}/>
+                                    <div className="dropdown w-full">
+                                        {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                                        <label className="btn btn-solid-primary" tabIndex={0}>
+                                            {!administrador.nombreAdministrador
+                                            ? "Seleccione un administrador"
+                                            : administrador.nombreAdministrador}
                                         </label>
-                                    </div>
+                                        <div className="w-full">
+                                            <ul className="dropdown-menu w-full">
+                                            {admins.map((admin) => {
+                                                return (
+                                                // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                                                <li
+                                                    key={admin.Usuario_id}
+                                                    className="dropdown-item"
+                                                    onClick={() =>
+                                                    setAdministrador( {
+                                                        nombreAdministrador: `${admin.Usuarios.Nombres} ${admin.Usuarios.Apellidos}`,
+                                                        idAdministrador: admin.Usuario_id
+                                                    } )
+                                                    }
+                                                >
+                                                    {`${admin.Usuarios.Nombres} ${admin.Usuarios.Apellidos}`}
+                                                </li>
+                                                );
+                                            })}
+                                            </ul>
+                                        </div>
+                                        </div>
                                 </div>
                                 
                                 <div className="mt-4">
@@ -128,19 +164,21 @@ const EditSchoolPage: NextPage<Props> = ({ school }) => {
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
     const { slug = "" } = query;
-    let scul: ISchoolName | null;
-  
+    let scul: ISchoolAdmin | null;
+
+    const adminsData = await getAllAdminNames();
+    const admins: IAdminList[] | null = JSON.parse( JSON.stringify( adminsData ) );
+
     if( slug === "new" ){
       scul = {
         Nombre: ""
       }
     }else{
         const sculData = await getSchoolData( slug.toString() );
-        console.log(sculData);
         scul = JSON.parse( JSON.stringify( sculData ) );
     }
 
-    if( !scul ){
+    if( !scul && !admins ){
         return {
             redirect:{
                 destination: "/superAdmin/schools",
@@ -151,7 +189,8 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 
     return{
         props:{
-            school: scul
+            school: scul,
+            admins
         }
     };
 

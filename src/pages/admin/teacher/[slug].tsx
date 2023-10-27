@@ -41,7 +41,6 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
 
   const route = useRouter();
   const handleEdit = async (teacher: ITeacher) => {
-    console.log("API?")
     const resp = await chibalApi({
       method: "PUT",
       url: "/admin",
@@ -63,7 +62,6 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
   };
 
   const onSubmit = (form: FormData) => {
-    console.log(teacher);
     const values = getValues();
     setProfe({
       Usuario_id: teacher.Usuario_id,
@@ -78,11 +76,8 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
     //? Aquí se hace el insert en base de datos?
     if(profe){
       if( profe.Usuario_id ){
-          console.log("Editar")
           return handleEdit( profe );
       }else{
-          console.log("Crear");
-          console.log(profe)
           return handleNew( profe );
       }
       //saveAdmin( administrator ); //<--- Esto va en API

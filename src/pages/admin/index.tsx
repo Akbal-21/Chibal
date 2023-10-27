@@ -6,7 +6,7 @@ import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai"
 
 const AdminPage = () => {
   const { teachers, isError, isLoading } = useTeacher("admin");
-  console.log(teachers);
+  //console.log(teachers);
 
   const handleDelete = async (Usuario_id: number | undefined) => {
     await chibalApi({
