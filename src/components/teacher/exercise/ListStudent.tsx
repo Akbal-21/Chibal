@@ -16,9 +16,9 @@ export const ListStudent: FC<Props> = ({ student }) => {
       return user.Usuarios_id === Usuarios.Usuarios_id;
     });
     setIsSelectStudent(isSelect);
-    console.log(allStudents);
-  }, [allStudents]);
+  }, [isSelectStudent]);
 
+  console.log(allStudents);
   //if (
   //  allStudents.find(function (user) {
   //    return user.Usuarios_id === student.Usuarios.Usuarios_id;
@@ -42,7 +42,7 @@ export const ListStudent: FC<Props> = ({ student }) => {
         <input
           type="checkbox"
           className="checkbox"
-          defaultChecked={isSelectStudent}
+          checked={isSelectStudent}
           onChange={() => hancdleChange()}
         />
         <span>
