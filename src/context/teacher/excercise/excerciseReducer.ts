@@ -11,10 +11,6 @@ type ExcerciseActionType =
       payload: ISetStudentsExerciseContext;
     }
   | {
-      type: "[Excercise] - Add All Students to Excercise";
-      payload: ISetStudentsExerciseContext[];
-    }
-  | {
       type: "[Excercise] - Reset Student List";
     };
 
@@ -35,12 +31,6 @@ export const excerciseReducer = (
         allStudents: state.allStudents.filter(
           (student) => !(student.Usuarios_id === action.payload.Usuarios_id),
         ),
-      };
-
-    case "[Excercise] - Add All Students to Excercise":
-      return {
-        ...state,
-        allStudents: [...state.allStudents, ...action.payload],
       };
 
     case "[Excercise] - Reset Student List":

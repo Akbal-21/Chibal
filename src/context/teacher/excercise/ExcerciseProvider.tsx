@@ -21,6 +21,8 @@ export const ExcerciseProvider: FC<Props> = ({ children }) => {
   );
 
   const addStudentAtExcercise = (student: ISetStudentsExerciseContext) => {
+    console.log(student);
+
     dispatch({
       type: "[Excercise] - Add Student to Excercise",
       payload: student,
@@ -38,15 +40,6 @@ export const ExcerciseProvider: FC<Props> = ({ children }) => {
     });
   };
 
-  const addAllStudentsAtExcercise = (
-    students: ISetStudentsExerciseContext[],
-  ) => {
-    dispatch({
-      type: "[Excercise] - Add All Students to Excercise",
-      payload: students,
-    });
-  };
-
   return (
     <ExcerciseContext.Provider
       value={{
@@ -55,7 +48,7 @@ export const ExcerciseProvider: FC<Props> = ({ children }) => {
         //Meyhods
         addStudentAtExcercise,
         removeStudentAtExcercise,
-        addAllStudentsAtExcercise,
+
         resetListStudent,
       }}
     >

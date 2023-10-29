@@ -372,14 +372,7 @@ const ExcersisePage: NextPage<Props> = ({
                     </label>
                     <ul className="dropdown-menu">
                       {studentsGroup.map((student) => {
-                        const isSelect = allStudents.some(function (user) {
-                          return (
-                            user.Usuarios_id === student.Usuarios.Usuarios_id
-                          );
-                        });
-                        return (
-                          <ListStudent student={student} isSelect={isSelect} />
-                        );
+                        return <ListStudent student={student} />;
                       })}
                     </ul>
                   </div>

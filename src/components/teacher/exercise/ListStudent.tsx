@@ -1,28 +1,40 @@
 import { ExcerciseContext } from "@/context";
 import { IGetAllStudentsByTeacherID } from "@/interface";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 interface Props {
   student: IGetAllStudentsByTeacherID;
-  isSelect: boolean;
 }
 
-export const ListStudent: FC<Props> = ({ student, isSelect }) => {
+export const ListStudent: FC<Props> = ({ student }) => {
   const { allStudents, addStudentAtExcercise, removeStudentAtExcercise } =
     useContext(ExcerciseContext);
+  const [isSelectStudent, setIsSelectStudent] = useState<boolean>(false);
+  const { Usuarios } = student;
+  useEffect(() => {
+    const isSelect = allStudents.some(function (user) {
+      return user.Usuarios_id === Usuarios.Usuarios_id;
+    });
+    setIsSelectStudent(isSelect);
+    console.log(allStudents);
+  }, [allStudents]);
 
-  const [isSelectStudent, setIsSelectStudent] = useState<boolean>(isSelect);
+  //if (
+  //  allStudents.find(function (user) {
+  //    return user.Usuarios_id === student.Usuarios.Usuarios_id;
+  //  })
+  //) {
+  //  setIsSelectStudent(true);
+  //}
 
-  // const hancdleChange = () => {
-  //   setIsSelectStudent(!isSelectStudent);
-  //   if (isSelectStudent === true) {
-  //     addStudentAtExcercise(student.Usuarios);
-  //   } else {
-  //     removeStudentAtExcercise(student.Usuarios);
-  //   }
-
-  //   console.log(allStudents);
-  // };
+  const hancdleChange = () => {
+    setIsSelectStudent(!isSelectStudent);
+    if (isSelectStudent === true) {
+      addStudentAtExcercise(Usuarios);
+    } else if (isSelectStudent === false) {
+      removeStudentAtExcercise(Usuarios);
+    }
+  };
 
   return (
     <li key={student.Usuarios.Usuarios_id} className="dropdown-item">
@@ -30,8 +42,8 @@ export const ListStudent: FC<Props> = ({ student, isSelect }) => {
         <input
           type="checkbox"
           className="checkbox"
-          checked={isSelectStudent}
-          // onChange={hancdleChange}
+          defaultChecked={isSelectStudent}
+          onChange={() => hancdleChange()}
         />
         <span>
           {`${student.Usuarios.Apellidos} ${student.Usuarios.Nombres}`}

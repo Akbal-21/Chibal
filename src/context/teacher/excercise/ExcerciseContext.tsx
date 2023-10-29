@@ -6,7 +6,6 @@ interface ContextProps {
   //Methods
   addStudentAtExcercise: (student: ISetStudentsExerciseContext) => void;
   removeStudentAtExcercise: (student: ISetStudentsExerciseContext) => void;
-  addAllStudentsAtExcercise: (students: ISetStudentsExerciseContext[]) => void;
   resetListStudent: () => void;
 }
 
