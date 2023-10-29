@@ -1,54 +1,69 @@
-import { ExcerciseContext } from "@/context";
-import { IGetAllStudentsByTeacherID } from "@/interface";
-import { FC, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
+import { ExcerciseContext } from '@/context';
+import { IGetAllStudentsByTeacherID } from '@/interface';
 
 interface Props {
-  student: IGetAllStudentsByTeacherID;
+  group: IGetAllStudentsByTeacherID[];
 }
 
-export const ListStudent: FC<Props> = ({ student }) => {
+export const ListStudent: React.FC<Props> = ({ group }) => {
   const { allStudents, addStudentAtExcercise, removeStudentAtExcercise } =
     useContext(ExcerciseContext);
-  const [isSelectStudent, setIsSelectStudent] = useState<boolean>(false);
-  const { Usuarios } = student;
-  useEffect(() => {
-    const isSelect = allStudents.some(function (user) {
-      return user.Usuarios_id === Usuarios.Usuarios_id;
-    });
-    setIsSelectStudent(isSelect);
-    console.log(allStudents);
-  }, [allStudents]);
 
-  //if (
-  //  allStudents.find(function (user) {
-  //    return user.Usuarios_id === student.Usuarios.Usuarios_id;
-  //  })
-  //) {
-  //  setIsSelectStudent(true);
-  //}
+  const handleChange = (student: IGetAllStudentsByTeacherID) => {
+    const found = allStudents.find((user) => user.Usuarios_id === student.Usuarios.Usuarios_id);
 
-  const hancdleChange = () => {
-    setIsSelectStudent(!isSelectStudent);
-    if (isSelectStudent === true) {
-      addStudentAtExcercise(Usuarios);
-    } else if (isSelectStudent === false) {
-      removeStudentAtExcercise(Usuarios);
+    if (found) {
+      removeStudentAtExcercise(student.Usuarios);
+    } else {
+      addStudentAtExcercise(student.Usuarios);
     }
   };
 
+  const handleToggleAll = () => {
+    if (allStudents.length === group.length) {
+      // Si todos los estudiantes están seleccionados, deseleccionar todos
+      group.forEach((student) => {
+        removeStudentAtExcercise(student.Usuarios);
+      });
+    } else {
+      // Si no todos los estudiantes están seleccionados, seleccionar todos
+      group.forEach((student) => {
+        addStudentAtExcercise(student.Usuarios);
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log('Updated allStudents:', allStudents);
+  }, [allStudents]);
+
   return (
-    <li key={student.Usuarios.Usuarios_id} className="dropdown-item">
-      <label className="flex cursor-pointer gap-2">
-        <input
-          type="checkbox"
-          className="checkbox"
-          defaultChecked={isSelectStudent}
-          onChange={() => hancdleChange()}
-        />
-        <span>
-          {`${student.Usuarios.Apellidos} ${student.Usuarios.Nombres}`}
-        </span>
-      </label>
-    </li>
+    <ul className="dropdown-menu">
+      <li>
+        <label className="flex cursor-pointer gap-2">
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={allStudents.length === group.length}
+            onChange={handleToggleAll}
+          />
+          <span>Marcar Todos</span>
+        </label>
+      </li>
+      {group.map((student) => (
+        <li key={student.Usuarios.Usuarios_id} className="dropdown-item">
+          <label className="flex cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={allStudents.some((user) => user.Usuarios_id === student.Usuarios.Usuarios_id)}
+              onChange={() => handleChange(student)}
+            />
+            <span>{`${student.Usuarios.Apellidos} ${student.Usuarios.Nombres}`}</span>
+          </label>
+        </li>
+      ))}
+    </ul>
   );
 };

@@ -22,16 +22,22 @@ export const excerciseReducer = (
     case "[Excercise] - Add Student to Excercise":
       return {
         ...state,
-        allStudents: [...state.allStudents, action.payload],
+        allStudents: state.allStudents.includes(action.payload)
+          ? state.allStudents
+          : [...state.allStudents, action.payload],
       };
+      
 
     case "[Excercise] - Remove Student to Excercise":
       return {
         ...state,
-        allStudents: state.allStudents.filter(
-          (student) => !(student.Usuarios_id === action.payload.Usuarios_id),
-        ),
+        allStudents: state.allStudents
+          .filter((student) => student.Usuarios_id !== action.payload.Usuarios_id)
+          .filter((student, index, self) => 
+            self.findIndex((s) => s.Usuarios_id === student.Usuarios_id) === index
+          ),
       };
+      
 
     case "[Excercise] - Reset Student List":
       return {
