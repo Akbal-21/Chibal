@@ -9,9 +9,9 @@ datasource db {
 }
 
 model Administrador {
-  Usuario_id Int       @id
-  Usuarios   Usuarios  @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
-  Escuela    Escuela[]
+  Usuario_id Int      @id
+  Usuarios   Usuarios @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
+  Escuela    Escuela?
 }
 
 model Alumnos {
@@ -43,7 +43,7 @@ model Ejercicios {
 model Escuela {
   Escuela_id       Int            @id @default(autoincrement())
   Nombre           String         @db.VarChar
-  Administrador_id Int?
+  Administrador_id Int?           @unique
   Administrador    Administrador? @relation(fields: [Administrador_id], references: [Usuario_id], onDelete: NoAction, onUpdate: NoAction)
   Grupos           Grupos[]
   Maestros         Maestros[]

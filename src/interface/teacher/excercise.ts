@@ -74,3 +74,27 @@ export interface UpdateShift {
   Respuesta: string | null;
   Inciso_id: number;
 }
+
+export interface IGetAllStudentsByTeacherID {
+  Usuarios: {
+    Usuarios_id: number;
+    Nombres: string;
+    Apellidos: string;
+  };
+}
+
+export interface IGetStudentAsigmentExercise {
+  Alumnos: {
+    Usuarios: {
+      Usuarios_id: number;
+      Nombres: string;
+      Apellidos: string;
+    };
+  };
+}
+
+export interface ISetStudentsExerciseContext {
+  Usuarios_id: number;
+  Nombres: string;
+  Apellidos: string;
+}

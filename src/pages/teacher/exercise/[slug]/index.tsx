@@ -1,5 +1,8 @@
 import { SigInLayout } from "@/components";
+import { ListStudent } from "@/components/teacher/exercise/ListStudent";
+import { ExcerciseContext } from "@/context";
 import {
+  getAllStudentsByTeacherId,
   getDataOfExercise,
   getLine,
   getTypePublisher,
@@ -9,13 +12,16 @@ import {
   DataExerciseStgring,
   IExercise,
   IExerciseTeacherDB,
+  IGetAllStudentsByTeacherID,
+  IGetStudentAsigmentExercise,
   ILine,
+  ISetStudentsExerciseContext,
   ITypeExercise,
   ITypePublisher,
 } from "@/interface/";
 import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
 import { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
@@ -34,6 +40,8 @@ interface Props {
   typeOfExercise: ITypeExercise[];
   incisos: ILine[];
   typeOfPublisher: ITypePublisher[];
+  studentsGroup: IGetAllStudentsByTeacherID[];
+  asigmentStudentExcercise: IGetStudentAsigmentExercise[];
 }
 
 const ExcersisePage: NextPage<Props> = ({
@@ -41,7 +49,11 @@ const ExcersisePage: NextPage<Props> = ({
   typeOfExercise,
   incisos,
   typeOfPublisher,
+  studentsGroup,
+  asigmentStudentExcercise,
 }) => {
+  const { addStudentAtExcercise, resetListStudent, allStudents } =
+    useContext(ExcerciseContext);
   const [dates, setDates] = useState<{
     dateLimit: Date | null;
   }>({
@@ -59,6 +71,7 @@ const ExcersisePage: NextPage<Props> = ({
   const [dataIncises, setDataIncises] = useState("");
 
   useEffect(() => {
+    resetListStudent();
     setAddExercise([]);
     if (incisos.length > 0) {
       const { TipoEjercicio_id } = exercises;
@@ -103,6 +116,23 @@ const ExcersisePage: NextPage<Props> = ({
         Number(TipoEjercicio_id),
       );
     }
+
+    console.log(asigmentStudentExcercise.length, allStudents.length);
+
+    if (asigmentStudentExcercise.length === 0) {
+      for (const key in studentsGroup) {
+        const student: ISetStudentsExerciseContext =
+          studentsGroup[key].Usuarios;
+        addStudentAtExcercise(student);
+      }
+    } else {
+      for (const key in asigmentStudentExcercise) {
+        const student: ISetStudentsExerciseContext =
+          asigmentStudentExcercise[key].Alumnos.Usuarios;
+        addStudentAtExcercise(student);
+      }
+    }
+    console.log(asigmentStudentExcercise.length, allStudents.length);
   }, []);
 
   const {
@@ -223,6 +253,8 @@ const ExcersisePage: NextPage<Props> = ({
     }
   };
 
+  let isAsigment = false;
+
   return (
     <SigInLayout titel={`Ejercicio ${exercises.Ejercicios_id}`}>
       <div className="pt-11">
@@ -287,7 +319,7 @@ const ExcersisePage: NextPage<Props> = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
                   Tipo de Ejercicio:
                   <br />
@@ -331,6 +363,38 @@ const ExcersisePage: NextPage<Props> = ({
                         // setDateLimit(date)
                       }
                     />
+                  </div>
+                </div>
+
+                <div>
+                  Alumnos asignados:
+                  <br />
+                  <div className="dropdown w-full">
+                    {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
+                    <label className="btn btn-solid-primary" tabIndex={0}>
+                      click
+                    </label>
+                    <ul className="dropdown-menu">
+                      {studentsGroup.map((student) => {
+                        for (let i = 0; i < allStudents.length; i++) {
+                          if (
+                            allStudents[i].Usuarios_id ===
+                            student.Usuarios.Usuarios_id
+                          ) {
+                            isAsigment = true;
+                            break;
+                          } else {
+                            isAsigment = false;
+                          }
+                        }
+                        return (
+                          <ListStudent
+                            student={student}
+                            isAsigment={isAsigment}
+                          />
+                        );
+                      })}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -427,6 +491,7 @@ const ExcersisePage: NextPage<Props> = ({
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
+  const parts = slug.toString().split("-");
 
   let exercises: IExercise | IExerciseTeacherDB | null;
 
@@ -440,18 +505,32 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
     incisos = [];
   } else {
-    const datExercise = await getDataOfExercise(slug.toString());
+    const datExercise = await getDataOfExercise(parts[0]);
     exercises = JSON.parse(JSON.stringify(datExercise));
-    const datLine = await getLine(slug.toLocaleString());
+    const datLine = await getLine(parts[0]);
     incisos = JSON.parse(JSON.stringify(datLine));
   }
+
+  const getAllStudents:
+    | Error
+    | {
+        studentsGroup: IGetAllStudentsByTeacherID[];
+        asigmentStudentExcercise: IGetStudentAsigmentExercise[];
+      }
+    | undefined = await getAllStudentsByTeacherId(parts);
 
   const typeOfExercise = await getTypeofExercise();
 
   const typeOfPublisher: ITypePublisher[] | undefined =
     await getTypePublisher();
 
-  if (!exercises || !typeOfExercise || !typeOfPublisher) {
+  if (
+    !exercises ||
+    !typeOfExercise ||
+    !typeOfPublisher ||
+    !getAllStudents ||
+    getAllStudents instanceof Error
+  ) {
     return {
       redirect: {
         destination: "/teacher/exercise",
@@ -459,6 +538,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       },
     };
   }
+  const { asigmentStudentExcercise, studentsGroup } = getAllStudents;
 
   return {
     props: {
@@ -466,6 +546,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       typeOfExercise,
       incisos,
       typeOfPublisher,
+      asigmentStudentExcercise,
+      studentsGroup,
     },
   };
 };

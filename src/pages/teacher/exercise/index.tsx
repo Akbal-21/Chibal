@@ -7,7 +7,7 @@ import { AiOutlineUsergroupAdd } from "react-icons/ai";
 const ExcercisePage = () => {
   const route = useRouter();
   const handleNew = () => {
-    return route.replace("/teacher/exercise/new");
+    return route.replace(`/teacher/exercise/new-${user?.Usuarios_id}`);
   };
 
   const { user } = useContext(AuthContext);
@@ -18,7 +18,9 @@ const ExcercisePage = () => {
 
   const handleEdith = (Ejercicios_id: number) => {
     console.log(Ejercicios_id);
-    return route.replace(`/teacher/exercise/${Ejercicios_id}`);
+    return route.replace(
+      `/teacher/exercise/${Ejercicios_id}-${user?.Usuarios_id}`,
+    );
   };
 
   const handleDelete = (Ejercicios_id: number) => {
