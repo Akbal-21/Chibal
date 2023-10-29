@@ -1,27 +1,38 @@
 import { ExcerciseContext } from "@/context";
-import {
-  IGetAllStudentsByTeacherID,
-  ISetStudentsExerciseContext,
-} from "@/interface";
+import { IGetAllStudentsByTeacherID } from "@/interface";
 import { FC, useContext, useState } from "react";
 
 interface Props {
   student: IGetAllStudentsByTeacherID;
-  isAsigment: boolean;
+  isSelect: boolean;
 }
 
-export const ListStudent: FC<Props> = ({ student, isAsigment }) => {
-  console.log(isAsigment);
+export const ListStudent: FC<Props> = ({ student, isSelect }) => {
+  const { allStudents, addStudentAtExcercise, removeStudentAtExcercise } =
+    useContext(ExcerciseContext);
 
-  const { allStudents } = useContext(ExcerciseContext);
-  const [isSelectStudent, setIsSelectStudent] = useState<boolean>(isAsigment);
-  const user: ISetStudentsExerciseContext = student.Usuarios;
-  console.log(allStudents, user);
+  const [isSelectStudent, setIsSelectStudent] = useState<boolean>(isSelect);
+
+  // const hancdleChange = () => {
+  //   setIsSelectStudent(!isSelectStudent);
+  //   if (isSelectStudent === true) {
+  //     addStudentAtExcercise(student.Usuarios);
+  //   } else {
+  //     removeStudentAtExcercise(student.Usuarios);
+  //   }
+
+  //   console.log(allStudents);
+  // };
 
   return (
     <li key={student.Usuarios.Usuarios_id} className="dropdown-item">
       <label className="flex cursor-pointer gap-2">
-        <input type="checkbox" className="checkbox" checked={isSelectStudent} />
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={isSelectStudent}
+          // onChange={hancdleChange}
+        />
         <span>
           {`${student.Usuarios.Apellidos} ${student.Usuarios.Nombres}`}
         </span>

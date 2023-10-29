@@ -117,8 +117,6 @@ const ExcersisePage: NextPage<Props> = ({
       );
     }
 
-    console.log(asigmentStudentExcercise.length, allStudents.length);
-
     if (asigmentStudentExcercise.length === 0) {
       for (const key in studentsGroup) {
         const student: ISetStudentsExerciseContext =
@@ -132,7 +130,7 @@ const ExcersisePage: NextPage<Props> = ({
         addStudentAtExcercise(student);
       }
     }
-    console.log(asigmentStudentExcercise.length, allStudents.length);
+    console.log(asigmentStudentExcercise);
   }, []);
 
   const {
@@ -252,8 +250,6 @@ const ExcersisePage: NextPage<Props> = ({
       ]);
     }
   };
-
-  let isAsigment = false;
 
   return (
     <SigInLayout titel={`Ejercicio ${exercises.Ejercicios_id}`}>
@@ -376,22 +372,13 @@ const ExcersisePage: NextPage<Props> = ({
                     </label>
                     <ul className="dropdown-menu">
                       {studentsGroup.map((student) => {
-                        for (let i = 0; i < allStudents.length; i++) {
-                          if (
-                            allStudents[i].Usuarios_id ===
-                            student.Usuarios.Usuarios_id
-                          ) {
-                            isAsigment = true;
-                            break;
-                          } else {
-                            isAsigment = false;
-                          }
-                        }
+                        const isSelect = allStudents.some(function (user) {
+                          return (
+                            user.Usuarios_id === student.Usuarios.Usuarios_id
+                          );
+                        });
                         return (
-                          <ListStudent
-                            student={student}
-                            isAsigment={isAsigment}
-                          />
+                          <ListStudent student={student} isSelect={isSelect} />
                         );
                       })}
                     </ul>
