@@ -1,3 +1,4 @@
+import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
 import { AuthContext } from "@/context";
 import { useGroup } from "@/hooks";
@@ -24,8 +25,12 @@ const GroupPage = () => {
     return;
   };
 
-  const handleDelete = (Grupos_id: number) => {
-    console.log(Grupos_id);
+  const handleDelete = async (Grupos_id: number) => {
+    const { data } = await chibalApi({
+      method: "DELETE",
+      url: "/teacher/newGroup",
+      data: Grupos_id,
+    });
   };
 
   return (

@@ -1,10 +1,8 @@
 import { AuthLayouth } from "@/components/layouths";
-import { AuthContext } from "@/context";
 import { isEmail } from "@/utils";
 import { GetServerSideProps } from "next";
 import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { SiMaildotru } from "react-icons/si";
@@ -15,10 +13,6 @@ type FormData = {
 };
 
 const LoginPage = () => {
-  const router = useRouter();
-
-  // const { loginUser, user } = useLoginUser();
-  const { loginUser, user } = useContext(AuthContext);
 
   //*Formulario
   const {
@@ -32,17 +26,7 @@ const LoginPage = () => {
 
   // *funcion del form
   const onLoginUser = async ({ email, password }: FormData) => {
-    // await login(email, password);
-
-    // biome-ignore lint/complexity/noExtraBooleanCast: <explanation>
-    console.log(!!!signIn);
     await signIn("credentials", { email, password });
-
-    // if (!signIn) {
-    //   setShowError(true);
-    //   setTimeout(() => setShowError(false), 3000);
-    //   return;
-    // }
   };
 
   return (
@@ -57,7 +41,7 @@ const LoginPage = () => {
           )}
           <form onSubmit={handleSubmit(onLoginUser)} noValidate>
             {/* email */}
-            <label className="form-label text-lg">Coreo electonico</label>
+            <label className="form-label text-lg">Correo electrónico</label>
             {errors.email && (
               <span className=" badge badge-error m-1">
                 {errors.email.message}
@@ -102,7 +86,7 @@ const LoginPage = () => {
                 placeholder="Enter password"
                 {...register("password", {
                   required: "Este campo es requerido",
-                  minLength: { value: 6, message: "Minimo 6 caracteres" },
+                  minLength: { value: 6, message: "Mínimo 6 caracteres" },
                 })}
               />
 
@@ -132,8 +116,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const user: any = structuredClone(session?.user);
-  console.log(user);
-
   if (user?.roll === "Alumno") {
     return {
       redirect: {

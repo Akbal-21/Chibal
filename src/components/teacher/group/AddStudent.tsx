@@ -1,99 +1,176 @@
-import { IDataStudentDB, IStudentDataGroup } from "@/interface";
+import { chibalApi } from "@/api";
+import { GroupContext } from "@/context";
 import { isEmail } from "@/utils";
-import { useState } from "react";
+import { FC, useContext } from "react";
+import { useForm } from "react-hook-form";
+import { BiUserCircle } from "react-icons/bi";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { SiMaildotru } from "react-icons/si";
 
-export const AddStudent = () => {
-  const [addStudent, setAddStudent] = useState<IDataStudentDB[]>([]);
+interface Props {
+  slug: string;
+}
 
-  const [studentState, setStudentState] = useState<IStudentDataGroup>({
-    Nombres: "",
-    Apellidos: "",
-    Correo: "",
-    Contrasena: "",
-  });
+type FormData = {
+  names: string;
+  lastsNames: string;
+  email: string;
+  password: string;
+};
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setStudentState({
-      ...studentState,
-      [name]: value,
-    });
-  };
+export const AddStudent: FC<Props> = ({ slug }) => {
+  const { addStudent, students } = useContext(GroupContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
-  const handleAddStudent = () => {
-    console.log(studentState);
-    const mail = isEmail(studentState.Correo);
-    console.log(!!mail);
-    if (
-      studentState.Nombres.length < 3 ||
-      studentState.Apellidos.length < 3 ||
-      studentState.Contrasena.length < 6
-    ) {
-      alert("Los campos deben de tener mas de 3 caracteres");
-
-      return;
-    }
-
-    setAddStudent([
-      ...addStudent,
-      {
-        Nombres: studentState.Nombres,
-        Apellidos: studentState.Apellidos,
-        Correo: studentState.Correo,
-        Contrasena: studentState.Contrasena,
+  // *Estados
+  const handleAddStudent = async ({
+    email,
+    lastsNames,
+    names,
+    password,
+  }: FormData) => {
+    const data = await chibalApi({
+      url: "/teacher/newGroup",
+      method: "POST",
+      data: {
+        email,
+        lastsNames,
+        names,
+        password,
+        slug,
       },
-    ]);
+    });
+
+    console.log(data);
   };
   return (
     <div>
       <div className="divider divider-horizontal">Agregar un alumno</div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label>
-            Correo
-            <input
-              className="input input-solid max-w-full"
-              placeholder="email@google.com"
-              type="email"
-              name="Correo"
-            />
-          </label>
+      <form onSubmit={handleSubmit(handleAddStudent)} noValidate>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <div>
+              <label className="form-label text-lg">Nombres</label>
+              {errors.names && (
+                <span className=" badge badge-error m-1">
+                  {errors.names.message}
+                </span>
+              )}
+              <div className="form-control relative w-full mb-4">
+                <input
+                  type="text"
+                  className={
+                    !errors.names
+                      ? "input input-lg max-w-full pl-10"
+                      : "input input-error input-lg max-w-full pl-10"
+                  }
+                  placeholder="Nombres"
+                  {...register("names", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 3, message: "Mínimo 3 caracteres" },
+                  })}
+                />
+                <span className="absolute inset-y-0 left-3 inline-flex items-center">
+                  <BiUserCircle />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <label className="form-label text-lg">Apellidos</label>
+              {errors.lastsNames && (
+                <span className=" badge badge-error m-1">
+                  {errors.lastsNames.message}
+                </span>
+              )}
+              <div className="form-control relative w-full mb-4">
+                <input
+                  type="text"
+                  className={
+                    !errors.lastsNames
+                      ? "input input-lg max-w-full pl-10"
+                      : "input input-error input-lg max-w-full pl-10"
+                  }
+                  placeholder="Apellidos"
+                  {...register("lastsNames", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 3, message: "Mínimo 3 caracteres" },
+                  })}
+                />
+                <span className="absolute inset-y-0 left-3 inline-flex items-center">
+                  <BiUserCircle />
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          Contraseña
-          <input
-            className="input input-solid max-w-full"
-            placeholder="Contraseña"
-            type="password"
-            name="Contrasena"
-          />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label className="form-label text-lg">Correo</label>
+            {errors.email && (
+              <span className=" badge badge-error m-1">
+                {errors.email.message}
+              </span>
+            )}
+            <div className="form-control relative w-full mb-4">
+              <input
+                type="email"
+                className={
+                  !errors.email
+                    ? "input input-lg max-w-full pl-10"
+                    : "input input-error input-lg max-w-full pl-10"
+                }
+                placeholder="Enter email"
+                {...register("email", {
+                  required: "Este campo es requerido",
+                  validate: isEmail,
+                })}
+              />
+              <span className="absolute inset-y-0 left-3 inline-flex items-center">
+                <SiMaildotru />
+              </span>
+            </div>
+          </div>
+          <div>
+            <label className="form-label text-lg">Contreseña</label>
+            {errors.password && (
+              <span className=" badge badge-error m-1">
+                {errors.password.message}
+              </span>
+            )}
+            <div className="form-control relative w-full mb-5">
+              <input
+                type="password"
+                className={
+                  !errors.password
+                    ? "input input-lg max-w-full pl-10"
+                    : "input input-error input-lg max-w-full pl-10 "
+                }
+                placeholder="Enter password"
+                {...register("password", {
+                  required: "Este campo es requerido",
+                  minLength: { value: 6, message: "Mínimo 6 caracteres" },
+                })}
+              />
+
+              <span className="absolute inset-y-0 left-3 inline-flex items-center">
+                <RiLockPasswordLine />
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
         <div>
-          Nombres:
-          <input
-            className="input input-solid max-w-full"
-            placeholder="Nombre"
-            type="text"
-            name="Nombres"
-          />
+          <button className="btn btn-success mt-6 w-full" type="submit">
+            Agregar
+          </button>
         </div>
-        <div>
-          Apellidos
-          <input
-            className="input input-solid max-w-full"
-            placeholder="Apellidos"
-            type="text"
-            name="Apellidos"
-          />
-        </div>
-      </div>
-      <div>
-        <button className="btn btn-success mt-6 w-full" type="button">
-          Agregar
-        </button>
-      </div>
+      </form>
     </div>
   );
 };

@@ -1,9 +1,8 @@
 import { IDataGroup } from "@/interface";
 import { db } from "..";
 
-export const getDataGroup = async (idUser: string) => {
+export const getDataGroup = async (idGroup: string) => {
   // let informacionGrupos;
-
   await db.prisma.$connect();
 
   const dataGroup: IDataGroup[] = await db.prisma.grupos.findMany({
@@ -20,6 +19,7 @@ export const getDataGroup = async (idUser: string) => {
           },
         },
       },
+      Turno: true,
       NombreGrupo: true,
       Grado_id: true,
       Grado: {
@@ -29,7 +29,7 @@ export const getDataGroup = async (idUser: string) => {
       },
     },
     where: {
-      Grupos_id: Number(idUser),
+      Grupos_id: Number(idGroup),
     },
   });
 

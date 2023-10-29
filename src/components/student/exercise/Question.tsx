@@ -1,31 +1,30 @@
+import { chibalApi } from "@/api";
+import { AuthContext } from "@/context";
 import { canvasToNeg, modelUrls, predictionValue } from "@/functions";
 import { IQuestion } from "@/interface";
 import { useQuestionsStore } from "@/store/student/question";
 import { LayersModel, Rank, Tensor, loadLayersModel } from "@tensorflow/tfjs";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
+import { useContext, useEffect, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { Footer } from ".";
 
 export const Question = () => {
-  const { questions, currentQuestion, goNextQuestion, goPreviousQuestion } =
-    useQuestionsStore();
+  const { user } = useContext(AuthContext);
+  const {
+    questions,
+    currentQuestion,
+    goNextQuestion,
+    goPreviousQuestion,
+    selectAnswer,
+  } = useQuestionsStore();
   const info: IQuestion = questions[currentQuestion];
   // console.log(info.code);
   let modelIndex: 0 | 1 = 0;
 
-  useQuestionsStore();
   const [predictValue, setPredictValue] = useState("");
-
-  const updatePredictValue = (newValue: string) => {
-    setPredictValue(newValue);
-  };
-  const { selectAnswer } = useQuestionsStore();
 
   // !Refactorizar desde aca
   const [model, setModel] = useState<LayersModel>();
-  const [imageUrl, setImageUrl] = useState("");
   const canvasRef = useRef<SignatureCanvas>(null);
   // Se carga el modelo
   useEffect(() => {
@@ -61,15 +60,21 @@ export const Question = () => {
 
       const predictionsArray = predict.arraySync();
 
-      predictCharacter(predictionsArray);
+      const prob = predictCharacter(predictionsArray);
+      return prob;
     }
   };
 
   // Función para procesar la predicción
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const predictCharacter = (predictionsArray: any): void => {
+  const predictCharacter = async (
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    predictionsArray: any,
+  ): Promise<{
+    maxProb: number;
+    newPredict3: string;
+  }> => {
     // Encontrar la clase con la probabilidad más alta
-    let maxProb = -1;
+    let maxProb = -1; //Puntaje de acierto
     let maxIndex = -1;
     for (let i = 0; i < predictionsArray[0].length; i++) {
       if (predictionsArray[0][i] > maxProb) {
@@ -81,52 +86,67 @@ export const Question = () => {
     // setPredict3(newPredict3); // Actualizar el estado
     setPredictValue(newPredict3);
 
-    console.log(newPredict3); // Imprimir en la consola
-
-    updatePredictValue(newPredict3);
+    console.log(predictValue, newPredict3); // Imprimir en la consola
+    const predict = {
+      maxProb,
+      newPredict3,
+    };
     selectAnswer(info.id, newPredict3);
+
+    return predict;
   };
 
-  // * Función para cambiar entre números y letras
-  // const toggleMode = () => {
-  // modelIndex = !modelIndex
-  //   setIsDigitMode(!isDigitMode);
-  // };
+  const handleSaveCloudinary = async () => {
+    const dataUrl = canvasRef.current
+      ?.getTrimmedCanvas()
+      .toDataURL("image/png");
 
-  const handleSave = () => {
-    const dataUrl = canvasRef.current?.getTrimmedCanvas().toDataURL();
-    setImageUrl(dataUrl || "");
+    if (!dataUrl) {
+      return;
+    }
+
+    const blob = await (await fetch(dataUrl)).blob();
+    const formData = new FormData();
+    formData.append("file", blob);
+
+    const { data } = await chibalApi.post<{ message: string }>(
+      "/student/uploadImage",
+      formData,
+    );
+    return data.message;
   };
 
   const handleClear = () => {
     canvasRef.current?.clear();
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     goNextQuestion();
-    // loadModel(info.code);
-    canvasRef.current?.clear();
+    const url = await handleSaveCloudinary();
+    const prob = await predict();
+    const { id } = questions[currentQuestion];
+    handleClear();
+    const id_User = user?.Usuarios_id;
+    console.log({ url, prob, id });
+    await chibalApi({
+      method: "POST",
+      url: "/student/doExerciseByLine",
+      data: {
+        url,
+        prob,
+        id,
+        id_User,
+      },
+    });
+    return;
   };
 
   return (
     <div>
       <div className="flex flex-row space-x-2 items-center justify-center">
-        {/* <button
-          className="p-2 hover:bg-gray-200"
-          onClick={goPreviousQuestion}
-          disabled={currentQuestion === 0}
-        >
-          <FaArrowLeft />
-        </button> */}
-        {currentQuestion + 1} / {questions.length}
-        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-        <button
-          className="p-2 hover:bg-gray-200"
-          onClick={handleNextQuestion}
-          disabled={currentQuestion >= questions.length - 1}
-        >
-          <FaArrowRight />
-        </button>
+        <div className="text-3xl font-bold">
+          {currentQuestion + 1} / {questions.length}
+        </div>
       </div>
       <div className="bg-white shadow-md p-4 rounded-md">
         <h1 className="text-xl font-bold">{info ? info.question : ""}</h1>
@@ -150,40 +170,40 @@ export const Question = () => {
             />
           </div>
           <div style={{ margin: "5px" }}>
-            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button
-              onClick={handleSave}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Guardar
-            </button>
-            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button
-              onClick={predict}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Predecir
-            </button>
-            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button
-              onClick={handleClear}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Limpiar
-            </button>
-            {/* //*
-             <button
-              onClick={toggleMode}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Cambiar a {isDigitMode ? "Números" : "Letras"}
-            </button> */}
-          </div>
-
-          <div>
-            <p>Predicción: {predictValue}</p>
-            {imageUrl && (
-              <Image src={imageUrl} alt="signature" width={50} height={50} />
+            {currentQuestion >= questions.length - 1 ? (
+              <div className="grid grid-cols-2">
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                <button
+                  onClick={handleClear}
+                  className="btn btn-primary font-bold w-full"
+                >
+                  Limpiar
+                </button>
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                <button
+                  className="btn btn-primary font-bold"
+                  onClick={handleNextQuestion}
+                >
+                  Finalizar
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2">
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                <button
+                  onClick={handleClear}
+                  className="btn btn-primary font-bold"
+                >
+                  Limpiar
+                </button>
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                <button
+                  className="btn btn-primary font-bold"
+                  onClick={handleNextQuestion}
+                >
+                  Siguiente
+                </button>
+              </div>
             )}
           </div>
         </div>
