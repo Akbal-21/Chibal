@@ -52,7 +52,7 @@ const ExcersisePage: NextPage<Props> = ({
   studentsGroup,
   asigmentStudentExcercise,
 }) => {
-  const { addStudentAtExcercise, resetListStudent, allStudents } =
+  const { addStudentAtExcercise, resetListStudent } =
     useContext(ExcerciseContext);
   const [dates, setDates] = useState<{
     dateLimit: Date | null;
@@ -127,10 +127,11 @@ const ExcersisePage: NextPage<Props> = ({
       for (const key in asigmentStudentExcercise) {
         const student: ISetStudentsExerciseContext =
           asigmentStudentExcercise[key].Alumnos.Usuarios;
+          console.log("YAREGISTRADO",student)
         addStudentAtExcercise(student);
       }
     }
-    console.log(asigmentStudentExcercise);
+    console.log("YAREGISTRADOSSS",asigmentStudentExcercise);
   }, []);
 
   const {
@@ -371,9 +372,7 @@ const ExcersisePage: NextPage<Props> = ({
                       click
                     </label>
                     <ul className="dropdown-menu">
-                      {studentsGroup.map((student) => {
-                        return <ListStudent student={student} />;
-                      })}
+                      <ListStudent group={studentsGroup}/>
                     </ul>
                   </div>
                 </div>
@@ -519,7 +518,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
   const { asigmentStudentExcercise, studentsGroup } = getAllStudents;
-
+  console.log(asigmentStudentExcercise, studentsGroup)
   return {
     props: {
       exercises,
