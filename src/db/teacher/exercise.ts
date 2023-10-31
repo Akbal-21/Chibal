@@ -1,4 +1,10 @@
-import { ILine, ITypeExercise, ITypePublisher } from "@/interface";
+import {
+  IGetAllStudentsByTeacherID,
+  IGetStudentAsigmentExercise,
+  ILine,
+  ITypeExercise,
+  ITypePublisher,
+} from "@/interface";
 import { db } from "..";
 
 export const getTypeofExercise = async () => {
@@ -51,4 +57,60 @@ export const getLine = async (Ejercicios_id: string) => {
   console.log(line);
 
   return line;
+};
+
+export const getAllStudentsByTeacherId = async (parts: string[]) => {
+  try {
+    await db.prisma.$connect();
+    const studentsGroup: IGetAllStudentsByTeacherID[] =
+      await db.prisma.alumnos.findMany({
+        select: {
+          Usuarios: {
+            select: {
+              Usuarios_id: true,
+              Nombres: true,
+              Apellidos: true,
+            },
+          },
+        },
+        where: {
+          Grupos: {
+            Maestro_id: Number(parts[1]),
+          },
+        },
+        orderBy: {
+          Usuarios: {
+            Apellidos: "asc",
+          },
+        },
+      });
+
+    const asigmentStudentExcercise: IGetStudentAsigmentExercise[] =
+      await db.prisma.alumnos_Ejercicios.findMany({
+        select: {
+          Alumnos: {
+            select: {
+              Usuarios: {
+                select: {
+                  Usuarios_id: true,
+                  Nombres: true,
+                  Apellidos: true,
+                },
+              },
+            },
+          },
+        },
+        where: {
+          EjercicioID: Number(parts[0]),
+        },
+      });
+    if (!studentsGroup || !asigmentStudentExcercise) {
+      return;
+    }
+    return { studentsGroup, asigmentStudentExcercise };
+  } catch (error) {
+    if (error instanceof Error) {
+      return error;
+    }
+  }
 };

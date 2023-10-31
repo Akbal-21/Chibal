@@ -41,51 +41,56 @@ async function checkJWT(req: NextApiRequest, res: NextApiResponse<Data>) {
   }
 
   let roll = "";
+  try {
+    await db.prisma.$connect();
 
-  await db.prisma.$connect();
+    const user = await db.prisma.usuarios.findUnique({
+      where: { Usuarios_id: Number(Usuario_id) },
+      select: {
+        Usuarios_id: true,
+        Nombres: true,
+        Correo: true,
+        Apellidos: true,
+        Contrasena: true,
+        Maestros: true,
+        Alumnos: true,
+        Administrador: true,
+        SuperAdmin: true,
+      },
+    });
 
-  const user = await db.prisma.usuarios.findUnique({
-    where: { Usuarios_id: Number(Usuario_id) },
-    select: {
-      Usuarios_id: true,
-      Nombres: true,
-      Correo: true,
-      Apellidos: true,
-      Contrasena: true,
-      Maestros: true,
-      Alumnos: true,
-      Administrador: true,
-      SuperAdmin: true,
-    },
-  });
+    await db.prisma.$disconnect();
+    if (!user) {
+      return res.status(400).json({ message: "Bad request" });
+    }
 
-  await db.prisma.$disconnect();
-  if (!user) {
-    return res.status(400).json({ message: "Bad request" });
-  }
+    if (user.Maestros) {
+      roll = "Maestro";
+    }
+    if (user.Alumnos) {
+      roll = "Alumno";
+    }
+    if (user.Administrador) {
+      roll = "Administrador";
+    }
+    if (user.SuperAdmin) {
+      roll = "SuperAdmin";
+    }
+    const { Nombres, Correo, Apellidos, Usuarios_id } = user;
 
-  if (user.Maestros) {
-    roll = "Maestro";
+    return res.status(200).json({
+      token: jwt.signToken(Usuarios_id, Correo, roll), // *JWT
+      user: {
+        Usuarios_id,
+        Nombres,
+        Correo,
+        Apellidos,
+        roll,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
   }
-  if (user.Alumnos) {
-    roll = "Alumno";
-  }
-  if (user.Administrador) {
-    roll = "Administrador";
-  }
-  if (user.SuperAdmin) {
-    roll = "SuperAdmin";
-  }
-  const { Nombres, Correo, Apellidos, Usuarios_id } = user;
-
-  return res.status(200).json({
-    token: jwt.signToken(Usuarios_id, Correo, roll), // *JWT
-    user: {
-      Usuarios_id,
-      Nombres,
-      Correo,
-      Apellidos,
-      roll,
-    },
-  });
 }

@@ -31,6 +31,8 @@ const GroupPage = () => {
       url: "/teacher/newGroup",
       data: Grupos_id,
     });
+    route.reload();
+    console.log(data);
   };
 
   return (

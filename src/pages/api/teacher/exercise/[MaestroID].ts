@@ -27,20 +27,26 @@ async function getAllExercisesbyUser(
   console.log(req.query);
   const { MaestroID } = req.query;
 
-  await db.prisma.$connect();
+  try {
+    await db.prisma.$connect();
 
-  const dataExercise: IExerciseTeacherDB[] =
-    await db.prisma.ejercicios.findMany({
-      where: {
-        MaestroID: Number(MaestroID),
-      },
-    });
+    const dataExercise: IExerciseTeacherDB[] =
+      await db.prisma.ejercicios.findMany({
+        where: {
+          MaestroID: Number(MaestroID),
+        },
+      });
 
-  await db.prisma.$disconnect();
+    await db.prisma.$disconnect();
 
-  if (!dataExercise) {
-    return res.status(404).json({ message: "Bad Request" });
+    if (!dataExercise) {
+      return res.status(404).json({ message: "Bad Request" });
+    }
+
+    return res.status(200).json({ dataExercise });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
   }
-
-  return res.status(200).json({ dataExercise });
 }
