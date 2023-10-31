@@ -15,8 +15,6 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
     case "POST":
       return addNewStudent(req, res);
     case "DELETE":
-      console.log("Hola");
-
       return deleteGroup(req, res);
 
     default:
@@ -52,30 +50,36 @@ async function addNewStudent(req: NextApiRequest, res: NextApiResponse<Data>) {
     });
   }
 
-  await db.prisma.$connect();
-  console.log("Estado1");
+  try {
+    await db.prisma.$connect();
+    console.log("Estado1");
 
-  const student: IUserPost = await db.prisma.usuarios.create({
-    data: {
-      Apellidos: lastsNames,
-      Correo: email,
-      Nombres: names,
-      Contrasena: bcrypt.hashSync(password),
-      Alumnos: {
-        create: {
-          Grupo_id: Number(slug),
+    const student: IUserPost = await db.prisma.usuarios.create({
+      data: {
+        Apellidos: lastsNames,
+        Correo: email,
+        Nombres: names,
+        Contrasena: bcrypt.hashSync(password),
+        Alumnos: {
+          create: {
+            Grupo_id: Number(slug),
+          },
         },
       },
-    },
-  });
-  await db.prisma.$disconnect();
+    });
+    await db.prisma.$disconnect();
 
-  if (!student) {
-    return res.status(400).json({ message: "Error server" });
+    if (!student) {
+      return res.status(400).json({ message: "Error server" });
+    }
+    console.log(student);
+
+    return res.status(200).json({ student });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
   }
-  console.log(student);
-
-  return res.status(200).json({ student });
 }
 
 async function deleteGroup(req: NextApiRequest, res: NextApiResponse<Data>) {

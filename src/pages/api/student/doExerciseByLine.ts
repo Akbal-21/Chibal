@@ -31,24 +31,29 @@ async function exerciseByLineStudent(
 
   const { maxProb, newPredict3 } = prob;
   console.log({ url, maxProb, newPredict3, id, id_User });
+  try {
+    await db.prisma.$connect();
 
-  await db.prisma.$connect();
+    const insertInLine = await db.prisma.respuestas.create({
+      data: {
+        Puntaje: maxProb * 100,
+        AlumnoID: id_User,
+        Inciso_id: id,
+        Imagen: url,
+        Respuesta: newPredict3,
+      },
+    });
 
-  const insertInLine = await db.prisma.respuestas.create({
-    data: {
-      Puntaje: maxProb * 100,
-      AlumnoID: id_User,
-      Inciso_id: id,
-      Imagen: url,
-      Respuesta: newPredict3,
-    },
-  });
+    if (!insertInLine) {
+      return res.status(0).json({ message: "Error en la red" });
+    }
+    await db.prisma.$disconnect();
+    // console.log(InsertLine);
 
-  if (!insertInLine) {
-    return res.status(0).json({ message: "Error en la red" });
+    return res.status(202);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
   }
-  await db.prisma.$disconnect();
-  // console.log(InsertLine);
-
-  return res.status(202);
 }

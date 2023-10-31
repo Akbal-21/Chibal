@@ -55,7 +55,6 @@ async function updateExcercise(
     addExercise: DataExerciseStgring[];
     allStudents: ISetStudentsExerciseContext[];
   };
-  console.log({ form, addExercise, allStudents });
   const {
     Ejercicios_id,
     NombreEjercicio,
@@ -82,41 +81,48 @@ async function updateExcercise(
     linesExercise.push({ line, idExcercise: Ejercicios_id });
   }
   console.log({ exerciseStudent, linesExercise });
+  try {
+    await db.prisma.$connect();
 
-  await db.prisma.$connect();
+    const exercise = await db.prisma.ejercicios.update({
+      where: {
+        Ejercicios_id,
+        MaestroID,
+      },
+      data: {
+        NombreEjercicio,
+        TipoEjercicio_id,
+        FechaPublicacion,
+        FechaLimite,
+        Estado_id,
+      },
+    });
 
-  const exercise = await db.prisma.ejercicios.update({
-    where: {
-      Ejercicios_id,
-      MaestroID,
-    },
-    data: {
-      NombreEjercicio,
-      TipoEjercicio_id,
-      FechaPublicacion,
-      FechaLimite,
-      Estado_id,
-    },
-  });
+    const exercisesStudentDelete =
+      await db.prisma.alumnos_Ejercicios.deleteMany({
+        where: {
+          EjercicioID: Ejercicios_id,
+        },
+      });
 
-  const exercisesStudentDelete = await db.prisma.alumnos_Ejercicios.deleteMany({
-    where: {
-      EjercicioID: Ejercicios_id,
-    },
-  });
+    const exercisesStudentUpdate =
+      await db.prisma.alumnos_Ejercicios.createMany({
+        data: exerciseStudent,
+      });
 
-  const exercisesStudentUpdate = await db.prisma.alumnos_Ejercicios.createMany({
-    data: exerciseStudent,
-  });
+    const exercisesLinesDelete = await db.prisma.incisos.deleteMany({
+      where: {
+        EjercicioID: Ejercicios_id,
+      },
+    });
+    await db.prisma.$disconnect();
 
-  const exercisesLinesDelete = await db.prisma.incisos.deleteMany({
-    where: {
-      EjercicioID: Ejercicios_id,
-    },
-  });
-  await db.prisma.$disconnect();
+    console.log(exercise);
 
-  console.log(exercise);
-
-  return res.status(200).json({ message: "Example" });
+    return res.status(200).json({ message: "Example" });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
+  }
 }

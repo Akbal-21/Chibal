@@ -51,8 +51,6 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   };
 
   let nivel;
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetStudents();
     if (dataGroup.length === 1) {
