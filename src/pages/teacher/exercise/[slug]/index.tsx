@@ -1,3 +1,4 @@
+import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
 import { ListStudent } from "@/components/teacher/exercise/ListStudent";
 import { ExcerciseContext } from "@/context";
@@ -30,7 +31,7 @@ import { BsFillCalendarFill } from "react-icons/bs";
 interface FormData {
   NombreEjercicio: string;
   TipoEjercicio_id?: number;
-  FechaPublicacion: string;
+  FechaPublicacion?: string;
   FechaLimite: string;
   incisos: string;
   Estado: number;
@@ -42,6 +43,7 @@ interface Props {
   typeOfPublisher: ITypePublisher[];
   studentsGroup: IGetAllStudentsByTeacherID[];
   asigmentStudentExcercise: IGetStudentAsigmentExercise[];
+  parts: string[];
 }
 
 const ExcersisePage: NextPage<Props> = ({
@@ -51,8 +53,9 @@ const ExcersisePage: NextPage<Props> = ({
   typeOfPublisher,
   studentsGroup,
   asigmentStudentExcercise,
+  parts,
 }) => {
-  const { addStudentAtExcercise, resetListStudent } =
+  const { addStudentAtExcercise, resetListStudent, allStudents } =
     useContext(ExcerciseContext);
   const [dates, setDates] = useState<{
     dateLimit: Date | null;
@@ -127,11 +130,9 @@ const ExcersisePage: NextPage<Props> = ({
       for (const key in asigmentStudentExcercise) {
         const student: ISetStudentsExerciseContext =
           asigmentStudentExcercise[key].Alumnos.Usuarios;
-          console.log("YAREGISTRADO",student)
         addStudentAtExcercise(student);
       }
     }
-    console.log("YAREGISTRADOSSS",asigmentStudentExcercise);
   }, []);
 
   const {
@@ -145,16 +146,41 @@ const ExcersisePage: NextPage<Props> = ({
     defaultValues: exercises,
   });
 
-  const onSubmit = (form: FormData) => {
+  const onSubmit = async (form: FormData) => {
     setValue("TipoEjercicio_id", typeExercise?.Tipo_id);
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     setValue("Estado", typePublisher!.Estado_id);
-    setValue("FechaPublicacion", datePublic.toDateString());
     if (dates.dateLimit !== null) {
       setValue("FechaLimite", dates.dateLimit.toDateString());
     }
+    console.log("Hola");
 
+    if (form.Estado === 2) {
+      setValue("FechaPublicacion", datePublic.toDateString());
+    }
     console.log({ form, addExercise });
+
+    if (parts[0] === "new") {
+      const saveExercise = await chibalApi({
+        method: "POST",
+        data: {
+          form,
+          addExercise,
+          allStudents,
+        },
+        url: "/teacher/exercise",
+      });
+    } else {
+      const saveExercise = await chibalApi({
+        method: "PUT",
+        data: {
+          form,
+          addExercise,
+          allStudents,
+        },
+        url: "/teacher/exercise",
+      });
+    }
   };
 
   let isCorrect: string | undefined;
@@ -369,10 +395,12 @@ const ExcersisePage: NextPage<Props> = ({
                   <div className="dropdown w-full">
                     {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
                     <label className="btn btn-solid-primary" tabIndex={0}>
-                      click
+                      {allStudents.length === studentsGroup.length
+                        ? "Todos los alumnos"
+                        : "Se selecciono alumnos"}
                     </label>
                     <ul className="dropdown-menu">
-                      <ListStudent group={studentsGroup}/>
+                      <ListStudent group={studentsGroup} />
                     </ul>
                   </div>
                 </div>
@@ -480,7 +508,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     exercises = {
       NombreEjercicio: "",
       FechaLimite: new Date().toISOString(),
-      FechaPublicacion: new Date().toISOString(),
+      FechaPublicacion: "",
     };
     incisos = [];
   } else {
@@ -518,9 +546,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
   const { asigmentStudentExcercise, studentsGroup } = getAllStudents;
-  console.log(asigmentStudentExcercise, studentsGroup)
+  console.log(asigmentStudentExcercise, studentsGroup);
   return {
     props: {
+      parts,
       exercises,
       typeOfExercise,
       incisos,

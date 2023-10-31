@@ -52,6 +52,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
 
   let nivel;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetStudents();
     if (dataGroup.length === 1) {
@@ -95,9 +96,9 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
     const teacher = user?.Usuarios_id;
     const { id_Level } = levelGroup;
     const { id_Shift } = shiftGroup;
-    if (nameGroup.length <2) {
-      alert("El nombre debe de tener mas de 2 caractertes ")
-      return
+    if (nameGroup.length < 2) {
+      alert("El nombre debe de tener mas de 2 caractertes ");
+      return;
     }
     let res;
     if (slug !== "new") {
@@ -117,6 +118,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
       navigateTo(`/teacher/group/${id_group}/editStudent`);
       return;
     }
+    router.replace("/teacher/group");
   };
 
   return (
@@ -142,7 +144,9 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                       className="input input-solid max-w-full"
                       placeholder="1A"
                       value={nameGroup}
-                      onChange={(e) => setNameGroup(e.target.value.replaceAll(" ",""))}
+                      onChange={(e) =>
+                        setNameGroup(e.target.value.replaceAll(" ", ""))
+                      }
                     />
                   </div>
 
