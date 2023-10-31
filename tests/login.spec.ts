@@ -5,15 +5,16 @@ import { test, expect } from "@playwright/test";
 const descripcion = `Modulo: Inicio de sesión
 Procedimiento:
 Iniciar sesión con correo y contraseña.
+Datos de entrada:
 Correo: ruben@a.com
 Contraseña: 123456
 Resultados esperados:
 Inicio de sesión de usuario exitoso. De lo contrario, se mostrará un error para las credenciales incorrectas.
 `;
 // *Casos a usar
-const caso1 = "Iniciar y cerrar sesión exitosos";
-const caso2 = "Usuario / Contraseña incorrectos";
-const caso3 = "Campos no válidos";
+const caso1 = "Iniciar y cerrar sesión exitosos.";
+const caso2 = "Usuario / Contraseña incorrectos.";
+const caso3 = "Campos no válidos.";
 // * BeforeEach ejecuta un codigo antes de cada caso
 // * Es OPCIONAL
 
