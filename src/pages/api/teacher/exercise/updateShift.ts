@@ -28,23 +28,26 @@ async function updateShifting(req: NextApiRequest, res: NextApiResponse) {
     Inciso_id: number;
   };
   // const studentID =()
+  try {
+    await db.prisma.$connect();
+    const updateShift: UpdateShift = await db.prisma.respuestas.update({
+      where: {
+        AlumnoID_Inciso_id: { AlumnoID: Number(id_Student), Inciso_id },
+      },
+      data: {
+        Puntaje: shift,
+      },
+    });
+    console.log(updateShift);
 
-  await db.prisma.$connect();
-  console.log("Hola");
-
-  const updateShift: UpdateShift = await db.prisma.respuestas.update({
-    where: {
-      AlumnoID_Inciso_id: { AlumnoID: Number(id_Student), Inciso_id },
-    },
-    data: {
-      Puntaje: shift,
-    },
-  });
-  console.log(updateShift);
-
-  await db.prisma.$disconnect();
-  if (!updateShift) {
-    return res.status(400).json({ message: "Hay un problema" });
+    await db.prisma.$disconnect();
+    if (!updateShift) {
+      return res.status(400).json({ message: "Hay un problema" });
+    }
+    return res.status(200).json({ updateShift });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
   }
-  return res.status(200).json({ updateShift });
 }

@@ -29,7 +29,6 @@ async function saveFile(file: formidable.File): Promise<string> {
   // fs.writeFileSync(`./${file.originalFilename}`, data);
   // fs.unlinkSync(file.filepath);
   // return;
-
   const { secure_url } = await cloudinary.uploader.upload(file.filepath);
   return secure_url;
 }
@@ -49,6 +48,12 @@ async function parseFilses(req: NextApiRequest): Promise<string> {
 }
 
 async function uploadImage(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const imageUrl = await parseFilses(req);
-  return res.status(200).json({ message: imageUrl });
+  try {
+    const imageUrl = await parseFilses(req);
+    return res.status(200).json({ message: imageUrl });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
+  }
 }

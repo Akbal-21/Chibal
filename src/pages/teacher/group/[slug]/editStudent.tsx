@@ -15,6 +15,7 @@ const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
   const { addStudent, students, resetStudents } = useContext(GroupContext);
   const router = useRouter();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (students.length === 0) {
       resetStudents();
