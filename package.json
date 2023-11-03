@@ -48,12 +48,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.2.2",
-<<<<<<< HEAD
-    "@francisco-renteria/playwright-html": "^0.3.1",
-    "@playwright/test": "^1.39.0",
-=======
     "@playwright/test": "1.39.0",
->>>>>>> origin/dev
     "@types/bcryptjs": "2.4.4",
     "@types/formidable": "2.0.4",
     "@types/js-cookie": "3.0.4",
