@@ -1,5 +1,4 @@
 import { test, expect, Locator, Page } from "@playwright/test";
-import { step } from "@tensorflow/tfjs";
 
 // *Definir descripcion del caso de prueba
 
