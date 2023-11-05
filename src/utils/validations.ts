@@ -51,5 +51,5 @@ export const isValidLineMix = (text: string): boolean => {
 };
 
 export const isTextMix = (text: string): string | undefined => {
-  return isValidLineLetter(text) ? undefined : "El texto no parece ser válido";
+  return isValidLineMix(text) ? undefined : "El texto no parece ser válido";
 };

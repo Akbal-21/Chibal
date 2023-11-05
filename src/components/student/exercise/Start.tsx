@@ -1,6 +1,10 @@
 import { useQuestionsStore } from "@/store/student/question";
 import { FC } from "react";
-
+import { modelUrls } from "@/functions";
+import { loadLayersModel } from "@tensorflow/tfjs";
+//* Precarga los modelos (mejora tiempo de carga)
+loadLayersModel(modelUrls[0]);
+loadLayersModel(modelUrls[1]);
 interface Props {
   slug: string;
   json1: string;
