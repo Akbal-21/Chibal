@@ -10,7 +10,7 @@ Resultados esperados:
     Confirmación de operaciones en la lista de grupos`;
 
 const caso1 = "Acceder a la lista de grupos";
-const caso2 = "Creación de grupo neuvo";
+const caso2 = "Creación de grupo nuevo";
 const caso3 = "Edición de grupo existente";
 const caso4 = "Eliminación de grupo existente";
 
@@ -23,8 +23,16 @@ test.beforeEach(async ({ page }) => {
     await page.getByRole("button", { name: "Ingresar" }).click();
 });
 
+
 test.describe( descripcion, () =>{
     test( caso1, async ( { page } ) => {
+        await page.getByText('Grupo').click();
+        await page.getByRole('button', { name: 'Nuevo Grupo' }).click();
+        await expect( page ).toHaveURL( new RegExp( "/teacher/group" ) );
+    } );
+
+    test( caso2, async ( { page } ) => {await page.locator('body').click();
+    await page.locator('body').click();
         await page.getByText('Grupo').click();
         await page.getByRole('button', { name: 'Nuevo Grupo' }).click();
         await page.getByPlaceholder('1A').click();
@@ -44,7 +52,6 @@ test.describe( descripcion, () =>{
         await page.getByPlaceholder('Enter password').fill('123456');
         await page.getByRole('button', { name: 'Agregar' }).click();
         await page.getByRole('button', { name: 'Guardar' }).click();
-
         await expect(page).toHaveURL(new RegExp("/teacher/group"));
     } );
 } );
