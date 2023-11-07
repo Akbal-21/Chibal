@@ -12,8 +12,8 @@ interface StudnetExercise {
 }
 
 interface LineExercise {
-  line: string;
-  idExcercise: number;
+  LoSolicitado: string;
+  EjercicioID: number;
 }
 interface FormData {
   Ejercicios_id: number;
@@ -41,8 +41,91 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
   }
 }
 
-function insertExcercise(req: NextApiRequest, res: NextApiResponse<Data>) {
+async function insertExcercise(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>,
+) {
   console.log(req.body);
+
+  const { form, addExercise, allStudents, teacherID } = req.body as {
+    form: FormData;
+    addExercise: DataExerciseStgring[];
+    allStudents: ISetStudentsExerciseContext[];
+    teacherID: string;
+  };
+  const {
+    NombreEjercicio,
+    FechaLimite,
+    FechaPublicacion,
+    TipoEjercicio_id,
+    Estado,
+  } = form;
+
+  try {
+    await db.prisma.$connect();
+
+    const groupByTeacherId = await db.prisma.grupos.findFirst({
+      select: {
+        Grupos_id: true,
+      },
+      where: {
+        Maestro_id: Number(teacherID),
+      },
+    });
+
+    if (!groupByTeacherId) {
+      return res.status(400).json({
+        message: "El maestro no tiene grupo",
+      });
+    }
+
+    console.log(groupByTeacherId);
+
+    const saveExcercise = await db.prisma.ejercicios.create({
+      data: {
+        NombreEjercicio,
+        MaestroID: Number(teacherID),
+        GrupoID: groupByTeacherId.Grupos_id,
+        TipoEjercicio_id,
+        FechaPublicacion,
+        FechaLimite,
+        Estado_id: Estado,
+      },
+    });
+
+    const linesExercise: LineExercise[] = [];
+
+    const { Ejercicios_id } = saveExcercise;
+
+    // *Incisos del Ejercicio
+    for (const key in addExercise) {
+      const line = addExercise[key].solit;
+      linesExercise.push({ LoSolicitado: line, EjercicioID: Ejercicios_id });
+    }
+
+    await db.prisma.incisos.createMany({
+      data: linesExercise,
+    });
+
+    // *Estudiantes asignados al ejercicio
+    const exerciseStudent: StudnetExercise[] = [];
+    for (const key in allStudents) {
+      const student = allStudents[key].Usuarios_id;
+      exerciseStudent.push({ AlumnoID: student, EjercicioID: Ejercicios_id });
+    }
+
+    await db.prisma.alumnos_Ejercicios.createMany({
+      data: exerciseStudent,
+    });
+
+    await db.prisma.$disconnect();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error);
+
+      return error;
+    }
+  }
   return res.status(200).json({ message: "Example" });
 }
 
@@ -78,7 +161,7 @@ async function updateExcercise(
 
   for (const key in addExercise) {
     const line = addExercise[key].solit;
-    linesExercise.push({ line, idExcercise: Ejercicios_id });
+    linesExercise.push({ LoSolicitado: line, EjercicioID: Ejercicios_id });
   }
   console.log({ exerciseStudent, linesExercise });
   try {
@@ -114,6 +197,10 @@ async function updateExcercise(
       where: {
         EjercicioID: Ejercicios_id,
       },
+    });
+
+    const exercisesLinesUpdate = await db.prisma.incisos.createMany({
+      data: linesExercise,
     });
     await db.prisma.$disconnect();
 

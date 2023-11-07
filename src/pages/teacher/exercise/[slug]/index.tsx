@@ -159,6 +159,7 @@ const ExcersisePage: NextPage<Props> = ({
       setValue("FechaPublicacion", datePublic.toDateString());
     }
     console.log({ form, addExercise });
+    const teacherID = parts[1];
 
     if (parts[0] === "new") {
       const saveExercise = await chibalApi({
@@ -167,6 +168,7 @@ const ExcersisePage: NextPage<Props> = ({
           form,
           addExercise,
           allStudents,
+          teacherID,
         },
         url: "/teacher/exercise",
       });
@@ -503,8 +505,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   let exercises: IExercise | IExerciseTeacherDB | null;
 
   let incisos: ILine[] | string;
+  console.log(parts);
 
-  if (slug === "new") {
+  if (parts[0] === "new") {
     exercises = {
       NombreEjercicio: "",
       FechaLimite: new Date().toISOString(),
@@ -525,6 +528,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         asigmentStudentExcercise: IGetStudentAsigmentExercise[];
       }
     | undefined = await getAllStudentsByTeacherId(parts);
+  console.log(getAllStudents);
 
   const typeOfExercise = await getTypeofExercise();
 

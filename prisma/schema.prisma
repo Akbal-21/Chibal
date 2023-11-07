@@ -65,7 +65,7 @@ model Grupos {
   Grupos_id   Int          @id @default(autoincrement())
   Escuela_id  Int?
   NombreGrupo String       @db.VarChar
-  Maestro_id  Int?
+  Maestro_id  Int?         @unique
   Turno_id    Int?
   Grado_id    Int?
   Alumnos     Alumnos[]
@@ -88,7 +88,7 @@ model Maestros {
   Usuario_id Int          @id
   Escuela_id Int?
   Ejercicios Ejercicios[]
-  Grupos     Grupos[]
+  Grupos     Grupos?
   Escuela    Escuela?     @relation(fields: [Escuela_id], references: [Escuela_id], onDelete: NoAction, onUpdate: NoAction)
   Usuarios   Usuarios     @relation(fields: [Usuario_id], references: [Usuarios_id], onDelete: NoAction, onUpdate: NoAction)
 }
