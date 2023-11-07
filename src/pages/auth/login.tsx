@@ -1,10 +1,11 @@
 import { AuthLayouth } from "@/components/layouths";
+import { InternationalContext } from "@/context";
 import { en, es } from "@/messages";
 import { isEmail } from "@/utils";
 import { GetServerSideProps } from "next";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { SiMaildotru } from "react-icons/si";
@@ -16,7 +17,8 @@ type FormData = {
 
 const LoginPage = () => {
   const router = useRouter();
-  const ms = router.locale === "en" ? en : es;
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
 
   //*Formulario
   const {
@@ -59,9 +61,9 @@ const LoginPage = () => {
                     ? "input input-lg max-w-full pl-10"
                     : "input input-error input-lg max-w-full pl-10"
                 }
-                placeholder="Enter email"
+                placeholder={ms.login.password}
                 {...register("email", {
-                  required: "Este campo es requerido",
+                  required: ms.login.required,
                   validate: isEmail,
                 })}
               />
@@ -87,9 +89,9 @@ const LoginPage = () => {
                     ? "input input-lg max-w-full pl-10"
                     : "input input-error input-lg max-w-full pl-10 "
                 }
-                placeholder="Enter password"
+                placeholder={ms.login.password}
                 {...register("password", {
-                  required: "Este campo es requerido",
+                  required: ms.login.required,
                   minLength: { value: 6, message: "Mínimo 6 caracteres" },
                 })}
               />
@@ -103,7 +105,7 @@ const LoginPage = () => {
               type="submit"
               className="btn btn-md btn-circle btn-primary w-full "
             >
-              Ingresar
+              {ms.login.submit}
             </button>
             {/* Fin del form */}
           </form>

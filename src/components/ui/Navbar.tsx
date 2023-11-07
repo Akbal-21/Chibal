@@ -1,4 +1,5 @@
-import { AuthContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
+import { en, es } from "@/messages";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
@@ -11,13 +12,15 @@ export const Navbar = () => {
     router.push(url);
   };
 
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+
   return (
     <div className="navbar bg-coral rounded-lg">
       <div className="navbar-start">
         <Link href={"/"} className="navbar-item p-0">
           <h1 className="text-white text-2xl">
-            <img src="/logo_chibal2.svg" alt="logo" width={"100px"}/>
-            
+            <img src="/logo_chibal2.svg" alt="logo" width={"100px"} />
           </h1>
         </Link>
       </div>
@@ -39,7 +42,6 @@ export const Navbar = () => {
             >
               <b>Maestros</b>
             </h1>
-            
           </>
         ) : user?.roll === "Maestro" ? (
           <>
@@ -48,14 +50,14 @@ export const Navbar = () => {
               className="text-white text-xl navbar-item"
               onClick={() => navigateTo("/teacher/group")}
             >
-              <b>Grupo</b>
+              <b>{ms.teacher.navbar.group}</b>
             </h1>
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <h1
               className="text-white text-xl navbar-item"
               onClick={() => navigateTo("/teacher/exercise")}
             >
-              <b>Ejercicios</b>
+              <b>{ms.teacher.navbar.exercise}</b>
             </h1>
           </>
         ) : (
@@ -87,7 +89,7 @@ export const Navbar = () => {
               // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
               tabIndex={0}
             >
-              <b>{`Hola ${user?.Nombres} `}</b>
+              <b>{`${ms.navbar.hello} ${user?.Nombres} `}</b>
             </label>
             <div className="dropdown-menu dropdown-menu-bottom-left">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}

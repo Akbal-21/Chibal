@@ -1,4 +1,9 @@
-import { AuthProvider, ExcerciseProvider, GroupProvider } from "@/context";
+import {
+  AuthProvider,
+  ExcerciseProvider,
+  GroupProvider,
+  InternationalProvider,
+} from "@/context";
 // import { ExcerciseProvider } from "@/context/teacher/excercise";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
@@ -15,11 +20,13 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       >
         <AuthProvider>
-          <GroupProvider>
-            <ExcerciseProvider>
-              <Component {...pageProps} />
-            </ExcerciseProvider>
-          </GroupProvider>
+          <InternationalProvider>
+            <GroupProvider>
+              <ExcerciseProvider>
+                <Component {...pageProps} />
+              </ExcerciseProvider>
+            </GroupProvider>
+          </InternationalProvider>
         </AuthProvider>
       </SWRConfig>
     </SessionProvider>

@@ -1,7 +1,8 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
-import { AuthContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { useGroup } from "@/hooks";
+import { en, es } from "@/messages";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import {
@@ -9,10 +10,11 @@ import {
   AiFillEdit,
   AiOutlineUsergroupAdd,
 } from "react-icons/ai";
-
 const GroupPage = () => {
   const route = useRouter();
 
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const { user } = useContext(AuthContext);
   const { escuela, isLoading } = useGroup(`teacher/${user?.Usuarios_id}`);
 
@@ -50,10 +52,10 @@ const GroupPage = () => {
                       #
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Grupo
+                      {ms.teacher.group.index.nameGroup}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Acciones
+                      {ms.teacher.group.index.action.title}
                     </th>
                   </tr>
                 </thead>
@@ -75,7 +77,7 @@ const GroupPage = () => {
                           className="btn btn-secondary m-1"
                           onClick={(e) => handleEdit(group.Grupos_id)}
                         >
-                          <AiFillEdit /> Editar
+                          <AiFillEdit /> {ms.teacher.group.index.action.edit}
                         </button>
 
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -83,7 +85,8 @@ const GroupPage = () => {
                           className="btn btn-error m-1"
                           onClick={(e) => handleDelete(group.Grupos_id)}
                         >
-                          <AiFillDelete /> Elimiar grupo
+                          <AiFillDelete />{" "}
+                          {ms.teacher.group.index.action.dellet}
                         </button>
                       </td>
                     </tr>
@@ -97,7 +100,7 @@ const GroupPage = () => {
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>
-                Nuevo Grupo
+                {ms.teacher.group.index.newGroup}
               </button>
             </div>
           </div>

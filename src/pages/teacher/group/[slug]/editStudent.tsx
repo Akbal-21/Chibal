@@ -2,20 +2,20 @@ import { AddStudent, SigInLayout, TableStudents } from "@/components";
 import { GroupContext } from "@/context";
 import { getDataGroup } from "@/db/teacher";
 import { IDataGroup } from "@/interface";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 
 interface Props {
   slug: string;
   dataGroup: IDataGroup[];
 }
 
-const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
+const editStudentPage: FC<Props> = ({ slug, dataGroup }) => {
+  console.log("Hola");
   const { addStudent, students, resetStudents } = useContext(GroupContext);
   const router = useRouter();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (students.length === 0) {
       resetStudents();
@@ -79,6 +79,7 @@ const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // const { data } = await  // your fetch function here
   const { slug = "" } = query as { slug: string };
+  console.log(slug);
 
   let dataGroup: IDataGroup[] | undefined;
 
@@ -87,6 +88,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   } else {
     dataGroup = await getDataGroup(slug);
   }
+
+  console.log("Hola");
 
   return {
     props: {
