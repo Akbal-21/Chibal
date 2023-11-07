@@ -17,22 +17,23 @@ const caso4 = "Eliminación de grupo existente";
 test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:3000/auth/login");
     await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("ruben@a.com");
+    await page.getByPlaceholder("Enter email").fill("oscar@a.com");
     await page.getByPlaceholder("Enter password").click();
     await page.getByPlaceholder("Enter password").fill("123456");
     await page.getByRole("button", { name: "Ingresar" }).click();
 });
 
 
-test.describe( descripcion, () =>{
+test.describe( descripcion, () => {
+    test.describe.configure({ mode: 'serial' });
+
     test( caso1, async ( { page } ) => {
         await page.getByText('Grupo').click();
         await page.getByRole('button', { name: 'Nuevo Grupo' }).click();
         await expect( page ).toHaveURL( new RegExp( "/teacher/group" ) );
     } );
 
-    test( caso2, async ( { page } ) => {await page.locator('body').click();
-    await page.locator('body').click();
+    test( caso2, async ( { page } ) => {
         await page.getByText('Grupo').click();
         await page.getByRole('button', { name: 'Nuevo Grupo' }).click();
         await page.getByPlaceholder('1A').click();
@@ -54,4 +55,21 @@ test.describe( descripcion, () =>{
         await page.getByRole('button', { name: 'Guardar' }).click();
         await expect(page).toHaveURL(new RegExp("/teacher/group"));
     } );
+
+    test( caso3, async ( { page } ) => {
+        await page.getByRole('button', { name: 'Ingresar' }).click();
+        await page.getByRole('heading', { name: 'Grupo' }).click();
+        await page.getByRole('button', { name: 'Editar' }).click();
+        await page.locator('label').filter({ hasText: 'Matutino' }).click();
+        await page.getByText('Vespertino').click();
+        await page.getByRole('button', { name: 'Guardar' }).click();
+        await expect(page).toHaveURL(new RegExp("/teacher/group"));
+    } );
+
+    test( caso4, async ( { page } ) => {
+        await page.getByText('Grupo').click();
+        await page.getByRole('button', { name: 'Elimiar grupo' }).click();
+        await expect(page).toHaveURL(new RegExp("/teacher/group"));
+    } );
+
 } );
