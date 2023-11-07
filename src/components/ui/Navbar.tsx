@@ -14,9 +14,10 @@ export const Navbar = () => {
   return (
     <div className="navbar bg-coral rounded-lg">
       <div className="navbar-start">
-        <Link href={"/"} className="navbar-item">
+        <Link href={"/"} className="navbar-item p-0">
           <h1 className="text-white text-2xl">
-            <b>Chiba'l</b>
+            <img src="/logo_chibal2.svg" alt="logo" width={"100px"}/>
+            
           </h1>
         </Link>
       </div>
