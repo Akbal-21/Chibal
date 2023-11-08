@@ -16,9 +16,7 @@ const caso4 = "Eliminación de grupo existente";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:3000/auth/login");
-    await page.getByPlaceholder("Enter email").click();
     await page.getByPlaceholder("Enter email").fill("oscar@a.com");
-    await page.getByPlaceholder("Enter password").click();
     await page.getByPlaceholder("Enter password").fill("123456");
     await page.getByRole("button", { name: "Ingresar" }).click();
 });

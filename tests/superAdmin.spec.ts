@@ -12,7 +12,7 @@ Resultados esperados:
 const caso1Admins = "Acceder a la lista de administradores";
 const caso2Admins = "Creación de administrador nuevo";
 const caso3Admins = "Edición de administrador existente";
-const caso4Admins = "Eliminación deadministrador existente";
+const caso4Admins = "Eliminación de administrador existente";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:3000/auth/login");
@@ -64,10 +64,10 @@ Procedimiento:
 Resultados esperados:
     Confirmación de operaciones en la lista de escuelas`;
 
-const caso1Schools = "Acceder a la lista de administradores";
-const caso2Schools = "Creación de administrador nuevo";
-const caso3Schools = "Edición de administrador existente";
-const caso4Schools = "Eliminación deadministrador existente";
+const caso1Schools = "Acceder a la lista de escuelas";
+const caso2Schools = "Creación de escuela nueva";
+const caso3Schools = "Edición de escuela existente";
+const caso4Schools = "Eliminación de escuela existente";
 
 test.describe( descripcionSchools, () => {
     test.describe.configure( { mode: 'serial' } );
