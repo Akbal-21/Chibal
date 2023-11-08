@@ -1,8 +1,11 @@
 import { CheckResults, SigInLayout } from "@/components";
+import { InternationalContext } from "@/context";
 import { getAllLinesByStudent } from "@/db/teacher";
 import { LineByStudentID } from "@/interface";
+import { en, es } from "@/messages";
 import { GetServerSideProps, NextPage } from "next";
 import { redirect } from "next/navigation";
+import { useContext } from "react";
 
 interface Props {
   slug: string;
@@ -11,6 +14,8 @@ interface Props {
 }
 
 const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   return (
     <SigInLayout titel="Resultados de los Ejercicios">
       <div className=" mt-7">
@@ -19,19 +24,19 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
             <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Dibujo del alumno
+                  {ms.teacher.exercise.pdf.studentDraw}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Lo detectado
+                  {ms.teacher.exercise.pdf.asDetected}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Lo solicitado
+                  {ms.teacher.exercise.pdf.asRequest}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Puntaje
+                  {ms.teacher.exercise.pdf.score}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ver resultados
+                  {ms.teacher.exercise.pdf.update}
                 </th>
               </tr>
             </thead>
