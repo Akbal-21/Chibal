@@ -1,7 +1,10 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
+import { InternationalContext } from "@/context";
 import { useAdmin } from "@/hooks";
+import { en, es } from "@/messages";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import {
   AiFillDelete,
   AiFillEdit,
@@ -9,6 +12,8 @@ import {
 } from "react-icons/ai";
 
 const AdminTablePage = () => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const { admins, isError, isLoading } = useAdmin("superAdmin");
 
   const handleDelete = async (Usuario_id: number | undefined) => {
@@ -23,17 +28,16 @@ const AdminTablePage = () => {
 
   const route = useRouter();
   const handleNew = () => {
-      return route.replace("/superAdmin/admins/new");
-    };
-  const handleEdit = ( admin_id: number ) => {
-    //console.log(admin_id)
-    return route.replace( `/superAdmin/admins/${admin_id}`);
-    
+    return route.replace("/superAdmin/admins/new");
   };
-    
+  const handleEdit = (admin_id: number) => {
+    //console.log(admin_id)
+    return route.replace(`/superAdmin/admins/${admin_id}`);
+  };
+
   return (
     <>
-      <SigInLayout titel="CRUD super administrador">
+      <SigInLayout titel={ms.superAdmin.admin.index.title}>
         <div>
           <div className="p-1 mt-20 relative flex justify-center items-center">
             {isLoading ? (
@@ -48,53 +52,71 @@ const AdminTablePage = () => {
                           #
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Nombre
+                          {ms.superAdmin.admin.index.name}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Escuela
+                          {ms.superAdmin.admin.index.school}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Acciones
+                          {ms.superAdmin.admin.index.actions.title}
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {admins.map((admin, index: number) => {
-                        if( admin.Administrador !== null ){
+                        if (admin.Administrador !== null) {
                           return (
                             <tr
-                            key={admin.Administrador?.Usuarios.Usuarios_id}
-                            className="bg-white border-b  hover:bg-gray-50"
+                              key={admin.Administrador?.Usuarios.Usuarios_id}
+                              className="bg-white border-b  hover:bg-gray-50"
                             >
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {index + 1}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Administrador?.Usuarios.Nombres} {admin.Administrador?.Usuarios.Apellidos}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Nombre ? admin.Nombre : "Asignar escuela"}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Administrador?.Usuarios.Usuarios_id) )}>
-                              <AiFillEdit /> Editar
-                            </button>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {index + 1}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {admin.Administrador?.Usuarios.Nombres}{" "}
+                                {admin.Administrador?.Usuarios.Apellidos}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {admin.Nombre
+                                  ? admin.Nombre
+                                  : ms.superAdmin.admin.index.asigmentSchool}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                                <button
+                                  className="btn btn-secondary m-1"
+                                  onClick={(e) =>
+                                    handleEdit(
+                                      Number(
+                                        admin.Administrador?.Usuarios
+                                          .Usuarios_id,
+                                      ),
+                                    )
+                                  }
+                                >
+                                  <AiFillEdit />{" "}
+                                  {ms.superAdmin.admin.index.actions.edit}
+                                </button>
 
-                            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button
-                              className="btn btn-error m-1"
-                              onClick={(e) => handleDelete(admin.Administrador?.Usuarios.Usuarios_id)}
-                            >
-                              <AiFillDelete /> Elimiar
-                            </button>
-                          </td>
-                        </tr>
-                        )
-                      }
-                      }
-                      )}
-                      </tbody>
+                                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                                <button
+                                  className="btn btn-error m-1"
+                                  onClick={(e) =>
+                                    handleDelete(
+                                      admin.Administrador?.Usuarios.Usuarios_id,
+                                    )
+                                  }
+                                >
+                                  <AiFillDelete />{" "}
+                                  {ms.superAdmin.admin.index.actions.dellet}
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        }
+                      })}
+                    </tbody>
                   </table>
                 </div>
                 <div className="px-4 w-full">
@@ -103,7 +125,7 @@ const AdminTablePage = () => {
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>
-                    Nuevo Administrador
+                    {ms.superAdmin.admin.index.newAdmin}
                   </button>
                 </div>
               </div>

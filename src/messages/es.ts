@@ -133,6 +133,72 @@ export default {
       sendResults: "Enviar resultados",
     },
   },
+  admin: {
+    welcome: "Bienvenido",
+    name: "Nombre",
+    actions: {
+      title: "Acciones",
+      edit: "Editar",
+      dellet: "Eliminar",
+    },
+    newAdmin: "Nuevo administrador",
+    slug: {
+      admin: "Administrador",
+      required: "Este campo es obligatorio",
+      editAdmin: "Editar administrador",
+      name: "Nombre",
+      surname: "Apellidos",
+      email: "Correo",
+      save: "guardar",
+    },
+  },
+  superAdmin: {
+    admin: {
+      index: {
+        title: "CRUD super administrador",
+        name: "Nombre",
+        school: "Escuela",
+        actions: {
+          title: "Acciones",
+          edit: "Editar",
+          dellet: "Eliminar",
+        },
+        asigmentSchool: "Asigna una escuela",
+        newAdmin: "Nuevo administrador",
+      },
+      slug: {
+        admin: "Administrador",
+        required: "Este campo es obligatorio",
+        editAdmin: "Editar administrador",
+        name: "Nombre",
+        surname: "Apellidos",
+        email: "Correo",
+        save: "guardar",
+      },
+    },
+    school: {
+      index: {
+        title: "CRUD Maestro",
+        school: "Escuela",
+        admin: "Administrador",
+        actions: {
+          title: "Acciones",
+          edit: "Editar",
+          dellet: "Eliminar",
+        },
+        noAsigment: "No asignado",
+        newSchool: "Nueva escuela",
+      },
+      slug: {
+        title: "Escuela",
+        editSchool: "Editar escuela",
+        name: "Nopmbre",
+        required: "Este campo es obligatorio",
+        save: "guardar",
+        selectAdmin: "Seleccione un administrador",
+      },
+    },
+  },
   navbar: {
     hello: "Hola",
     logout: "Cerrar sesión",
