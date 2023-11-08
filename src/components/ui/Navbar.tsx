@@ -31,7 +31,7 @@ export const Navbar = () => {
             className="text-white text-xl navbar-item"
             onClick={() => navigateTo("/student")}
           >
-            <b>Ejercicios</b>
+            <b>{ms.student.navbar.exercise}</b>
           </h1>
         ) : user?.roll === "Administrador" ? (
           <>
@@ -94,7 +94,7 @@ export const Navbar = () => {
             <div className="dropdown-menu dropdown-menu-bottom-left">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button className="dropdown-item text-sm" onClick={logout}>
-                Salir
+                {ms.navbar.logout}
               </button>
             </div>
           </div>

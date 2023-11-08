@@ -1,7 +1,7 @@
 import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
 import { ListStudent } from "@/components/teacher/exercise/ListStudent";
-import { ExcerciseContext } from "@/context";
+import { ExcerciseContext, InternationalContext } from "@/context";
 import {
   getAllStudentsByTeacherId,
   getDataOfExercise,
@@ -20,6 +20,7 @@ import {
   ITypeExercise,
   ITypePublisher,
 } from "@/interface/";
+import { en, es } from "@/messages";
 import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
 import { GetServerSideProps, NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
@@ -57,6 +58,10 @@ const ExcersisePage: NextPage<Props> = ({
 }) => {
   const { addStudentAtExcercise, resetListStudent, allStudents } =
     useContext(ExcerciseContext);
+
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+
   const [dates, setDates] = useState<{
     dateLimit: Date | null;
   }>({
@@ -281,7 +286,9 @@ const ExcersisePage: NextPage<Props> = ({
   };
 
   return (
-    <SigInLayout titel={`Ejercicio ${exercises.Ejercicios_id}`}>
+    <SigInLayout
+      titel={`${ms.teacher.exercise.exercise} ${exercises.Ejercicios_id}`}
+    >
       <div className="pt-11">
         <section className="bg-gray-2 rounded-xl">
           <div className="p-8 shadow-lg">
@@ -293,7 +300,7 @@ const ExcersisePage: NextPage<Props> = ({
               <div className="form-control relative w-full">
                 <div className=" grid grid-cols-custom-2 w-full gap-5">
                   <div>
-                    Nombre del ejercicio:
+                    {ms.teacher.exercise.nameExercise}:
                     {errors.NombreEjercicio && (
                       <span className=" badge badge-error m-1">
                         {errors.NombreEjercicio.message}
@@ -305,13 +312,13 @@ const ExcersisePage: NextPage<Props> = ({
                       placeholder="Name"
                       type="text"
                       {...register("NombreEjercicio", {
-                        required: "Este Campo es requerido",
+                        required: ms.login.required,
                         minLength: { value: 3, message: "Mínimo 3 caracteres" },
                       })}
                     />
                   </div>
                   <div>
-                    Publicacion:
+                    {ms.teacher.exercise.slug.publicType}:
                     <br />
                     <div className="dropdown w-full">
                       {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
@@ -346,7 +353,7 @@ const ExcersisePage: NextPage<Props> = ({
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
-                  Tipo de Ejercicio:
+                  {ms.teacher.exercise.slug.typeExercise}:
                   <br />
                   <div className="dropdown w-full">
                     {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
@@ -377,7 +384,7 @@ const ExcersisePage: NextPage<Props> = ({
                 </div>
 
                 <div className="w-full">
-                  Fecha Limite:
+                  {ms.teacher.exercise.limitDate}:
                   <div className="form-control relative">
                     <BsFillCalendarFill />
                     <ReactDatePicker
@@ -392,14 +399,14 @@ const ExcersisePage: NextPage<Props> = ({
                 </div>
 
                 <div>
-                  Alumnos asignados:
+                  {ms.teacher.exercise.slug.asigmentStudent}:
                   <br />
                   <div className="dropdown w-full">
                     {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
                     <label className="btn btn-solid-primary" tabIndex={0}>
                       {allStudents.length === studentsGroup.length
-                        ? "Todos los alumnos"
-                        : "Se selecciono alumnos"}
+                        ? ms.teacher.exercise.slug.text.allStudents
+                        : ms.teacher.exercise.slug.text.selectedStudents}
                     </label>
                     <ul className="dropdown-menu">
                       <ListStudent group={studentsGroup} />
@@ -410,17 +417,19 @@ const ExcersisePage: NextPage<Props> = ({
 
               <div>
                 <div className="divider divider-horizontal">
-                  <h3 className="text-xl">Incisos del ejercicio</h3>
+                  <h3 className="text-xl">
+                    {ms.teacher.exercise.slug.exerciseLines}
+                  </h3>
                 </div>
                 {addExercise.length === 0 ? (
                   <div className="flex justify-center items-center">
-                    <h3>Agrege un inciso porfavor</h3>
+                    <h3>{ms.teacher.exercise.slug.addLinePlease}</h3>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 w-full">
                     <div className="w-full text-center">
                       <h3 className="text-xl">
-                        <b>Solicitado</b>
+                        <b>{ms.teacher.exercise.slug.solid}</b>
                       </h3>
                       {addExercise.map((item) => (
                         <h3 className="text-lg">{item.solit}</h3>
@@ -428,7 +437,7 @@ const ExcersisePage: NextPage<Props> = ({
                     </div>
                     <div className="w-full text-center">
                       <h3 className="text-xl">
-                        <b>Tipo</b>
+                        <b>{ms.teacher.exercise.slug.typeExercise}</b>
                       </h3>
                       {addExercise.map((item) => (
                         <h3 className="text-lg">{item.typeExercise}</h3>
@@ -439,7 +448,9 @@ const ExcersisePage: NextPage<Props> = ({
 
                 <br />{" "}
                 <div className="divider divider-horizontal">
-                  <h3 className="text-xl">Agregar Incisos</h3>
+                  <h3 className="text-xl">
+                    {ms.teacher.exercise.slug.exerciseLines}
+                  </h3>
                 </div>
 
                 <div className="grid grid-cols-custom-2 gap-4 w-full">
@@ -476,7 +487,7 @@ const ExcersisePage: NextPage<Props> = ({
                       type="button"
                       onClick={checkInquire}
                     >
-                      Agregar
+                      {ms.teacher.exercise.slug.addLineList}
                     </button>
                   </div>
                 </div>
@@ -487,7 +498,7 @@ const ExcersisePage: NextPage<Props> = ({
                   type="submit"
                   className="rounded-lg btn btn-primary btn-block"
                 >
-                  Guardar
+                  {ms.teacher.exercise.slug.save}
                 </button>
               </div>
             </form>

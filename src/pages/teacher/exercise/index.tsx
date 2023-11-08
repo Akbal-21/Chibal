@@ -1,10 +1,13 @@
 import { FullScreenLoading, SigInLayout } from "@/components";
-import { AuthContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { useExerciseTeacher } from "@/hooks";
+import { en, es } from "@/messages";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 const ExcercisePage = () => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const route = useRouter();
   const handleNew = () => {
     return route.replace(`/teacher/exercise/new-${user?.Usuarios_id}`);
@@ -52,25 +55,25 @@ const ExcercisePage = () => {
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Nombre del ejercicio
+                      {ms.teacher.exercise.nameExercise}
                     </th>
                     <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Fecha a Publicar
+                      {ms.teacher.exercise.index.publicDate}
                     </th>
                     <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Fecha Limite de entrega
+                      {ms.teacher.exercise.limitDate}
                     </th>
                     <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Acciones
+                      {ms.teacher.exercise.index.action.title}
                     </th>
                   </tr>
                 </thead>
@@ -97,7 +100,7 @@ const ExcercisePage = () => {
                           onClick={() => handleEdith(exercise.Ejercicios_id)}
                           disabled={exercise.Estado_id !== 1}
                         >
-                          Editar
+                          {ms.teacher.exercise.index.action.edit}
                         </button>
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
@@ -105,7 +108,7 @@ const ExcercisePage = () => {
                           disabled={exercise.Estado_id !== 1}
                           onClick={() => handleDelete(exercise.Ejercicios_id)}
                         >
-                          Eliminar
+                          {ms.teacher.exercise.index.action.dellet}
                         </button>
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
@@ -115,7 +118,7 @@ const ExcercisePage = () => {
                             handleShowResults(exercise.Ejercicios_id)
                           }
                         >
-                          Mostrar Resultados
+                          {ms.teacher.exercise.index.action.showResults}
                         </button>
                       </td>
                     </tr>
@@ -129,7 +132,7 @@ const ExcercisePage = () => {
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>
-                <b>Crear nuevo Ejercicio</b>
+                <b>{ms.teacher.exercise.index.newExercise}</b>
               </button>
             </div>
           </div>
