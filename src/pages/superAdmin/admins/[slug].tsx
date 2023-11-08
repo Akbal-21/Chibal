@@ -29,7 +29,7 @@ const EditAdminPage: NextPage<Props> = ({ admin }) => {
         watch,
     } = useForm<FormData>();
 
-    const [administrator, setAdministrator] = useState<IAdminInsert>();
+    const route = useRouter();
 
     useEffect( () => {
         if ( admin ) {
@@ -48,7 +48,6 @@ const EditAdminPage: NextPage<Props> = ({ admin }) => {
                 administrator
             }
           });
-        const route = useRouter();
         return route.replace( "/superAdmin/admins" );
     }
 
@@ -60,31 +59,29 @@ const EditAdminPage: NextPage<Props> = ({ admin }) => {
                 administrator
             }
           });
-        const route = useRouter();
-        return route.replace( "/superAdmin/admins" );
+        route.push( "/superAdmin/admins" );
+        return;
     }
 
-    const onSubmit = (form: FormData) => {
+    const onSubmit = async (form: FormData) => {
         const values = getValues();
-        setAdministrator({
+        const administrator = {
             Usuarios_id: admin.Usuarios_id,
             Nombres: String(values.Nombres),
             Apellidos: String(values.Apellidos),
             Correo: String(values.Correo),
             Contrasena: admin.Contrasena
-            //Escuela: escuela
-        });
+        };
         //setEscuela(admin_school);
         //? Aquí se hace el insert en base de datos?
-        if(administrator){
-            if( administrator.Usuarios_id ){
-                console.log("Editar")
-                handleEdit( administrator );
-            }else{
-                console.log("Crear")
-                handleNew( administrator );
-            }
+        if( admin.Usuarios_id ){
+            console.log("Editar")
+            handleEdit( administrator );
+        }else{
+            console.log("Crear")
+            handleNew( administrator );
         }
+
     };
 
     

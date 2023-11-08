@@ -12,6 +12,7 @@ import {
 const SchoolTablePage = () => {
   const { schools, isError, isLoading } = useSchool("superAdmin/schools");
   //console.log(schools);
+  const route = useRouter();
 
   const handleDelete = async (Escuela_id: number) => {
     await chibalApi({
@@ -21,9 +22,9 @@ const SchoolTablePage = () => {
         School_id: Escuela_id,
       },
     });
+    route.reload();
   };
 
-  const route = useRouter();
   const handleNew = () => {
     console.log("niu");
     return route.replace("/superAdmin/schools/new");

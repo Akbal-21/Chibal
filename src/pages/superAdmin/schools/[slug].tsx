@@ -31,10 +31,10 @@ const EditSchoolPage: NextPage<Props> = ({ school, admins }) => {
     useEffect( () => {
         
         console.log(school.Administrador_id);
+        setValue( 'idEscuela', school.Escuela_id );
+        setValue( 'nombreEscuela', school.Nombre );
         if ( school.Administrador_id ) {
 
-            setValue( 'idEscuela', school.Escuela_id );
-            setValue( 'nombreEscuela', school.Nombre );
             setValue( 'adminId', school.Administrador_id );
             setAdministrador( {
                 idAdministrador: school.Administrador_id,
@@ -168,6 +168,7 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
 
     const adminsData = await getAllAdminNames();
     const admins: IAdminList[] | null = JSON.parse( JSON.stringify( adminsData ) );
+    console.log(admins);
 
     if( slug === "new" ){
       scul = {

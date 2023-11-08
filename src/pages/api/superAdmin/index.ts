@@ -26,28 +26,28 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 async function getAllAdmins(req: NextApiRequest, res: NextApiResponse) {
     await db.prisma.$connect();
 
-    const admins = await db.prisma.escuela.findMany({
+    const admins = await db.prisma.administrador.findMany({
         select: {
-            Escuela_id: true,
-            Nombre: true,
-            Administrador: {
-              select: {
-                Usuarios: {
-                  select: {
+            Usuario_id: true,
+            Usuarios:{
+                select:{
                     Nombres: true,
                     Apellidos: true,
-                    Usuarios_id: true,
-                  },
-                },
-              },
+                    Correo: true,
+                    Contrasena: true
+                }
             },
-          },      
+            Escuela:{
+                select:{
+                    Escuela_id: true,
+                    Nombre: true
+                }
+            }
+        }      
         
     });
     
     await db.prisma.$disconnect();
-
-    console.log(admins)
 
     if (!admins) {
         return res.status(404).json({ message: "Bad Request" });
@@ -66,13 +66,17 @@ async function deleteAdmin(req: NextApiRequest, res: NextApiResponse<Data>) {
           Usuario_id: Number(Usuario_id)
         },
     });
-    
-    console.log(deleteAd);
+
+    const deleteAd1 = await db.prisma.usuarios.delete({
+        where: {
+          Usuarios_id: Number(Usuario_id)
+        },
+    });
     
 
     await db.prisma.$disconnect();
     
-    return res.status(202);
+    return res.status(200).json( { message: "Usuario eliminado" } );
 }
 
 async function updateAdmin(req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -90,27 +94,33 @@ async function updateAdmin(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     await db.prisma.$disconnect();
     //console.log(updatedAdmin)
-    return res.status( 202 );
+    return res.status( 200 ).json( { message: "Usuario actualizado" } );
 }
 
 async function newAdmin(req: NextApiRequest, res: NextApiResponse<Data>) {
     const { administrator } = req.body;
 
-    await db.prisma.$connect();
+    try {
+        await db.prisma.$connect();
 
-    const updatedAdmin = await db.prisma.usuarios.create({
-        data:{
-            ...administrator,
-            Administrador:{
-                create:{
-                    Usuarios_id: administrator.Usuario_id
+        const updatedAdmin = await db.prisma.usuarios.create({
+            data:{
+                ...administrator,
+                Administrador:{
+                    create:{
+                        Usuarios_id: administrator.Usuario_id
+                    }
                 }
             }
-        }
-    });
+        });
 
-    await db.prisma.$disconnect();
-    //console.log(updatedAdmin)
-    return res.status( 202 );
+        await db.prisma.$disconnect();
+        return res.status( 200 ).json( { message: "Usuario creado" } );
+    } catch (error) {
+        if( error instanceof Error ){
+            console.log(error);
+            return;
+        }
+    }
 }
 

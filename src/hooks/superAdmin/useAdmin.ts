@@ -1,8 +1,8 @@
-import { IAdmin } from "@/interface";
+import { IAdminFull } from "@/interface";
 import useSWR, { SWRConfiguration } from "swr";
 
 interface dataAdmins {
-  admins: IAdmin[];
+  admins: IAdminFull[];
 }
 
 export const useAdmin = (url: string, config: SWRConfiguration = {}) => {

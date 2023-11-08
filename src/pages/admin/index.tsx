@@ -17,15 +17,15 @@ const AdminPage = () => {
         Usuario_id,
       },
     });
-    route.push( "/admin" );
+    route.reload();
   };
 
   const handleNew = () => {
-      return route.replace("/admin/teacher/new");
+      return route.push("/admin/teacher/new");
     };
   const handleEdit = ( teacher_id: number ) => {
     //console.log(admin_id)
-    return route.replace( `/admin/teacher/${teacher_id}`);
+    return route.push( `/admin/teacher/${teacher_id}`);
     
   };
 

@@ -19,15 +19,15 @@ const AdminTablePage = () => {
         Usuario_id,
       },
     });
+    route.reload();
   };
 
   const route = useRouter();
   const handleNew = () => {
-      return route.replace("/superAdmin/admins/new");
+      return route.push("/superAdmin/admins/new");
     };
   const handleEdit = ( admin_id: number ) => {
-    //console.log(admin_id)
-    return route.replace( `/superAdmin/admins/${admin_id}`);
+    return route.push( `/superAdmin/admins/${admin_id}`);
     
   };
     
@@ -60,31 +60,31 @@ const AdminTablePage = () => {
                     </thead>
                     <tbody>
                       {admins.map((admin, index: number) => {
-                        if( admin.Administrador !== null ){
+                        if( admin.Usuarios !== null ){
                           return (
                             <tr
-                            key={admin.Administrador?.Usuarios.Usuarios_id}
+                            key={admin.Usuario_id}
                             className="bg-white border-b  hover:bg-gray-50"
                             >
                           <td className="px-6 py-4 whitespace-nowrap">
                             {index + 1}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Administrador?.Usuarios.Nombres} {admin.Administrador?.Usuarios.Apellidos}
+                            {admin.Usuarios.Nombres} {admin.Usuarios.Apellidos}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Nombre ? admin.Nombre : "Asignar escuela"}
+                            {admin.Escuela ? admin.Escuela.Nombre : "Asignar escuela"}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Administrador?.Usuarios.Usuarios_id) )}>
+                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Usuario_id) )}>
                               <AiFillEdit /> Editar
                             </button>
 
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                             <button
                               className="btn btn-error m-1"
-                              onClick={(e) => handleDelete(admin.Administrador?.Usuarios.Usuarios_id)}
+                              onClick={(e) => handleDelete(admin.Usuario_id)}
                             >
                               <AiFillDelete /> Elimiar
                             </button>
