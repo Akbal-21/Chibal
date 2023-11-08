@@ -29,7 +29,7 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
     watch,
   } = useForm<FormData>();
 
-  const [profe, setProfe] = useState<ITeacher>();
+  //const [profe, setProfe] = useState<ITeacher>();
 
   useEffect( () => {
     if ( teacher ) {
@@ -40,30 +40,32 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
 }, [] );
 
   const route = useRouter();
-  const handleEdit = async (teacher: ITeacher) => {
+  const handleEdit = async (profe: ITeacher) => {
+    console.log("log antes de api");
     const resp = await chibalApi({
       method: "PUT",
       url: "/admin",
       data: {
-        teacher
+        profe
       }
     });
-    route.replace( "/admin" );
+    route.reload();
     return;
   };
 
-  const handleNew = async ( teacher: ITeacher ) => {
+  const handleNew = async ( profe: ITeacher ) => {
     await chibalApi({
       method: "POST",
       url: "/admin",
-      data: { teacher },
+      data: { profe },
     });
-    return route.replace( "/admin" );
+    route.push( "/admin" );
+    return;
   };
 
-  const onSubmit = (form: FormData) => {
+  const onSubmit = async (form: FormData) => {
     const values = getValues();
-    setProfe({
+    const profe = {
       Usuario_id: teacher.Usuario_id,
       Usuarios:{
         Nombres: String(values.Nombres),
@@ -71,18 +73,15 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
         Correo: String(values.Correo),
         Contrasena: teacher.Usuarios.Contrasena
       }
-    });
-    //setEscuela(admin_school);
-    //? Aquí se hace el insert en base de datos?
-    if(profe){
-      if( profe.Usuario_id ){
-          return handleEdit( profe );
-      }else{
-          return handleNew( profe );
-      }
-      //saveAdmin( administrator ); //<--- Esto va en API
+    };
+    
+    if( teacher.Usuario_id ){
+      await handleEdit( profe );
+      return;
+    }else{
+      await handleNew( profe );
+      return;
     }
-    //console.log({ administrator, escuela })
   };
 
   return (

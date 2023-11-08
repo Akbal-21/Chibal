@@ -84,9 +84,7 @@ const EditAdminPage: NextPage<Props> = ({ admin }) => {
                 console.log("Crear")
                 handleNew( administrator );
             }
-            //saveAdmin( administrator ); //<--- Esto va en API
         }
-        //console.log({ administrator, escuela })
     };
 
     

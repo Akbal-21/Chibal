@@ -7,6 +7,7 @@ import { AiFillDelete, AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai"
 const AdminPage = () => {
   const { teachers, isError, isLoading } = useTeacher("admin");
   //console.log(teachers);
+  const route = useRouter();
 
   const handleDelete = async (Usuario_id: number | undefined) => {
     await chibalApi({
@@ -16,9 +17,9 @@ const AdminPage = () => {
         Usuario_id,
       },
     });
+    route.push( "/admin" );
   };
 
-  const route = useRouter();
   const handleNew = () => {
       return route.replace("/admin/teacher/new");
     };

@@ -33,6 +33,12 @@ async function deleteTeacher(req: NextApiRequest, res: NextApiResponse<Data>) {
     },
   });
 
+  const user1 = await db.prisma.usuarios.delete({
+    where: {
+      Usuarios_id: Number(Usuario_id)
+    },
+  });
+
   await db.prisma.$disconnect()
 
   return res.status(200).json({ message: "Maestro eliminado" });
@@ -66,40 +72,56 @@ async function getAllTeachers(req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 
 async function updateTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
-  const { teacher } = req.body;
+  const { profe } = req.body;
 
-  await db.prisma.$connect();
+  try {
+    await db.prisma.$connect();
   
-  const updatedTeacher = await db.prisma.usuarios.update({
-    where:{
-      Usuarios_id: teacher.Usuario_id
-    },
-    data:{
-      ...teacher.Usuarios
+    const updatedTeacher = await db.prisma.usuarios.update({
+      where:{
+        Usuarios_id: profe.Usuario_id
+      },
+      data:{
+        ...profe.Usuarios
+      }
+    });
+
+    await db.prisma.$disconnect();
+
+    return res.status( 200 ).json( { message: "Usuario actualizado" } );
+  } catch (error) {
+    if( error instanceof Error ){
+      console.log(error);
+      return;
     }
-  });
-
-  await db.prisma.$disconnect();
-
-  return res.status( 200 ).json( { message: "Usuario actualizado" } );
+  }
+  
 }
 
 async function newTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
-  const { teacher } = req.body
-  await db.prisma.$connect();
+  const { profe } = req.body;
+
+  try {
+    await db.prisma.$connect();
   
-  console.log(teacher)
-  const newTeacher = await db.prisma.usuarios.create({
-    data:{
-      ...teacher.Usuarios,
-      Maestros:{
-        create:{
-          Usuario_id: teacher.Usuario_id
+    console.log(" crea nuevo teacher ");
+    const newTeacher = await db.prisma.usuarios.create({
+      data:{
+        ...profe.Usuarios,
+        Maestros:{
+          create:{
+            Usuario_id: profe.Usuario_id
+          }
         }
       }
+    });
+    
+    await db.prisma.$disconnect();
+    return res.status( 200 ).json( { message: "Usuario creado" } );
+  } catch (error) {
+    if( error instanceof Error ){
+      console.log(error);
+      return;
     }
-  });
-  
-  await db.prisma.$disconnect();
-  return res.status( 200 ).json( { message: "Usuario creado" } );
+  }
 }

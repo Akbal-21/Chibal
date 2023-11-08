@@ -27,28 +27,32 @@ test.describe( descripcion, () => {
     test.describe.configure({ mode: 'serial' });
 
     test( caso1, async ( { page } ) => {
-        await page.getByText('Grupo').click();
-        await page.getByRole('button', { name: 'Nuevo Grupo' }).click();
+        await page.getByText('Maestros').click();
         await expect( page ).toHaveURL( new RegExp( "/admin" ) );
     } );
-
+    
     test( caso2, async ( { page } ) => {
         await page.getByRole('button', { name: 'Nuevo Administrador' }).click();
         await page.getByLabel('Nombre').click();
         await page.getByLabel('Nombre').fill('Jose');
-        await page.getByLabel('Nombre').press('Tab');
         await page.getByLabel('Apellidos').fill('Gerardo');
-        await page.getByLabel('Apellidos').press('Tab');
         await page.getByLabel('Correo').fill('jg@profe.com');
         await page.getByRole('button', { name: 'Guardar' }).click();
+        await page.getByRole('button', { name: 'Guardar' }).click();
+        await expect( page ).toHaveURL( new RegExp( "/admin" ) );
     } );
-
+    
     test( caso3, async ( { page } ) => {
-        
+        await page.getByRole('button', { name: 'Editar' }).nth(4).click();
+        await page.getByLabel('Apellidos').fill('Genaro');
+        await page.getByRole('button', { name: 'Guardar' }).click();
+        await page.getByRole('button', { name: 'Guardar' }).click();
+        await expect( page ).toHaveURL( new RegExp( "/admin" ) );
     } );
-
+    
     test( caso4, async ( { page } ) => {
-        
+        await page.getByRole('button', { name: 'Elimiar' }).nth(4).click();
+        await expect( page ).toHaveURL( new RegExp( "/admin" ) );
     } );
 
 } );
