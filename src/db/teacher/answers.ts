@@ -1,4 +1,4 @@
-import { IAnswer } from "@/interface";
+import { IAnswer, IExercise, ILine } from "@/interface";
 import { db } from "..";
 
 export const getExerciseAnswers = async (exerciseId: string) => {
@@ -50,4 +50,31 @@ export const getExerciseAnswers = async (exerciseId: string) => {
   }
 
   return respuestas;
+};
+
+export const getNumLines = async (exerciseId: string) => {
+  console.log(exerciseId);
+
+  await db.prisma.$connect();
+
+  // Obtener respuestas para el ejercicio deseado
+  const lines :ILine[]= await db.prisma.incisos.findMany({
+    select: {
+          Incisos_id: true,
+          LoSolicitado: true,
+          EjercicioID: true,
+    },
+    where: {
+        EjercicioID: Number(exerciseId),
+    },
+  });
+
+  await db.prisma.$disconnect();
+  
+
+  if (!lines) {
+    return;
+  }
+
+  return lines.length;
 };

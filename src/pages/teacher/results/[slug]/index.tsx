@@ -1,5 +1,5 @@
 import { SigInLayout } from "@/components";
-import { getExerciseAnswers } from "@/db/teacher/answers";
+import { getExerciseAnswers, getNumLines } from "@/db/teacher/answers";
 import { getExerciseInfo } from "@/db/teacher/cabecera";
 import { IAnswer, IPDFCabecera } from "@/interface";
 import jsPDF from "jspdf";
@@ -11,15 +11,17 @@ interface Props {
   slug: string;
   results: IAnswer[];
   cabecera: IPDFCabecera[];
+  numLines: number;
 }
 
 interface UsuarioResultados {
   usuario: string;
   aciertos: string[];
   fallos: string[];
+  suma: number;
 }
 
-const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera }) => {
+const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines }) => {
   const router = useRouter();
   const resultadosAgrupados: Record<string, UsuarioResultados> = {};
   const NombreEjercicio = cabecera[0]?.NombreEjercicio
@@ -32,6 +34,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera }) => {
         usuario: `${row.Alumnos.Usuarios.Apellidos} ${row.Alumnos.Usuarios.Nombres}`,
         aciertos: [],
         fallos: [],
+        suma:0
       };
     }
 
@@ -46,6 +49,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera }) => {
             result.Respuesta ? result.Respuesta : "",
           );
         }
+        resultadosAgrupados[userId].suma+=(result.Puntaje?? 0);
       }
     });
   });
@@ -105,9 +109,8 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera }) => {
       body: Object.keys(resultadosAgrupados).map((userId) => {
         const usuario = resultadosAgrupados[userId];
         const promedioPuntaje = (
-          (usuario.aciertos.length /
-            (usuario.aciertos.length + usuario.fallos.length)) *
-          100
+          (usuario.suma /
+            (numLines===undefined? 1: numLines)) 
         ).toFixed(2);
 
         return [
@@ -160,9 +163,8 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera }) => {
               {Object.keys(resultadosAgrupados).map((userId) => {
                 const usuario = resultadosAgrupados[userId];
                 const promedioPuntaje = (
-                  (usuario.aciertos.length /
-                    (usuario.aciertos.length + usuario.fallos.length)) *
-                  100
+                  (usuario.suma /
+                    (numLines===undefined? 1: numLines)) 
                 ).toFixed(2);
 
                 return (
@@ -216,7 +218,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query as { slug: string };
   const x: IAnswer[] | undefined = await getExerciseAnswers(slug);
   const results: IAnswer[] = JSON.parse(JSON.stringify(x));
-
+  const numLines: number | undefined = await getNumLines(slug);
   const c: IPDFCabecera[] | undefined = await getExerciseInfo(slug);
   const cabecera: IPDFCabecera[] = JSON.parse(JSON.stringify(c));
   return {
@@ -224,6 +226,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       slug,
       results,
       cabecera,
+      numLines,
     },
   };
 };
