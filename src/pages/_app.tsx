@@ -5,6 +5,10 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 
+import { ABeeZee } from "next/font/google";
+
+const abz = ABeeZee({ weight: "400", style: "normal", subsets:["latin"] });
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider>
@@ -17,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <GroupProvider>
             <ExcerciseProvider>
-              <Component {...pageProps} />
+              <main className={abz.className}>
+                <Component {...pageProps} />
+              </main>
             </ExcerciseProvider>
           </GroupProvider>
         </AuthProvider>
