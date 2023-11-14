@@ -1,20 +1,21 @@
-import { useQuestionsData } from "../../../hooks/student/useQuestionsData";
+import { InternationalContext } from "@/context";
+import { en, es } from "@/messages";
+import { useContext } from "react";
 import { useQuestionsStore } from "../../../store/student/question";
 
 export const Results = () => {
-  const { correct, incorrect } = useQuestionsData();
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const { reset } = useQuestionsStore();
 
   return (
     <div style={{ marginTop: "16px" }}>
       <strong className=" text-center">
         <p>
-          Tus respuestas se han enviado correctamente
+          {ms.student.draw.sendAnswer}
           <br />
           <h1 className="text-6xl">😜</h1>
         </p>
-        {/* <p>✅ {correct} correctas</p>
-        <p>❌ {incorrect} incorrectas</p> */}
       </strong>
       <br />
       <div style={{ marginTop: "16px" }}>

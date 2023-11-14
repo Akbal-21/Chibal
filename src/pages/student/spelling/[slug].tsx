@@ -1,33 +1,35 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import { chibalApi } from "@/api";
+import {
+  Grid,
+  Item,
+  SigInLayout,
+  SortableItem,
+  generateRandomIntenseColor,
+} from "@/components";
+import { AuthContext, InternationalContext } from "@/context";
+import { getLine } from "@/db/teacher";
+import { ILine } from "@/interface";
+import { en, es } from "@/messages";
 import {
   DndContext,
-  closestCenter,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
   MouseSensor,
   TouchSensor,
-  DragOverlay,
+  closestCenter,
   useSensor,
   useSensors,
-  DragStartEvent,
-  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   horizontalListSortingStrategy,
   rectSortingStrategy,
-  rectSwappingStrategy,
 } from "@dnd-kit/sortable";
-import { Item } from "@/components";
-import { Grid } from "@/components";
-import { SortableItem } from "@/components";
-import { v4 as uuidv4 } from "uuid";
-import { generateRandomIntenseColor } from "@/components";
-import { GetServerSideProps, NextPage } from "next";
-import { getExerciseQuestions } from "@/api/getJson";
-import { getLine } from "@/db/teacher";
-import { ILine } from "@/interface";
-import { chibalApi } from "@/api";
-import { AuthContext } from "@/context";
 import axios, { AxiosError } from "axios";
+import { GetServerSideProps, NextPage } from "next";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   word: string;
@@ -35,6 +37,9 @@ interface Props {
 }
 export const App2: NextPage<Props> = ({ word, idInciso }) => {
   const { user } = useContext(AuthContext);
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+
   const generateUniqueId = () => uuidv4();
   const generateItem = (s: string) => {
     return {
@@ -96,16 +101,16 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
 
   useEffect(() => {
     const emptyItems = Array.from({ length: word.length }, () =>
-      generateItem("")
+      generateItem(""),
     );
     const letterItems = Array.from(word, (letter) => generateItem(letter));
 
     const moreItems = Array.from({ length: 15 - word.length }, () =>
-      generateItem(generateRandomLetter())
+      generateItem(generateRandomLetter()),
     );
 
     const combinedItems = [...moreItems, ...letterItems].sort(
-      () => Math.random() - 0.5
+      () => Math.random() - 0.5,
     );
 
     const newList1 = emptyItems;
@@ -151,7 +156,7 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
       const draggedItem = sourceList.find((item) => item.id === active.id);
 
       const draggedItemIndex = sourceList.findIndex(
-        (item) => item.id === active.id
+        (item) => item.id === active.id,
       );
       const targetIndex = targetList.findIndex((item) => item.id === over?.id);
       const targetItem = targetList[targetIndex];
@@ -204,7 +209,7 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
         setIsGameComplete(true);
       }
     },
-    [list1, list2]
+    [list1, list2],
   );
 
   interface objeto {
@@ -223,57 +228,60 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
   };
 
   return (
-    <div>
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
-    >
-      
-      <div className="grid">
-        <SortableContext items={list1} strategy={rectSortingStrategy}>
-          <Grid columns={word.length}>
-            {list1.map((objeto) => (
-              <SortableItem key={objeto.id} letter={objeto} />
-            ))}
-          </Grid>
-        </SortableContext>
-        {isGameComplete && (
-          <div className="text-4xl mt-4 text-center">
-            <div className="m-2">¡Juego completado!</div>
+    <SigInLayout titel={ms.student.spelling.exercise}>
+      <div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={handleDragCancel}
+        >
+          <div className="grid">
+            <SortableContext items={list1} strategy={rectSortingStrategy}>
+              <Grid columns={word.length}>
+                {list1.map((objeto) => (
+                  <SortableItem key={objeto.id} letter={objeto} />
+                ))}
+              </Grid>
+            </SortableContext>
+            {isGameComplete && (
+              <div className="text-4xl mt-4 text-center">
+                <div className="m-2">{ms.student.spelling.exerciseFinish}</div>
 
-            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button
-              className="btn btn-secondary m-1 text-2xl"
-              onClick={handleSave}
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                <button
+                  className="btn btn-secondary m-1 text-2xl"
+                  onClick={handleSave}
+                >
+                  {ms.student.spelling.sendResults}
+                </button>
+              </div>
+            )}
+            <SortableContext
+              items={list2}
+              strategy={horizontalListSortingStrategy}
             >
-              Enviar resultados
-            </button>
+              <Grid columns={5}>
+                {list2.map((objeto) => (
+                  <SortableItem key={objeto.id} letter={objeto} />
+                ))}
+              </Grid>
+            </SortableContext>
+            <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
+              {activeId ? (
+                <Item
+                  id={getItem(activeId, list1, list2)?.texto}
+                  isDragging
+                  content={getItem(activeId, list1, list2)?.texto}
+                  itemColor={getItem(activeId, list1, list2)?.color}
+                />
+              ) : null}
+            </DragOverlay>
           </div>
-        )}
-        <SortableContext items={list2} strategy={horizontalListSortingStrategy}>
-          <Grid columns={5}>
-            {list2.map((objeto) => (
-              <SortableItem key={objeto.id} letter={objeto} />
-            ))}
-          </Grid>
-        </SortableContext>
-        <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
-          {activeId ? (
-            <Item
-              id={getItem(activeId, list1, list2)?.texto}
-              isDragging
-              content={getItem(activeId, list1, list2)?.texto}
-              itemColor={getItem(activeId, list1, list2)?.color}
-            />
-          ) : null}
-        </DragOverlay>
+        </DndContext>
       </div>
-      
-    </DndContext>
-    </div>
+    </SigInLayout>
   );
 };
 
@@ -286,7 +294,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   let idInciso = 0;
 
   if (line[0]) {
-    word =line[0].LoSolicitado;
+    word = line[0].LoSolicitado;
     idInciso = line[0].Incisos_id;
     console.log(idInciso);
     return {

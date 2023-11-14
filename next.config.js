@@ -1,15 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // images: {
-  //   remotePatterns: [
-  //     {
-  //       protocol: "http",
-  //       hostname: "res.cloudinary.com",
-  //       pathname: "http://res.cloudinary.com/dbb7wgkhr/image/upload/**",
-  //     },
-  //   ],
-  // },
+  i18n: {
+    locales: ["es", "en"],
+    defaultLocale: "es",
+    localeDetection: true,
+  },
 };
 
 module.exports = nextConfig;

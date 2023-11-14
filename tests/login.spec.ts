@@ -24,32 +24,32 @@ test.beforeEach(async ({ page }) => {
 
 test.describe(descripcion, () => {
   test(caso1, async ({ page }) => {
-    await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("ruben@a.com");
-    await page.getByPlaceholder("Enter password").click();
-    await page.getByPlaceholder("Enter password").fill("123456");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").click();
+    await page.getByPlaceholder("Correo electronico").fill("ruben@a.com");
+    await page.getByPlaceholder("Contraseña").click();
+    await page.getByPlaceholder("Contraseña").fill("123456");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
     await expect(page).toHaveURL(new RegExp("/teacher"));
     await page.getByText("Hola Ruben").click();
-    await page.getByRole("button", { name: "Salir" }).click();
+    await page.getByRole("button", { name: "Cerrar sesión" }).click();
     await expect(page).toHaveURL(new RegExp("/auth/login"));
   });
 
   test(caso2, async ({ page }) => {
-    await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("example@a.com");
-    await page.getByPlaceholder("Enter password").click();
-    await page.getByPlaceholder("Enter password").fill("123457");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").click();
+    await page.getByPlaceholder("Correo electronico").fill("example@a.com");
+    await page.getByPlaceholder("Contraseña").click();
+    await page.getByPlaceholder("Contraseña").fill("123457");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
     await expect(page).toHaveURL(new RegExp("error=CredentialsSignin"));
   });
 
   test(caso3, async ({ page }) => {
-    await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("ruben");
-    await page.getByPlaceholder("Enter password").click();
-    await page.getByPlaceholder("Enter password").fill("123");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").click();
+    await page.getByPlaceholder("Correo electronico").fill("ruben");
+    await page.getByPlaceholder("Contraseña").click();
+    await page.getByPlaceholder("Contraseña").fill("123");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
     await expect(page.getByText("El correo no parece ser válido")).toHaveText(
       "El correo no parece ser válido"
     );

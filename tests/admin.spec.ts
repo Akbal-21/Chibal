@@ -16,11 +16,11 @@ const caso4 = "Eliminación de mestros existente";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:3000/auth/login");
-    await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("patito@a.com");
-    await page.getByPlaceholder("Enter password").click();
-    await page.getByPlaceholder("Enter password").fill("123456");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").click();
+    await page.getByPlaceholder("Correo electronico").fill("patito@a.com");
+    await page.getByPlaceholder("Contraseña").click();
+    await page.getByPlaceholder("Contraseña").fill("123456");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
 });
 
 test.describe( descripcion, () => {
@@ -51,7 +51,7 @@ test.describe( descripcion, () => {
     } );
     
     test( caso4, async ( { page } ) => {
-        await page.getByRole('button', { name: 'Elimiar' }).nth(4).click();
+        await page.getByRole('button', { name: 'Eliminar' }).nth(4).click();
         await expect( page ).toHaveURL( new RegExp( "/admin" ) );
     } );
 

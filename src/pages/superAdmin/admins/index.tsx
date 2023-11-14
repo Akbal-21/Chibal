@@ -1,7 +1,10 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
+import { InternationalContext } from "@/context";
 import { useAdmin } from "@/hooks";
+import { en, es } from "@/messages";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import {
   AiFillDelete,
   AiFillEdit,
@@ -9,6 +12,8 @@ import {
 } from "react-icons/ai";
 
 const AdminTablePage = () => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const { admins, isError, isLoading } = useAdmin("superAdmin");
 
   const handleDelete = async (Usuario_id: number | undefined) => {
@@ -30,10 +35,10 @@ const AdminTablePage = () => {
     return route.push( `/superAdmin/admins/${admin_id}`);
     
   };
-    
+
   return (
     <>
-      <SigInLayout titel="CRUD super administrador">
+      <SigInLayout titel={ms.superAdmin.admin.index.title}>
         <div>
           <div className="p-1 mt-20 relative flex justify-center items-center">
             {isLoading ? (
@@ -48,13 +53,13 @@ const AdminTablePage = () => {
                           #
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Nombre
+                          {ms.superAdmin.admin.index.name}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Escuela
+                          {ms.superAdmin.admin.index.school}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Acciones
+                          {ms.superAdmin.admin.index.actions.title}
                         </th>
                       </tr>
                     </thead>
@@ -103,7 +108,7 @@ const AdminTablePage = () => {
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>
-                    Nuevo Administrador
+                    {ms.superAdmin.admin.index.newAdmin}
                   </button>
                 </div>
               </div>

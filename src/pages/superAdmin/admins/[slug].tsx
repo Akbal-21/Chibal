@@ -1,43 +1,45 @@
 import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
-import { getAdminData, getSchools, saveAdmin, getAdminSchool } from "@/db/superAdmin";
-import { IAdmin, IAdminInsert, ISchoolName } from "@/interface";
-import schools from "@/pages/api/superAdmin/schools";
+import { InternationalContext } from "@/context";
+import { getAdminData } from "@/db/superAdmin";
+import { IAdminInsert, ISchoolName } from "@/interface";
+import { en, es } from "@/messages";
+import bcrypt from "bcryptjs";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import bcrypt from "bcryptjs";
 interface FormData {
-    Nombres?: string;
-    Apellidos?: string;
-    Correo?: string;
-    Escuela?: ISchoolName;
+  Nombres?: string;
+  Apellidos?: string;
+  Correo?: string;
+  Escuela?: ISchoolName;
 }
 interface Props {
-    admin: IAdminInsert
+  admin: IAdminInsert;
 }
 
 const EditAdminPage: NextPage<Props> = ({ admin }) => {
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        getValues,
-        setValue,
-        watch,
-    } = useForm<FormData>();
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+    watch,
+  } = useForm<FormData>();
 
     const route = useRouter();
 
-    useEffect( () => {
-        if ( admin ) {
-            setValue('Nombres', admin.Nombres);
-            setValue('Apellidos', admin.Apellidos);
-            setValue('Correo', admin.Correo);
-          }
-    }, [] );
+  useEffect(() => {
+    if (admin) {
+      setValue("Nombres", admin.Nombres);
+      setValue("Apellidos", admin.Apellidos);
+      setValue("Correo", admin.Correo);
+    }
+  }, []);
 
 
     const handleEdit = async ( administrator: IAdminInsert ) => {
@@ -84,105 +86,131 @@ const EditAdminPage: NextPage<Props> = ({ admin }) => {
 
     };
 
-    
-    return(
-        <SigInLayout titel={`Administrador ${admin.Usuarios_id}`}>
-            <div className="pt-11">
-                <section className="bg-gray-2 reounded-xl">
-                    <div className="p-8 shadow-lg">
-                        <form className="space-y-4" onSubmit={ handleSubmit(onSubmit) } noValidate>
-                            <div>
-                                <div className="divider divider-horizontal">
-                                    Editar administrador
-                                </div>
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label>
-                                            Nombre
-                                            <input type="text" className="input input-solid max-w-full" {...register("Nombres", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 3, message: "Mínimo 3 caracteres"  }
-                                            })}/>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label>
-                                            Apellidos
-                                            <input type="text" className="input input-solid max-w-full" {...register("Apellidos", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 5, message: "Mínimo 5 caracteres"  }
-                                            })}/>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label>
-                                            Correo
-                                            <input type="text" className="input input-solid max-w-full" {...register("Correo", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 5, message: "Mínimo 5 caracteres"  }
-                                            })}/>
-                                        </label>
-                                    </div>
-                                    
-                                </div>
-                                <div className="mt-4">
-                                    <button
-                                    type="submit"
-                                    className="rounded-lg btn btn-primary btn-block">
-                                    Guardar
-                                    </button>
-                                </div>
-                            </div>
-                        </form>                 
-                    </div>
-                </section>
-            </div>
-        </SigInLayout>
-    );
+  return (
+    <SigInLayout
+      titel={`${ms.superAdmin.admin.slug.admin} ${admin.Usuarios_id}`}
+    >
+      <div className="pt-11">
+        <section className="bg-gray-2 reounded-xl">
+          <div className="p-8 shadow-lg">
+            <form
+              className="space-y-4"
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+            >
+              <div>
+                <div className="divider divider-horizontal">
+                  {ms.superAdmin.admin.slug.editAdmin}
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label>
+                      {ms.superAdmin.admin.slug.name}
+                      <input
+                        type="text"
+                        className="input input-solid max-w-full"
+                        {...register("Nombres", {
+                          required: ms.superAdmin.admin.slug.required,
+                          minLength: {
+                            value: 3,
+                            message: "Mínimo 3 caracteres",
+                          },
+                        })}
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      {ms.superAdmin.admin.slug.surname}
+                      <input
+                        type="text"
+                        className="input input-solid max-w-full"
+                        {...register("Apellidos", {
+                          required: ms.superAdmin.admin.slug.required,
+                          minLength: {
+                            value: 5,
+                            message: "Mínimo 5 caracteres",
+                          },
+                        })}
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label>
+                      {ms.superAdmin.admin.slug.email}
+                      <input
+                        type="text"
+                        className="input input-solid max-w-full"
+                        {...register("Correo", {
+                          required: ms.superAdmin.admin.slug.required,
+                          minLength: {
+                            value: 5,
+                            message: "Mínimo 5 caracteres",
+                          },
+                        })}
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <button
+                    type="submit"
+                    className="rounded-lg btn btn-primary btn-block"
+                  >
+                    {ms.superAdmin.admin.slug.save}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </SigInLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-    const { slug = "" } = query;
+  const { slug = "" } = query;
 
-    let admin: IAdminInsert | null;
+  let admin: IAdminInsert | null;
 
-    if (slug === "new") {
-        admin = {
-            Nombres: "",
-            Apellidos: "",
-            Correo: "",
-            Contrasena: bcrypt.hashSync("123456") //Calcular hash
-        }
-    } else {
-        const datadmin = await getAdminData( slug.toString() );
-        admin = JSON.parse( JSON.stringify( datadmin ) );
-        //console.log(admin)
-        if(!admin?.Usuarios_id){
-            return {
-                redirect:{
-                    destination: "/superAdmin/admins",
-                    permanent: false
-                }
-            };
-        }
-    }
-    
-    if( !admin ){
-        return {
-            redirect:{
-                destination: "/superAdmin/admins",
-                permanent: false
-            }
-        };
-    }
-
-    return{
-        props:{
-            admin,
-        }
+  if (slug === "new") {
+    admin = {
+      Nombres: "",
+      Apellidos: "",
+      Correo: "",
+      Contrasena: bcrypt.hashSync("123456"), //Calcular hash
     };
+  } else {
+    const datadmin = await getAdminData(slug.toString());
+    admin = JSON.parse(JSON.stringify(datadmin));
+    //console.log(admin)
+    if (!admin?.Usuarios_id) {
+      return {
+        redirect: {
+          destination: "/superAdmin/admins",
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  if (!admin) {
+    return {
+      redirect: {
+        destination: "/superAdmin/admins",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      admin,
+    },
+  };
 };
 
 export default EditAdminPage;

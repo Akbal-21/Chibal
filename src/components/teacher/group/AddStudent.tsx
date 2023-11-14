@@ -1,5 +1,6 @@
 import { chibalApi } from "@/api";
-import { GroupContext } from "@/context";
+import { GroupContext, InternationalContext } from "@/context";
+import { en, es } from "@/messages";
 import { isEmail } from "@/utils";
 import { FC, useContext } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +21,10 @@ type FormData = {
 
 export const AddStudent: FC<Props> = ({ slug }) => {
   const { addStudent, students } = useContext(GroupContext);
+  const { language } = useContext(InternationalContext);
+
+  const ms = language === "en" ? en : es;
+
   const {
     register,
     handleSubmit,
@@ -47,6 +52,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
 
     console.log(data);
   };
+
   return (
     <div>
       <div className="divider divider-horizontal">Agregar un alumno</div>
@@ -54,7 +60,9 @@ export const AddStudent: FC<Props> = ({ slug }) => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <div>
-              <label className="form-label text-lg">Nombres</label>
+              <label className="form-label text-lg">
+                {ms.teacher.group.slug.createStudent.name}
+              </label>
               {errors.names && (
                 <span className=" badge badge-error m-1">
                   {errors.names.message}
@@ -68,7 +76,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                       ? "input input-lg max-w-full pl-10"
                       : "input input-error input-lg max-w-full pl-10"
                   }
-                  placeholder="Nombres"
+                  placeholder={ms.teacher.group.slug.createStudent.name}
                   {...register("names", {
                     required: "Este campo es requerido",
                     minLength: { value: 3, message: "Mínimo 3 caracteres" },
@@ -82,7 +90,9 @@ export const AddStudent: FC<Props> = ({ slug }) => {
           </div>
           <div>
             <div>
-              <label className="form-label text-lg">Apellidos</label>
+              <label className="form-label text-lg">
+                {ms.teacher.group.slug.createStudent.surnames}
+              </label>
               {errors.lastsNames && (
                 <span className=" badge badge-error m-1">
                   {errors.lastsNames.message}
@@ -96,7 +106,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                       ? "input input-lg max-w-full pl-10"
                       : "input input-error input-lg max-w-full pl-10"
                   }
-                  placeholder="Apellidos"
+                  placeholder={ms.teacher.group.slug.createStudent.surnames}
                   {...register("lastsNames", {
                     required: "Este campo es requerido",
                     minLength: { value: 3, message: "Mínimo 3 caracteres" },
@@ -111,7 +121,9 @@ export const AddStudent: FC<Props> = ({ slug }) => {
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="form-label text-lg">Correo</label>
+            <label className="form-label text-lg">
+              {ms.teacher.group.slug.createStudent.mail}
+            </label>
             {errors.email && (
               <span className=" badge badge-error m-1">
                 {errors.email.message}
@@ -125,7 +137,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                     ? "input input-lg max-w-full pl-10"
                     : "input input-error input-lg max-w-full pl-10"
                 }
-                placeholder="Enter email"
+                placeholder={ms.teacher.group.slug.createStudent.mail}
                 {...register("email", {
                   required: "Este campo es requerido",
                   validate: isEmail,
@@ -137,7 +149,9 @@ export const AddStudent: FC<Props> = ({ slug }) => {
             </div>
           </div>
           <div>
-            <label className="form-label text-lg">Contreseña</label>
+            <label className="form-label text-lg">
+              {ms.teacher.group.slug.createStudent.password}
+            </label>
             {errors.password && (
               <span className=" badge badge-error m-1">
                 {errors.password.message}
@@ -151,7 +165,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
                     ? "input input-lg max-w-full pl-10"
                     : "input input-error input-lg max-w-full pl-10 "
                 }
-                placeholder="Enter password"
+                placeholder={ms.teacher.group.slug.createStudent.password}
                 {...register("password", {
                   required: "Este campo es requerido",
                   minLength: { value: 6, message: "Mínimo 6 caracteres" },
@@ -167,7 +181,7 @@ export const AddStudent: FC<Props> = ({ slug }) => {
 
         <div>
           <button className="btn btn-success mt-6 w-full" type="submit">
-            Agregar
+            {ms.teacher.group.slug.createStudent.add}
           </button>
         </div>
       </form>

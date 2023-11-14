@@ -28,11 +28,11 @@ test.beforeEach(async ({ page }) => {
 test.describe(descripcion, () => {
   test.setTimeout(40000)
   test(caso1, async ({ page }) => {
-    await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("juan@a.com");
-    await page.getByPlaceholder("Enter password").click();
-    await page.getByPlaceholder("Enter password").fill("123456");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").click();
+    await page.getByPlaceholder("Correo electronico").fill("juan@a.com");
+    await page.getByPlaceholder("Contraseña").click();
+    await page.getByPlaceholder("Contraseña").fill("123456");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
 
     const row = await page.locator(`tr:has(td:has-text("${ejercicio[0]}"))`);
     const resolverButton = await row.locator('button:has-text("Resolver")');
@@ -57,7 +57,7 @@ test.describe(descripcion, () => {
     await four(page);
     await page.getByRole("button", { name: "Finalizar" }).click();
     await expect(page.locator("footer")).toHaveText(
-      "✅ 4 correctas - ❌ 0 incorrectas - ❓ 0 sin responder",
+      "✅ 4 Correctas - ❌ 0 Incorrectas - ❓ 0 Sin responder",
       { timeout: 4000 }
     );
   });

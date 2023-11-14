@@ -1,8 +1,11 @@
 import { AuthLayouth } from "@/components/layouths";
+import { InternationalContext } from "@/context";
+import { en, es } from "@/messages";
 import { isEmail } from "@/utils";
 import { GetServerSideProps } from "next";
 import { getSession, signIn } from "next-auth/react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { SiMaildotru } from "react-icons/si";
@@ -13,6 +16,9 @@ type FormData = {
 };
 
 const LoginPage = () => {
+  const router = useRouter();
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
 
   //*Formulario
   const {
@@ -33,7 +39,7 @@ const LoginPage = () => {
     <AuthLayouth titel={"Inicio de sesión"}>
       <div className="grid min-h-screen grtid-col items-center justify-between p-[calc(100vh/3)] ">
         <div className="bg-my_sin w-[400px] p-2 rounded-md">
-          <h1 className="text-center text-xl ">Inicio de sesión</h1>
+          <h1 className="text-center text-xl ">{ms.login.title}</h1>
           {showError && (
             <span className=" badge badge-error m-1">
               Correo o Contreseña incorrecta
@@ -41,7 +47,7 @@ const LoginPage = () => {
           )}
           <form onSubmit={handleSubmit(onLoginUser)} noValidate>
             {/* email */}
-            <label className="form-label text-lg">Correo electrónico</label>
+            <label className="form-label text-lg">{ms.login.email}</label>
             {errors.email && (
               <span className=" badge badge-error m-1">
                 {errors.email.message}
@@ -55,9 +61,9 @@ const LoginPage = () => {
                     ? "input input-lg max-w-full pl-10"
                     : "input input-error input-lg max-w-full pl-10"
                 }
-                placeholder="Enter email"
+                placeholder={ms.login.email}
                 {...register("email", {
-                  required: "Este campo es requerido",
+                  required: ms.login.required,
                   validate: isEmail,
                 })}
               />
@@ -68,7 +74,7 @@ const LoginPage = () => {
 
             {/* password */}
 
-            <label className="form-label text-lg">Contreseña</label>
+            <label className="form-label text-lg">{ms.login.password}</label>
             {errors.password && (
               <span className=" badge badge-error m-1">
                 {errors.password.message}
@@ -83,9 +89,9 @@ const LoginPage = () => {
                     ? "input input-lg max-w-full pl-10"
                     : "input input-error input-lg max-w-full pl-10 "
                 }
-                placeholder="Enter password"
+                placeholder={ms.login.password}
                 {...register("password", {
-                  required: "Este campo es requerido",
+                  required: ms.login.required,
                   minLength: { value: 6, message: "Mínimo 6 caracteres" },
                 })}
               />
@@ -99,7 +105,7 @@ const LoginPage = () => {
               type="submit"
               className="btn btn-md btn-circle btn-primary w-full "
             >
-              Ingresar
+              {ms.login.submit}
             </button>
             {/* Fin del form */}
           </form>
