@@ -6,6 +6,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 interface Props {
   slug: string;
@@ -139,27 +140,27 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
           Resultados del Ejercicio: {NombreEjercicio}
         </h2>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 ">
-            <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <Table className="w-full text-sm text-left text-gray-500 ">
+            <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+              <Tr>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nombre del Alumno
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Caracteres Acertados
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Caracteres Fallados
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Promedio del Puntaje
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Ver resultados
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {Object.keys(resultadosAgrupados).map((userId) => {
                 const usuario = resultadosAgrupados[userId];
                 const promedioPuntaje = (
@@ -168,23 +169,23 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
                 ).toFixed(2);
 
                 return (
-                  <tr
+                  <Tr
                     key={userId}
                     className="bg-white border-b  hover:bg-gray-100 "
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {usuario.usuario}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {usuario.aciertos.join(", ")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {usuario.fallos.join(", ")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {promedioPuntaje}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                       <button
                         className=" btn btn-secondary"
@@ -192,12 +193,12 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
                       >
                         Ver resultados
                       </button>
-                    </td>
-                  </tr>
+                    </Td>
+                  </Tr>
                 );
               })}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button

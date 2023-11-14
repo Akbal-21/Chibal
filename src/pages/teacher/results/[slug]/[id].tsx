@@ -3,6 +3,7 @@ import { getAllLinesByStudent } from "@/db/teacher";
 import { LineByStudentID } from "@/interface";
 import { GetServerSideProps, NextPage } from "next";
 import { redirect } from "next/navigation";
+import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table';
 
 interface Props {
   slug: string;
@@ -15,27 +16,27 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
     <SigInLayout titel="Resultados de los Ejercicios">
       <div className=" mt-7">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 ">
-            <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <Table className="w-full text-sm text-left text-gray-500 ">
+            <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+              <Tr>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Dibujo del alumno
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Lo detectado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Lo solicitado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Puntaje
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Ver resultados
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {lineByStudent.map((lineStudent, index) => (
                 <CheckResults
                   lineStudent={lineStudent}
@@ -43,8 +44,8 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
                   key={lineStudent.Inciso_id}
                 />
               ))}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
       </div>
     </SigInLayout>

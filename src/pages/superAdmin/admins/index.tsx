@@ -7,6 +7,7 @@ import {
   AiFillEdit,
   AiOutlineUsergroupAdd,
 } from "react-icons/ai";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 const AdminTablePage = () => {
   const { admins, isError, isLoading } = useAdmin("superAdmin");
@@ -41,41 +42,41 @@ const AdminTablePage = () => {
             ) : (
               <div className="grid grid-cols-custom-2">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                  <table className="w-full text-sm text-left text-gray-500 ">
-                    <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <Table className="w-full text-sm text-left text-gray-500 ">
+                    <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+                      <Tr>
+                        <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           #
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        </Th>
+                        <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Nombre
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        </Th>
+                        <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Escuela
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        </Th>
+                        <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Acciones
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
                       {admins.map((admin, index: number) => {
                         if( admin.Usuarios !== null ){
                           return (
-                            <tr
+                            <Tr
                             key={admin.Usuario_id}
                             className="bg-white border-b  hover:bg-gray-50"
                             >
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <Td className="px-6 py-4 whitespace-nowrap">
                             {index + 1}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          </Td>
+                          <Td className="px-6 py-4 whitespace-nowrap">
                             {admin.Usuarios.Nombres} {admin.Usuarios.Apellidos}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          </Td>
+                          <Td className="px-6 py-4 whitespace-nowrap">
                             {admin.Escuela ? admin.Escuela.Nombre : "Asignar escuela"}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          </Td>
+                          <Td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                             <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Usuario_id) )}>
                               <AiFillEdit /> Editar
@@ -88,14 +89,14 @@ const AdminTablePage = () => {
                             >
                               <AiFillDelete /> Elimiar
                             </button>
-                          </td>
-                        </tr>
+                          </Td>
+                        </Tr>
                         )
                       }
                       }
                       )}
-                      </tbody>
-                  </table>
+                      </Tbody>
+                  </Table>
                 </div>
                 <div className="px-4 w-full">
                   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
