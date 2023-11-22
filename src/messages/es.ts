@@ -141,7 +141,7 @@ export default {
       edit: "Editar",
       dellet: "Eliminar",
     },
-    newAdmin: "Nuevo administrador",
+    newTeacher: "Nuevo profesor",
     slug: {
       admin: "Administrador",
       required: "Este campo es obligatorio",

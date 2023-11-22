@@ -30,12 +30,11 @@ const AdminPage = () => {
   };
 
   const handleNew = () => {
-      return route.push("/admin/teacher/new");
-    };
-  const handleEdit = ( teacher_id: number ) => {
+    return route.push("/admin/teacher/new");
+  };
+  const handleEdit = (teacher_id: number) => {
     //console.log(admin_id)
-    return route.push( `/admin/teacher/${teacher_id}`);
-    
+    return route.push(`/admin/teacher/${teacher_id}`);
   };
 
   return (
@@ -112,7 +111,7 @@ const AdminPage = () => {
                   <b className="text-xl">
                     <AiOutlineUsergroupAdd />
                   </b>
-                  {ms.admin.newAdmin}
+                  {ms.admin.newTeacher}
                 </button>
               </div>
             </div>
