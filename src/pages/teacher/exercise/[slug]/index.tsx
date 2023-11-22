@@ -23,6 +23,7 @@ import {
 import { en, es } from "@/messages";
 import { isTextLetter, isTextMix, isTextNumber } from "@/utils";
 import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -62,12 +63,7 @@ const ExcersisePage: NextPage<Props> = ({
   const { language } = useContext(InternationalContext);
   const ms = language === "en" ? en : es;
 
-  const [dates, setDates] = useState<{
-    dateLimit: Date | null;
-  }>({
-    dateLimit: new Date(),
-  });
-  let datePublic = new Date();
+  const [dates, setDates] = useState<Date | null>(new Date());
 
   const [typeExercise, setTypeExercise] = useState<ITypeExercise>();
   const [typePublisher, setTypePublisher] = useState<ITypePublisher>();
@@ -78,15 +74,15 @@ const ExcersisePage: NextPage<Props> = ({
 
   const [dataIncises, setDataIncises] = useState("");
 
+  const route = useRouter();
+
   useEffect(() => {
     resetListStudent();
     setAddExercise([]);
     if (incisos.length > 0) {
       const { TipoEjercicio_id } = exercises;
-      datePublic = new Date(exercises.FechaPublicacion);
-      setDates({
-        dateLimit: new Date(exercises.FechaLimite),
-      });
+
+      setDates(new Date(exercises.FechaLimite));
 
       let typeEjercicio = "";
       let typePublish = "";
@@ -151,19 +147,32 @@ const ExcersisePage: NextPage<Props> = ({
     defaultValues: exercises,
   });
 
-  const onSubmit = async (form: FormData) => {
+  const setValuesForm = async () => {
+    setValue("Estado", 1);
     setValue("TipoEjercicio_id", typeExercise?.Tipo_id);
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     setValue("Estado", typePublisher!.Estado_id);
-    if (dates.dateLimit !== null) {
-      setValue("FechaLimite", dates.dateLimit.toDateString());
+    if (dates === null) {
+      return;
     }
-    console.log("Hola");
+    setValue("FechaLimite", dates.toDateString());
+    const datePublic = new Date();
+    console.log("HOla");
 
-    if (form.Estado === 2) {
+    if (typePublisher?.Estado_id === 2) {
       setValue("FechaPublicacion", datePublic.toDateString());
+      setValue("Estado", 2);
     }
-    console.log({ form, addExercise });
+    const pub = getValues("FechaPublicacion");
+    console.log(pub);
+  };
+
+  const onSubmit = async (form: FormData) => {
+    await setValuesForm();
+    const { FechaPublicacion, Estado } = getValues();
+
+    console.log(FechaPublicacion, Estado);
+
     const teacherID = parts[1];
 
     if (parts[0] === "new") {
@@ -174,6 +183,8 @@ const ExcersisePage: NextPage<Props> = ({
           addExercise,
           allStudents,
           teacherID,
+          FechaPublicacion,
+          Estado,
         },
         url: "/teacher/exercise",
       });
@@ -184,10 +195,13 @@ const ExcersisePage: NextPage<Props> = ({
           form,
           addExercise,
           allStudents,
+          FechaPublicacion,
+          Estado,
         },
         url: "/teacher/exercise",
       });
     }
+    route.replace("/teacher/exercise");
   };
 
   let isCorrect: string | undefined;
@@ -329,6 +343,8 @@ const ExcersisePage: NextPage<Props> = ({
                       </label>
                       <ul className="dropdown-menu">
                         {typeOfPublisher.map((publish) => {
+                          console.log(publish);
+
                           return (
                             // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                             <li
@@ -389,9 +405,9 @@ const ExcersisePage: NextPage<Props> = ({
                     <BsFillCalendarFill />
                     <ReactDatePicker
                       className="input input-solid"
-                      selected={dates.dateLimit}
+                      selected={dates}
                       onChange={
-                        (date) => setDates({ ...dates, dateLimit: date })
+                        (date) => setDates(date)
                         // setDateLimit(date)
                       }
                     />
@@ -516,7 +532,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   let exercises: IExercise | IExerciseTeacherDB | null;
 
   let incisos: ILine[] | string;
-  console.log(parts);
 
   if (parts[0] === "new") {
     exercises = {
@@ -539,7 +554,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         asigmentStudentExcercise: IGetStudentAsigmentExercise[];
       }
     | undefined = await getAllStudentsByTeacherId(parts);
-  console.log(getAllStudents);
 
   const typeOfExercise = await getTypeofExercise();
 
@@ -561,7 +575,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
   const { asigmentStudentExcercise, studentsGroup } = getAllStudents;
-  console.log(asigmentStudentExcercise, studentsGroup);
   return {
     props: {
       parts,

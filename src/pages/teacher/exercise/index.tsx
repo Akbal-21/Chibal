@@ -1,3 +1,4 @@
+import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
 import { AuthContext, InternationalContext } from "@/context";
 import { useExerciseTeacher } from "@/hooks";
@@ -26,8 +27,14 @@ const ExcercisePage = () => {
     );
   };
 
-  const handleDelete = (Ejercicios_id: number) => {
-    console.log(Ejercicios_id);
+  const handleDelete = async (Ejercicios_id: number) => {
+    const data = await chibalApi({
+      url: "/teacher/exercise",
+      method: "DELETE",
+      data: { Ejercicios_id },
+    });
+    console.log(data);
+    // route.reload();
   };
 
   const handleShowResults = (exerciseId: number) => {
