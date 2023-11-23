@@ -21,13 +21,27 @@ test.describe(apiTestDescription, () => {
           AlumnoID: 86,
           Estado: 0,
           Ejercicios: {
-            Ejercicios_id: 5,
+            Ejercicios_id: 15,
+            NombreEjercicio: "Prueba API Trazo",
+            MaestroID: 85,
+            GrupoID: 7,
+            TipoEjercicio_id: 3,
+            FechaPublicacion: "2024-06-25T00:00:00.000Z",
+            FechaLimite: "2024-06-25T00:00:00.000Z",
+            Estado_id: 2,
+          },
+        },
+        {
+          AlumnoID: 86,
+          Estado: 0,
+          Ejercicios: {
+            Ejercicios_id: 16,
             NombreEjercicio: "Prueba API Deletreo",
             MaestroID: 85,
-            GrupoID: 42,
+            GrupoID: 7,
             TipoEjercicio_id: 4,
-            FechaPublicacion: "2024-10-21T00:00:00.000Z",
-            FechaLimite: "2024-10-21T00:00:00.000Z",
+            FechaPublicacion: "2024-06-25T00:00:00.000Z",
+            FechaLimite: "2024-06-25T00:00:00.000Z",
             Estado_id: 2,
           },
         },
@@ -48,7 +62,7 @@ test.describe(apiTestDescription, () => {
     const expectedJson = {
       dataStudent: [
         {
-          Grupos_id: 42,
+          Grupos_id: 7,
           NombreGrupo: "1API"
         }
       ]
@@ -68,23 +82,23 @@ test.describe(apiTestDescription, () => {
     const expectedJson = {
       dataExercise: [
         {
-          Ejercicios_id: 6,
+          Ejercicios_id: 15,
           NombreEjercicio: "Prueba API Trazo",
           MaestroID: 85,
-          GrupoID: 42,
+          GrupoID: 7,
           TipoEjercicio_id: 3,
-          FechaPublicacion: "2024-10-21T00:00:00.000Z",
-          FechaLimite: "2024-10-21T00:00:00.000Z",
+          FechaPublicacion: "2024-06-25T00:00:00.000Z",
+          FechaLimite: "2024-06-25T00:00:00.000Z",
           Estado_id: 2,
         },
         {
-          Ejercicios_id: 5,
+          Ejercicios_id: 16,
           NombreEjercicio: "Prueba API Deletreo",
           MaestroID: 85,
-          GrupoID: 42,
+          GrupoID: 7,
           TipoEjercicio_id: 4,
-          FechaPublicacion: "2024-10-21T00:00:00.000Z",
-          FechaLimite: "2024-10-21T00:00:00.000Z",
+          FechaPublicacion: "2024-06-25T00:00:00.000Z",
+          FechaLimite: "2024-06-25T00:00:00.000Z",
           Estado_id: 2,
         }
       ]
