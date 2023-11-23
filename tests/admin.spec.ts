@@ -32,7 +32,7 @@ test.describe( descripcion, () => {
     } );
     
     test( caso2, async ( { page } ) => {
-        await page.getByRole('button', { name: 'Nuevo Administrador' }).click();
+        await page.getByRole('button', { name: 'Nuevo profesor' }).click();
         await page.getByLabel('Nombre').click();
         await page.getByLabel('Nombre').fill('Jose');
         await page.getByLabel('Apellidos').fill('Gerardo');
