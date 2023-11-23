@@ -12,7 +12,7 @@ test( "Crea la escuela y el administrador de la misma escuela", async ( { page }
     await page.getByRole('button', { name: 'Nuevo Administrador' }).click();
     await page.getByLabel('Nombre').fill('Administrador');
     await page.getByLabel('Apellidos').fill('Nuevo');
-    await page.getByLabel('Correo').fill('emilio@admin.com');
+    await page.getByLabel('Correo').fill('nuevo@admin.com');
     await page.getByRole('button', { name: 'guardar' }).click();
     await expect( page ).toHaveURL( new RegExp( "/superAdmin/admins" ) );
 
@@ -24,4 +24,9 @@ test( "Crea la escuela y el administrador de la misma escuela", async ( { page }
     await page.getByText('Administrador Nuevo').click();
     await page.getByRole('button', { name: 'guardar' }).click();
     await expect( page ).toHaveURL( new RegExp( "/superAdmin/schools" ) );
+    
+    // * Logout
+    await page.getByText('Hola Super').click();
+    await page.getByText('Cerrar sesión').click();
+    await expect( page ).toHaveURL( new RegExp( "/auth/login" ) );
 } );
