@@ -1,11 +1,14 @@
 import { SigInLayout } from "@/components";
+import { InternationalContext } from "@/context";
 import { getExerciseAnswers, getNumLines } from "@/db/teacher/answers";
 import { getExerciseInfo } from "@/db/teacher/cabecera";
 import { IAnswer, IPDFCabecera } from "@/interface";
+import { en, es } from "@/messages";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 
 interface Props {
   slug: string;
@@ -22,6 +25,8 @@ interface UsuarioResultados {
 }
 
 const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines }) => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const router = useRouter();
   const resultadosAgrupados: Record<string, UsuarioResultados> = {};
   const NombreEjercicio = cabecera[0]?.NombreEjercicio
@@ -57,7 +62,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
   const exportToPDF = () => {
     if (Object.keys(resultadosAgrupados).length === 0) {
       // No hay filas en la tabla, no se puede exportar a PDF
-      alert("No hay datos para exportar a PDF.");
+      alert(ms.teacher.exercise.pdf.alert);
       return;
     }
 
@@ -74,7 +79,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
       // Agregar el nombre del ejercicio
       doc.setFontSize(16);
       doc.text(
-        `Ejercicio: ${cab.NombreEjercicio}` || "",
+        `${ms.teacher.exercise.pdf.exercie}: ${cab.NombreEjercicio}` || "",
         marginLeft,
         marginTop,
       );
@@ -84,13 +89,19 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
 
       if (cab.Grupos) {
         if (cab.Grupos.NombreGrupo) {
-          infoGrupo.push(`Grupo: ${cab.Grupos.NombreGrupo}`);
+          infoGrupo.push(
+            `${ms.teacher.exercise.pdf.group}: ${cab.Grupos.NombreGrupo}`,
+          );
         }
         if (cab.Grupos.Turno?.Horario) {
-          infoGrupo.push(`Turno: ${cab.Grupos.Turno.Horario}`);
+          infoGrupo.push(
+            `${ms.teacher.exercise.pdf.shift}: ${cab.Grupos.Turno.Horario}`,
+          );
         }
         if (cab.Grupos.Grado?.Nivel) {
-          infoGrupo.push(`Nivel: ${cab.Grupos.Grado.Nivel}`);
+          infoGrupo.push(
+            `${ms.teacher.exercise.pdf.level}: ${cab.Grupos.Grado.Nivel}`,
+          );
         }
       }
       doc.setFontSize(12);
@@ -100,10 +111,10 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
     autoTable(doc, {
       head: [
         [
-          "Nombre del Alumno",
-          "Caracteres Acertados",
-          "Caracteres Fallados",
-          "Promedio del Puntaje",
+          ms.teacher.exercise.pdf.studentName,
+          ms.teacher.exercise.pdf.correct,
+          ms.teacher.exercise.pdf.incorrect,
+          ms.teacher.exercise.pdf.prom,
         ],
       ],
       body: Object.keys(resultadosAgrupados).map((userId) => {
@@ -133,29 +144,29 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
   };
 
   return (
-    <SigInLayout titel="Resultados de los Ejercicios">
+    <SigInLayout titel={ms.teacher.exercise.pdf.results}>
       <div className="pt-11">
         <h2 className="mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl text-center">
-          Resultados del Ejercicio: {NombreEjercicio}
+          {ms.teacher.exercise.pdf.results}: {NombreEjercicio}
         </h2>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 ">
             <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nombre del Alumno
+                  {ms.teacher.exercise.pdf.studentName}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Caracteres Acertados
+                  {ms.teacher.exercise.pdf.correct}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Caracteres Fallados
+                  {ms.teacher.exercise.pdf.incorrect}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Promedio del Puntaje
+                  {ms.teacher.exercise.pdf.prom}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ver resultados
+                  {ms.teacher.exercise.pdf.showResults}
                 </th>
               </tr>
             </thead>
@@ -190,7 +201,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
                         className=" btn btn-secondary"
                         onClick={() => handleResultsByStudent(userId)}
                       >
-                        Ver resultados
+                        {ms.teacher.exercise.pdf.showResults}
                       </button>
                     </td>
                   </tr>
@@ -205,7 +216,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
           className="btn btn-primary font-bold mt-3"
           disabled={Object.keys(resultadosAgrupados).length === 0}
         >
-          Exportar tabla a PDF
+          {ms.teacher.exercise.pdf.exportToPDF}
         </button>
       </div>
     </SigInLayout>

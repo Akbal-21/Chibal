@@ -26,11 +26,11 @@ test.beforeEach(async ({ page }) => {
 
 test.describe(descripcion, () => {
   test(caso1, async ({ page }) => {
-    await page.getByPlaceholder("Enter email").click();
-    await page.getByPlaceholder("Enter email").fill("juan@a.com");
-    await page.getByPlaceholder("Enter password").click();
-    await page.getByPlaceholder("Enter password").fill("123456");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").click();
+    await page.getByPlaceholder("Correo electronico").fill("juan@a.com");
+    await page.getByPlaceholder("Contraseña").click();
+    await page.getByPlaceholder("Contraseña").fill("123456");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
 
     const row = await page.locator('tr:has(td:has-text("Deletreo"))');
     const resolverButton = await row.locator('button:has-text("Resolver")');

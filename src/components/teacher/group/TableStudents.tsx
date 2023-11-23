@@ -1,8 +1,11 @@
-import { GroupContext } from "@/context";
+import { GroupContext, InternationalContext } from "@/context";
+import { en, es } from "@/messages";
 import { useContext } from "react";
 
 export const TableStudents = () => {
   const { students } = useContext(GroupContext);
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -13,13 +16,13 @@ export const TableStudents = () => {
               #
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Nombre
+              {ms.teacher.group.slug.index.listOfStudent.name}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Apellido
+              {ms.teacher.group.slug.index.listOfStudent.surnames}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Correo
+              {ms.teacher.group.slug.index.listOfStudent.mail}
             </th>
           </tr>
         </thead>

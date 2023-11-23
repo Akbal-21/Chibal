@@ -1,7 +1,8 @@
 import { chibalApi } from "@/api";
-import { AuthContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { canvasToNeg, modelUrls, predictionValue } from "@/functions";
 import { IQuestion } from "@/interface";
+import { en, es } from "@/messages";
 import { useQuestionsStore } from "@/store/student/question";
 import { LayersModel, Rank, Tensor, loadLayersModel } from "@tensorflow/tfjs";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -10,6 +11,8 @@ import { Footer } from ".";
 
 export const Question = () => {
   const { user } = useContext(AuthContext);
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const {
     questions,
     currentQuestion,
@@ -138,6 +141,16 @@ export const Question = () => {
         id_User,
       },
     });
+    if (currentQuestion >= questions.length - 1) {
+      await chibalApi({
+        method: "PUT",
+        url: "/student/doExerciseByLine",
+        data: {
+          id,
+          id_User,
+        },
+      });
+    }
     return;
   };
 
@@ -165,7 +178,7 @@ export const Question = () => {
                 width: 300,
                 height: 250,
                 style: { border: "2px solid #000" },
-                title: "Dibuja",
+                title: ms.student.draw.titleCnavas,
               }}
             />
           </div>
@@ -177,14 +190,14 @@ export const Question = () => {
                   onClick={handleClear}
                   className="btn btn-primary font-bold w-full"
                 >
-                  Limpiar
+                  {ms.student.draw.clean}
                 </button>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
                   className="btn btn-primary font-bold"
                   onClick={handleNextQuestion}
                 >
-                  Finalizar
+                  {ms.student.draw.finish}
                 </button>
               </div>
             ) : (
@@ -194,14 +207,14 @@ export const Question = () => {
                   onClick={handleClear}
                   className="btn btn-primary font-bold"
                 >
-                  Limpiar
+                  {ms.student.draw.clean}
                 </button>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
                   className="btn btn-primary font-bold"
                   onClick={handleNextQuestion}
                 >
-                  Siguiente
+                  {ms.student.draw.next}
                 </button>
               </div>
             )}

@@ -1,21 +1,24 @@
 import { AddStudent, SigInLayout, TableStudents } from "@/components";
-import { GroupContext } from "@/context";
+import { GroupContext, InternationalContext } from "@/context";
 import { getDataGroup } from "@/db/teacher";
 import { IDataGroup } from "@/interface";
-import { GetServerSideProps, NextPage } from "next";
+import { en, es } from "@/messages";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 
 interface Props {
   slug: string;
   dataGroup: IDataGroup[];
 }
 
-const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
+const editStudentPage: FC<Props> = ({ slug, dataGroup }) => {
   const { addStudent, students, resetStudents } = useContext(GroupContext);
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+
   const router = useRouter();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (students.length === 0) {
       resetStudents();
@@ -40,17 +43,19 @@ const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
             <div>
               {students.length <= 0 ? (
                 <div>
-                  <div className="divider divider-horizontal">Alumnos</div>
+                  <div className="divider divider-horizontal">
+                    {ms.teacher.group.slug.index.students}
+                  </div>
                   <div className="grid gap-4 w-full">
                     <b className="text-center text-xl">
-                      Agregue Alumnos por favor
+                      {ms.teacher.group.slug.index.addStudentsText}
                     </b>
                   </div>
                 </div>
               ) : (
                 <div>
                   <div className="divider divider-horizontal">
-                    Lista de Alumnos
+                    {ms.teacher.group.slug.index.listOfStudent.title}
                   </div>
 
                   <TableStudents />
@@ -58,14 +63,14 @@ const editStudentPage: NextPage<Props> = ({ slug, dataGroup }) => {
               )}
               <div>
                 <div className="divider divider-horizontal">
-                  Guardar Alumnos
+                  {ms.teacher.group.slug.index.saveStudent}
                 </div>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
                   className="btn btn-secondary w-full"
                   onClick={handleSave}
                 >
-                  Guardar
+                  {ms.teacher.group.slug.index.save}
                 </button>
               </div>
             </div>

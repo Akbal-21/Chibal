@@ -21,8 +21,6 @@ export const ExcerciseProvider: FC<Props> = ({ children }) => {
   );
 
   const addStudentAtExcercise = (student: ISetStudentsExerciseContext) => {
-    console.log("ADD",student);
-
     dispatch({
       type: "[Excercise] - Add Student to Excercise",
       payload: student,
@@ -30,12 +28,12 @@ export const ExcerciseProvider: FC<Props> = ({ children }) => {
   };
 
   const resetListStudent = () => {
-    console.log("RESET")
+    console.log("RESET");
     dispatch({ type: "[Excercise] - Reset Student List" });
   };
 
   const removeStudentAtExcercise = (student: ISetStudentsExerciseContext) => {
-    console.log("RM",student);
+    console.log("RM", student);
     dispatch({
       type: "[Excercise] - Remove Student to Excercise",
       payload: student,

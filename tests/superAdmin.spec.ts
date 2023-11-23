@@ -16,9 +16,9 @@ const caso4Admins = "Eliminación de administrador existente";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:3000/auth/login");
-    await page.getByPlaceholder("Enter email").fill("su@admin.com");
-    await page.getByPlaceholder("Enter password").fill("123456");
-    await page.getByRole("button", { name: "Ingresar" }).click();
+    await page.getByPlaceholder("Correo electronico").fill("su@admin.com");
+    await page.getByPlaceholder("Contraseña").fill("123456");
+    await page.getByRole("button", { name: "Iniciar sesión" }).click();
 });
 
 test.describe( descripcionAdmins, () => {
@@ -96,7 +96,7 @@ test.describe( descripcionSchools, () => {
     
     test( caso4Schools, async ( { page } ) => {
         await page.getByText('Escuelas').click();
-        await page.getByRole('button', { name: 'Elimiar' }).nth(3).click();
+        await page.getByRole('button', { name: 'Eliminar' }).nth(3).click();
         await expect( page ).toHaveURL( new RegExp( "/superAdmin/schools" ) );
     } );
 } );
