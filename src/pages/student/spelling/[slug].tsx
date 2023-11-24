@@ -48,14 +48,14 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
       color: s === "" ? "#ffffff" : generateRandomIntenseColor(),
     };
   };
+  const id = idInciso;
+  const id_User = user?.Usuarios_id;
+  console.log({ id, id_User });
 
   const handleSave = async () => {
     console.log("Guardado");
     console.log(word, idInciso);
     const palabra = word;
-    const id = idInciso;
-    const id_User = user?.Usuarios_id;
-    console.log({ palabra, id, id_User });
     try {
       const response = await chibalApi({
         method: "POST",
@@ -64,6 +64,15 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
           palabra,
           id,
           id_User,
+        },
+      });
+
+      await chibalApi({
+        method: "PUT",
+        url: "/student/doExerciseBySpell",
+        data: {
+          id,
+          userID: id_User,
         },
       });
 
@@ -288,6 +297,8 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
 export default App2;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  console.log(query);
+
   const { slug = "" } = query as { slug: string };
   const line: ILine[] = await getLine(slug);
   let word = "";

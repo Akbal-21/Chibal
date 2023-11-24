@@ -43,6 +43,8 @@ export const getDataOfExercise = async (Ejercicios_id: string) => {
 };
 
 export const getLine = async (Ejercicios_id: string) => {
+  console.log(Ejercicios_id);
+
   await db.prisma.$connect();
 
   const line: ILine[] = await db.prisma.incisos.findMany({

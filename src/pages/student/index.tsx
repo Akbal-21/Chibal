@@ -13,8 +13,6 @@ const StudentPage = () => {
   const fechaLocal = new Date();
   // Obtiene el desplazamiento de zona horaria del cliente en minutos
 
-  console.log({ user });
-
   const route = useRouter();
   const { exercise, isError, isLoading } = useExerciseStudent(
     `student/${user?.Usuarios_id}`,
@@ -22,10 +20,14 @@ const StudentPage = () => {
 
   console.log({ exercise });
   const handleDoExercise = (id: number, tipo: number | null) => {
-    console.log(id);
-    if (tipo === 1 || tipo === 2 || tipo === 3)
-      route.replace(`student/exercise/${id}`);
-    else if (tipo === 4) route.replace(`student/spelling/${id}`);
+    console.log({ id, tipo });
+    if (tipo === 1 || tipo === 2 || tipo === 3) {
+      return route.replace(`student/exercise/${id}`);
+    }
+    if (tipo === 4) {
+      console.log("Entra");
+      route.replace(`student/spelling/${id}`);
+    }
     return;
   };
 
@@ -147,7 +149,10 @@ const StudentPage = () => {
                                 exercise.Ejercicios.TipoEjercicio_id,
                               )
                             }
-                            disabled={fun(exercise.Ejercicios.FechaLimite)}
+                            disabled={
+                              fun(exercise.Ejercicios.FechaLimite) ||
+                              exercise.Estado === 1
+                            }
                           >
                             {ms.student.index.actions.resolve}
                           </button>

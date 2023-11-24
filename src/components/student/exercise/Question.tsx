@@ -141,16 +141,6 @@ export const Question = () => {
         id_User,
       },
     });
-    if (currentQuestion >= questions.length - 1) {
-      await chibalApi({
-        method: "PUT",
-        url: "/student/doExerciseByLine",
-        data: {
-          id,
-          id_User,
-        },
-      });
-    }
     return;
   };
 

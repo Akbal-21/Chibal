@@ -1,5 +1,7 @@
-import { InternationalContext } from "@/context";
+import { chibalApi } from "@/api";
+import { AuthContext, InternationalContext } from "@/context";
 import { en, es } from "@/messages";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 import { useQuestionsStore } from "../../../store/student/question";
 
@@ -8,9 +10,31 @@ export const Results = () => {
   const ms = language === "en" ? en : es;
   const { reset } = useQuestionsStore();
 
+  const { user } = useContext(AuthContext);
+
+  const { questions, currentQuestion } = useQuestionsStore();
+
+  const { id } = questions[currentQuestion];
+  const userID = user?.Usuarios_id;
+  console.log(id, userID);
+  const route = useRouter();
+  const handleFinish = async () => {
+    const dataResult = await chibalApi({
+      method: "PUT",
+      url: "/student/doExerciseByLine",
+      data: {
+        id,
+        userID,
+      },
+    });
+    console.log(dataResult);
+
+    route.replace("student");
+  };
+
   return (
-    <div style={{ marginTop: "16px" }}>
-      <strong className=" text-center">
+    <div className="mt-4">
+      <strong className="text-center">
         <p>
           {ms.student.draw.sendAnswer}
           <br />
@@ -18,9 +42,11 @@ export const Results = () => {
         </p>
       </strong>
       <br />
-      <div style={{ marginTop: "16px" }}>
+      <div className="mt-4 items-center">
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-        <button onClick={() => reset()}>¡Empezar de nuevo!</button>
+        <button className="btn btn-primary" onClick={() => handleFinish()}>
+          Volver al menu
+        </button>
       </div>
     </div>
   );

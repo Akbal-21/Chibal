@@ -60,11 +60,14 @@ async function exerciseByLineStudent(
     }
   }
 }
+
 async function updateAlumno_Ejercicio(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
-  const { id, id_User } = req.body as { id: number; id_User: number };
+  console.log(req.body);
+
+  const { id, userID } = req.body as { id: number; userID: number };
   try {
     await db.prisma.$connect();
     const idExcercise: {
@@ -83,7 +86,7 @@ async function updateAlumno_Ejercicio(
     await db.prisma.alumnos_Ejercicios.update({
       where: {
         AlumnoID_EjercicioID: {
-          AlumnoID: id_User,
+          AlumnoID: userID,
           EjercicioID: Number(idExcercise.EjercicioID),
         },
       },
