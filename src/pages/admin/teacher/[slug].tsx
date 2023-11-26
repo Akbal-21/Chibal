@@ -18,6 +18,7 @@ interface FormData {
   Nombres?: string;
   Apellidos?: string;
   Correo?: string;
+  Contra?: string
 }
 
 const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
@@ -76,7 +77,8 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
         Nombres: String(values.Nombres),
         Apellidos: String(values.Apellidos),
         Correo: String(values.Correo),
-        Contrasena: teacher.Usuarios.Contrasena
+        Contrasena: values.Contra ? bcrypt.hashSync(String(values.Contra)) : teacher.Usuarios.Contrasena
+        
       }
     };
     
@@ -154,6 +156,27 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
                       />
                     </label>
                   </div>
+                  {
+                    teacher.Usuarios.Contrasena === "" ? 
+                      <div>
+                        <label>
+                          {ms.login.password}
+                          <input
+                            type="text"
+                            className="input input-solid max-w-full"
+                            {...register("Contra", {
+                              required: "Este campo es obligatorio",
+                              minLength: {
+                                value: 5,
+                                message: "Mínimo 5 caracteres",
+                              },
+                            })}
+                          />
+                        </label>
+                      </div>
+                      :
+                      <></>
+                  }
                 </div>
                 <div className="mt-4">
                   <button
@@ -183,7 +206,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         Nombres: "",
         Apellidos: "",
         Correo: "",
-        Contrasena: bcrypt.hashSync("123456"), //Calcular hash
+        Contrasena: ""
       },
     };
   } else {
