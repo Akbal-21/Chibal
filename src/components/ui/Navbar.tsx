@@ -20,7 +20,7 @@ export const Navbar = () => {
       <div className="navbar-start">
         <Link href={"/"} className="navbar-item p-0">
           <h1 className="text-white text-2xl">
-            <img src="/logo_chibal2.svg" alt="logo" width={"100px"} />
+            <img src="/logo_chibal3.svg" alt="logo" width={"100px"} />
           </h1>
         </Link>
       </div>

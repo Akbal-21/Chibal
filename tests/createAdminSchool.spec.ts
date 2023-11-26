@@ -17,6 +17,7 @@ test( "Crea la escuela y el administrador de la misma escuela", async ( { page }
     await expect( page ).toHaveURL( new RegExp( "/superAdmin/admins" ) );
 
     // * Crea escuela
+    await page.waitForTimeout(2000); // timer 2 seg
     await page.getByText('Escuelas').click();
     await page.getByRole('button', { name: 'Nueva escuela' }).click();
     await page.getByLabel('Nombre').fill('Escuela Nueva');
