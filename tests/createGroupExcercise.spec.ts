@@ -28,6 +28,24 @@ test( "Crea un grupo, alumnos y crea un ejercicio", async ( { page } ) => {
     await page.getByRole('button', { name: 'Agregar' }).click();
     await expect(page).toHaveURL(new RegExp("/teacher/group"));
     
+    // * Crea ejercicio
+    await page.waitForTimeout(2000); // timer 2 seg
+    await page.getByText('Ejercicios').click();
+    await page.getByRole('button', { name: 'Nuevo ejercicio' }).click();
+    await page.getByPlaceholder('Name').click();
+    await page.getByPlaceholder('Name').fill('Ejercicio de prueba');
+    await page.locator('div').filter({ hasText: /^clickBorradorPublicado$/ }).locator('label').click();
+    await page.getByText('Publicado').click();
+    await page.getByText('click').click();
+    await page.getByText('Numeros').click();
+    await page.locator('div').filter({ hasText: /^Fecha limite de entrega:$/ }).getByRole('textbox').click();
+    await page.getByLabel('Choose Thursday, November 30th, 2023').click();
+    await page.getByRole('heading', { name: 'Agregue un inciso por favor' }).click();
+    await page.getByPlaceholder('Ingrese los numeros separados por , (coma)').click();
+    await page.getByPlaceholder('Ingrese los numeros separados por , (coma)').fill('1,7');
+    await page.getByRole('button', { name: 'Agregar' }).click();
+    await page.getByRole('button', { name: 'Guardar' }).click();
+    
     // * Logout
     await page.getByText('Hola Hombre').click();
     await page.getByText('Cerrar sesión').click();
