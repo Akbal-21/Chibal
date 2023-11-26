@@ -1,6 +1,6 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
-import { InternationalContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { useTeacher } from "@/hooks/admin";
 import { en, es } from "@/messages";
 import { useRouter } from "next/router";
@@ -14,7 +14,9 @@ import {
 const AdminPage = () => {
   const { language } = useContext(InternationalContext);
   const ms = language === "en" ? en : es;
-  const { teachers, isError, isLoading } = useTeacher("admin");
+  const { user } = useContext(AuthContext);
+  console.log(user?.Usuarios_id)
+  const { teachers, isError,isLoading } = useTeacher(`admin/${user?.Usuarios_id}`);
   //console.log(teachers);
   const route = useRouter();
 
