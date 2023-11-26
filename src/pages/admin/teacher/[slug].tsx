@@ -1,6 +1,6 @@
 import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
-import { InternationalContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { getAllTeachers } from "@/db/admin";
 import { ITeacher } from "@/interface";
 import { en, es } from "@/messages";
@@ -23,7 +23,8 @@ interface FormData {
 
 const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
   const { language } = useContext(InternationalContext);
-
+  const { user } = useContext(AuthContext);
+  console.log(user);
   const ms = language === "en" ? en : es;
 
   const {
@@ -60,10 +61,11 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
   };
 
   const handleNew = async ( profe: ITeacher ) => {
+    const id = user?.Usuarios_id;
     await chibalApi({
       method: "POST",
       url: "/admin",
-      data: { profe },
+      data: { profe, id },
     });
     route.push( "/admin" );
     return;
@@ -78,8 +80,8 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
         Apellidos: String(values.Apellidos),
         Correo: String(values.Correo),
         Contrasena: values.Contra ? bcrypt.hashSync(String(values.Contra)) : teacher.Usuarios.Contrasena
-        
-      }
+      },
+      //Escuela_id: 
     };
     
     if( teacher.Usuario_id ){
