@@ -1,4 +1,5 @@
-import { FC, useReducer } from "react";
+import Cookie from "js-cookie";
+import { FC, useEffect, useReducer } from "react";
 import { InternationalContext, internationalReducer } from "./";
 
 export interface InternationalState {
@@ -19,11 +20,20 @@ export const InternationalProvider: FC<Props> = ({ children }) => {
     International_INITIAL_STATE,
   );
 
+  useEffect(() => {
+    const leng = Cookie.get("language");
+    console.log(leng);
+    if (leng === "es" || leng === "en") {
+      changeLanguage(leng);
+    }
+  }, []);
+
   const changeLanguage = (language: string) => {
     dispatch({
       type: "[International] - Change Language",
       payload: language,
     });
+    Cookie.set("language", language);
   };
 
   return (

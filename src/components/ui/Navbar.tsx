@@ -12,8 +12,19 @@ export const Navbar = () => {
     router.push(url);
   };
 
-  const { language } = useContext(InternationalContext);
+  const { language, changeLanguage } = useContext(InternationalContext);
   const ms = language === "en" ? en : es;
+
+  const changeLanguageUser = () => {
+    if (language === "en") {
+      changeLanguage("es");
+      console.log("Ingles");
+    }
+    if (language === "es") {
+      changeLanguage("en");
+      console.log("Espanol");
+    }
+  };
 
   return (
     <div className="navbar bg-coral rounded-lg">
@@ -68,14 +79,14 @@ export const Navbar = () => {
                 className="text-white text-xl navbar-item"
                 onClick={() => navigateTo("/superAdmin/admins")}
               >
-                <b>Administradores</b>
+                <b>{ms.superAdmin.navbar.admins}</b>
               </h1>
               {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <h1
                 className="text-white text-xl navbar-item"
                 onClick={() => navigateTo("/superAdmin/schools")}
               >
-                <b>Escuelas</b>
+                <b>{ms.superAdmin.navbar.schools}</b>
               </h1>
             </>
           )
@@ -95,6 +106,14 @@ export const Navbar = () => {
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button className="dropdown-item text-sm" onClick={logout}>
                 {ms.navbar.logout}
+              </button>
+              <div className="divider" />
+              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+              <button
+                className="dropdown-item text-sm"
+                onClick={() => changeLanguageUser()}
+              >
+                {language === "en" ? "🇲🇽 Español" : "🇺🇸 English"}
               </button>
             </div>
           </div>

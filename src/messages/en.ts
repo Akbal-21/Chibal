@@ -153,6 +153,10 @@ export default {
     },
   },
   superAdmin: {
+    navbar: {
+      admins: "Administrators",
+      schools: "Schools",
+    },
     admin: {
       index: {
         title: "CRUD Super Administrator",
