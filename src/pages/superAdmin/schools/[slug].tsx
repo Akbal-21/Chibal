@@ -68,7 +68,7 @@ const EditSchoolPage: NextPage<Props> = ({ school, admins }) => {
         Administrador_id: administrador.idAdministrador,
       },
     });
-    return route.replace("/superAdmin/schools");
+    return route.push("/superAdmin/schools");
   };
 
   const handleNew = async () => {
@@ -78,9 +78,10 @@ const EditSchoolPage: NextPage<Props> = ({ school, admins }) => {
       url: "/superAdmin/schools",
       data: {
         Nombre: values.nombreEscuela,
+        Administrador_id: administrador.idAdministrador,
       },
     });
-    return route.replace("/superAdmin/schools");
+    return route.push("/superAdmin/schools");
   };
 
   const onSubmit = (form: FormData) => {

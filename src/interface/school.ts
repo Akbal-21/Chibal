@@ -6,6 +6,7 @@ export interface ITeacher {
       Correo: string;
       Contrasena?: string;
   };
+  
 };
 
 export interface IGrade {

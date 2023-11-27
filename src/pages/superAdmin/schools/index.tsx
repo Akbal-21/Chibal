@@ -31,11 +31,11 @@ const SchoolTablePage = () => {
 
   const handleNew = () => {
     console.log("niu");
-    return route.replace("/superAdmin/schools/new");
+    return route.push("/superAdmin/schools/new");
   };
   const handleEdit = (admin_id: number) => {
     //console.log(admin_id)
-    return route.replace(`/superAdmin/schools/${admin_id}`);
+    return route.push(`/superAdmin/schools/${admin_id}`);
   };
 
   return (

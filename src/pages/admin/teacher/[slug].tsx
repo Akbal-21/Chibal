@@ -1,6 +1,6 @@
 import { chibalApi } from "@/api";
 import { SigInLayout } from "@/components";
-import { InternationalContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { getAllTeachers } from "@/db/admin";
 import { ITeacher } from "@/interface";
 import { en, es } from "@/messages";
@@ -18,11 +18,13 @@ interface FormData {
   Nombres?: string;
   Apellidos?: string;
   Correo?: string;
+  Contra?: string
 }
 
 const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
   const { language } = useContext(InternationalContext);
-
+  const { user } = useContext(AuthContext);
+  console.log(user);
   const ms = language === "en" ? en : es;
 
   const {
@@ -59,10 +61,11 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
   };
 
   const handleNew = async ( profe: ITeacher ) => {
+    const id = user?.Usuarios_id;
     await chibalApi({
       method: "POST",
       url: "/admin",
-      data: { profe },
+      data: { profe, id },
     });
     route.push( "/admin" );
     return;
@@ -76,8 +79,9 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
         Nombres: String(values.Nombres),
         Apellidos: String(values.Apellidos),
         Correo: String(values.Correo),
-        Contrasena: teacher.Usuarios.Contrasena
-      }
+        Contrasena: values.Contra ? bcrypt.hashSync(String(values.Contra)) : teacher.Usuarios.Contrasena
+      },
+      //Escuela_id: 
     };
     
     if( teacher.Usuario_id ){
@@ -154,6 +158,27 @@ const TeacherTablePage: NextPage<Props> = ({ teacher }) => {
                       />
                     </label>
                   </div>
+                  {
+                    teacher.Usuarios.Contrasena === "" ? 
+                      <div>
+                        <label>
+                          {ms.login.password}
+                          <input
+                            type="text"
+                            className="input input-solid max-w-full"
+                            {...register("Contra", {
+                              required: "Este campo es obligatorio",
+                              minLength: {
+                                value: 5,
+                                message: "Mínimo 5 caracteres",
+                              },
+                            })}
+                          />
+                        </label>
+                      </div>
+                      :
+                      <></>
+                  }
                 </div>
                 <div className="mt-4">
                   <button
@@ -183,7 +208,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         Nombres: "",
         Apellidos: "",
         Correo: "",
-        Contrasena: bcrypt.hashSync("123456"), //Calcular hash
+        Contrasena: ""
       },
     };
   } else {
