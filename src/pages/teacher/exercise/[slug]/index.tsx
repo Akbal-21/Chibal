@@ -163,19 +163,23 @@ const ExcersisePage: NextPage<Props> = ({
       setValue("FechaPublicacion", datePublic.toDateString());
       setValue("Estado", 2);
     }
+    //setValue("TipoEjercicio_id",  );
+    const valor = getValues("TipoEjercicio_id");
+    console.log(valor);
     const pub = getValues("FechaPublicacion");
     console.log(pub);
   };
 
   const onSubmit = async (form: FormData) => {
     await setValuesForm();
-    const { FechaPublicacion, Estado } = getValues();
+    const { FechaPublicacion, Estado, TipoEjercicio_id } = getValues();
 
-    console.log(FechaPublicacion, Estado);
+    console.log(TipoEjercicio_id);
 
     const teacherID = parts[1];
 
     if (parts[0] === "new") {
+
       const saveExercise = await chibalApi({
         method: "POST",
         data: {
@@ -185,6 +189,7 @@ const ExcersisePage: NextPage<Props> = ({
           teacherID,
           FechaPublicacion,
           Estado,
+          TipoEjercicio_id
         },
         url: "/teacher/exercise",
       });
@@ -197,6 +202,7 @@ const ExcersisePage: NextPage<Props> = ({
           allStudents,
           FechaPublicacion,
           Estado,
+          TipoEjercicio_id
         },
         url: "/teacher/exercise",
       });

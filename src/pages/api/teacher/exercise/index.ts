@@ -78,6 +78,7 @@ async function insertExcercise(
     teacherID,
     FechaPublicacion,
     Estado,
+    TipoEjercicio_id
   } = req.body as {
     form: FormData;
     addExercise: DataExerciseStgring[];
@@ -85,8 +86,9 @@ async function insertExcercise(
     teacherID: string;
     FechaPublicacion: string | null;
     Estado: number;
+    TipoEjercicio_id: number
   };
-  const { NombreEjercicio, FechaLimite, TipoEjercicio_id } = form;
+  const { NombreEjercicio, FechaLimite } = form;
 
   const dateLim = Date.parse(FechaLimite);
   const dateLimit = new Date(dateLim);
@@ -184,19 +186,19 @@ async function updateExcercise(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
-  const { form, addExercise, allStudents, FechaPublicacion, Estado } =
+  const { form, addExercise, allStudents, FechaPublicacion, Estado, TipoEjercicio_id } =
     req.body as {
       form: FormData;
       addExercise: DataExerciseStgring[];
       allStudents: ISetStudentsExerciseContext[];
       FechaPublicacion: string | null;
       Estado: number;
+      TipoEjercicio_id: number
     };
   const {
     Ejercicios_id,
     NombreEjercicio,
     MaestroID,
-    TipoEjercicio_id,
     FechaLimite,
   } = form;
 
@@ -238,6 +240,7 @@ async function updateExcercise(
           Estado_id: Estado,
         },
       });
+      console.log(saveExcercise)
     } else {
       const datePub = Date.parse(FechaPublicacion);
       const datePublic = new Date(datePub);

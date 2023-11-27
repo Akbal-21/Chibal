@@ -29,7 +29,7 @@ export const Results = () => {
     });
     console.log(dataResult);
 
-    route.replace("student");
+    route.push("/student");
   };
 
   return (

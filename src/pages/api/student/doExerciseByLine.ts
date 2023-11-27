@@ -80,8 +80,9 @@ async function updateAlumno_Ejercicio(
         Incisos_id: id,
       },
     });
+    console.log(idExcercise);
     if (!idExcercise) {
-      return res.status(0).json({ message: "Error en la red" });
+      return res.status(400).json({ message: "Error en la red" });
     }
     await db.prisma.alumnos_Ejercicios.update({
       where: {
