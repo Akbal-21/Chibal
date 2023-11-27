@@ -5,6 +5,7 @@ import { LineByStudentID } from "@/interface";
 import { en, es } from "@/messages";
 import { GetServerSideProps, NextPage } from "next";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 
 interface Props {
@@ -16,6 +17,12 @@ interface Props {
 const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
   const { language } = useContext(InternationalContext);
   const ms = language === "en" ? en : es;
+
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.push(`/teacher/results/${slug}`);
+  };
   return (
     <SigInLayout titel="Resultados de los Ejercicios">
       <div className=" mt-7">
@@ -50,6 +57,15 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="grid grid-cols-1 p-4">
+          {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+          <button
+            className="btn btn-primary font-bold m-1 btn-block"
+            onClick={() => handleBack()}
+          >
+            {ms.teacher.exercise.slug.return}
+          </button>
         </div>
       </div>
     </SigInLayout>

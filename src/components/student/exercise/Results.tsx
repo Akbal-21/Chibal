@@ -45,7 +45,7 @@ export const Results = () => {
       <div className="mt-4 items-center">
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button className="btn btn-primary" onClick={() => handleFinish()}>
-          Volver al menu
+          {ms.student.draw.back_Menu}
         </button>
       </div>
     </div>

@@ -24,7 +24,12 @@ interface UsuarioResultados {
   suma: number;
 }
 
-const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines }) => {
+const ExerciseAnswersPage: NextPage<Props> = ({
+  slug,
+  results,
+  cabecera,
+  numLines,
+}) => {
   const { language } = useContext(InternationalContext);
   const ms = language === "en" ? en : es;
   const router = useRouter();
@@ -39,7 +44,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
         usuario: `${row.Alumnos.Usuarios.Apellidos} ${row.Alumnos.Usuarios.Nombres}`,
         aciertos: [],
         fallos: [],
-        suma:0
+        suma: 0,
       };
     }
 
@@ -54,7 +59,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
             result.Respuesta ? result.Respuesta : "",
           );
         }
-        resultadosAgrupados[userId].suma+=(result.Puntaje?? 0);
+        resultadosAgrupados[userId].suma += result.Puntaje ?? 0;
       }
     });
   });
@@ -120,8 +125,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
       body: Object.keys(resultadosAgrupados).map((userId) => {
         const usuario = resultadosAgrupados[userId];
         const promedioPuntaje = (
-          (usuario.suma /
-            (numLines===undefined? 1: numLines)) 
+          usuario.suma / (numLines === undefined ? 1 : numLines)
         ).toFixed(2);
 
         return [
@@ -140,7 +144,9 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
 
   const handleResultsByStudent = (userId: string) => {
     router.replace(`/teacher/results/${slug}/${userId}`);
-    console.log({ userId });
+  };
+  const handleBack = () => {
+    router.push("/teacher/exercise");
   };
 
   return (
@@ -174,8 +180,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
               {Object.keys(resultadosAgrupados).map((userId) => {
                 const usuario = resultadosAgrupados[userId];
                 const promedioPuntaje = (
-                  (usuario.suma /
-                    (numLines===undefined? 1: numLines)) 
+                  usuario.suma / (numLines === undefined ? 1 : numLines)
                 ).toFixed(2);
 
                 return (
@@ -210,14 +215,29 @@ const ExerciseAnswersPage: NextPage<Props> = ({ slug, results, cabecera,numLines
             </tbody>
           </table>
         </div>
-        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-        <button
-          onClick={exportToPDF}
-          className="btn btn-primary font-bold mt-3"
-          disabled={Object.keys(resultadosAgrupados).length === 0}
-        >
-          {ms.teacher.exercise.pdf.exportToPDF}
-        </button>
+
+        <div className="mt-4 grid-cols-2 grid">
+          <div className="p-4">
+            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+            <button
+              onClick={exportToPDF}
+              className="btn btn-primary font-bold m-1 btn-block"
+              disabled={Object.keys(resultadosAgrupados).length === 0}
+            >
+              {ms.teacher.exercise.pdf.exportToPDF}
+            </button>
+          </div>
+
+          <div className="p-4">
+            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+            <button
+              className="btn btn-primary font-bold m-1 btn-block"
+              onClick={() => handleBack()}
+            >
+              {ms.teacher.exercise.slug.return}
+            </button>
+          </div>
+        </div>
       </div>
     </SigInLayout>
   );

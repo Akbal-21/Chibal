@@ -82,6 +82,7 @@ export default {
           allStudents: "All students",
           selectedStudents: "Selected students",
         },
+        return: "Back",
       },
       pdf: {
         alert: "No data to export to PDF.",
@@ -126,6 +127,7 @@ export default {
       correct: "Correct",
       incorrect: "Incorrect",
       notAnswer: "Not Answered",
+      back_Menu: "Back to menu",
     },
     spelling: {
       exercise: "Spelling Exercise",

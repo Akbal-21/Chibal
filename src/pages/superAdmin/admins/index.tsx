@@ -29,11 +29,10 @@ const AdminTablePage = () => {
 
   const route = useRouter();
   const handleNew = () => {
-      return route.push("/superAdmin/admins/new");
-    };
-  const handleEdit = ( admin_id: number ) => {
-    return route.push( `/superAdmin/admins/${admin_id}`);
-    
+    return route.push("/superAdmin/admins/new");
+  };
+  const handleEdit = (admin_id: number) => {
+    return route.push(`/superAdmin/admins/${admin_id}`);
   };
 
   return (
@@ -65,41 +64,52 @@ const AdminTablePage = () => {
                     </thead>
                     <tbody>
                       {admins.map((admin, index: number) => {
-                        if( admin.Usuarios !== null ){
+                        if (admin.Usuarios !== null) {
                           return (
                             <tr
-                            key={admin.Usuario_id}
-                            className="bg-white border-b  hover:bg-gray-50"
+                              key={admin.Usuario_id}
+                              className="bg-white border-b  hover:bg-gray-50"
                             >
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {index + 1}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Usuarios.Nombres} {admin.Usuarios.Apellidos}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {admin.Escuela ? admin.Escuela.Nombre : "Asignar escuela"}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1" onClick={(e) => handleEdit( Number(admin.Usuario_id) )}>
-                              <AiFillEdit /> Editar
-                            </button>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {index + 1}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {admin.Usuarios.Nombres}{" "}
+                                {admin.Usuarios.Apellidos}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {admin.Escuela
+                                  ? admin.Escuela.Nombre
+                                  : "Asignar escuela"}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                                <button
+                                  className="btn btn-secondary m-1"
+                                  onClick={(e) =>
+                                    handleEdit(Number(admin.Usuario_id))
+                                  }
+                                >
+                                  <AiFillEdit />{" "}
+                                  {ms.superAdmin.admin.index.actions.edit}
+                                </button>
 
-                            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button
-                              className="btn btn-error m-1"
-                              onClick={(e) => handleDelete(admin.Usuario_id)}
-                            >
-                              <AiFillDelete /> Elimiar
-                            </button>
-                          </td>
-                        </tr>
-                        )
-                      }
-                      }
-                      )}
-                      </tbody>
+                                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                                <button
+                                  className="btn btn-error m-1"
+                                  onClick={(e) =>
+                                    handleDelete(admin.Usuario_id)
+                                  }
+                                >
+                                  <AiFillDelete />{" "}
+                                  {ms.superAdmin.admin.index.actions.dellet}
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        }
+                      })}
+                    </tbody>
                   </table>
                 </div>
                 <div className="px-4 w-full">

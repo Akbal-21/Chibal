@@ -179,7 +179,6 @@ const ExcersisePage: NextPage<Props> = ({
     const teacherID = parts[1];
 
     if (parts[0] === "new") {
-
       const saveExercise = await chibalApi({
         method: "POST",
         data: {
@@ -189,7 +188,7 @@ const ExcersisePage: NextPage<Props> = ({
           teacherID,
           FechaPublicacion,
           Estado,
-          TipoEjercicio_id
+          TipoEjercicio_id,
         },
         url: "/teacher/exercise",
       });
@@ -202,7 +201,7 @@ const ExcersisePage: NextPage<Props> = ({
           allStudents,
           FechaPublicacion,
           Estado,
-          TipoEjercicio_id
+          TipoEjercicio_id,
         },
         url: "/teacher/exercise",
       });
