@@ -2,6 +2,7 @@ import { FullScreenLoading, SigInLayout } from "@/components";
 import { AuthContext, InternationalContext } from "@/context";
 import { useExerciseStudent } from "@/hooks";
 import { en, es } from "@/messages";
+import { useQuestionsStore } from "@/store/student/question";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
@@ -83,7 +84,8 @@ const StudentPage = () => {
       ${minutos ? `${minutos} minutos` : ""}`;
     }
   }
-
+  const reset = useQuestionsStore(state => state.reset)
+  
   return (
     <SigInLayout titel={ms.student.navbar.exercise}>
       <div className="grid grid-cols-1 items-center w-full">
@@ -143,11 +145,12 @@ const StudentPage = () => {
                           {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                           <button
                             className="btn btn-secondary mx-1"
-                            onClick={() =>
+                            onClick={() =>{
+                              reset();
                               handleDoExercise(
                                 exercise.Ejercicios.Ejercicios_id,
                                 exercise.Ejercicios.TipoEjercicio_id,
-                              )
+                              )}
                             }
                             disabled={
                               fun(exercise.Ejercicios.FechaLimite) ||
