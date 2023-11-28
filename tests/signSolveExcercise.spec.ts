@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 
 test( "Crea un profesor para la escuela", async ( { page } ) => {
     // * Login
@@ -9,10 +9,43 @@ test( "Crea un profesor para la escuela", async ( { page } ) => {
     await expect( page ).toHaveURL( new RegExp( "/student" ) );
 
     // * Resuelve ejercicio
-    
+    await page.getByRole('button', { name: 'Resolver' }).click();
+    await page.getByRole('button', { name: '¡Empezar a responder!' }).click();
+
+    await page.waitForTimeout(1500);
+    await seven(page);
+    await page.getByRole("button", { name: "Siguiente" }).click();
+
+    await page.waitForTimeout(1500);
+    await seven(page);
+    await page.getByRole("button", { name: "Finalizar" }).click();
+
+    await expect(page.locator("footer")).toHaveText(
+        "✅ 4 Correctas - ❌ 0 Incorrectas - ❓ 0 Sin responder",
+        { timeout: 4000 }
+      );
     
     // * Logout
     await page.getByText('Hola Carlitos').click();
     await page.getByText('Cerrar sesión').click();
     await expect( page ).toHaveURL( new RegExp( "/auth/login" ) );
 } );
+
+async function seven(page: Page) {
+    const canvas = await page.getByTitle("Dibuja");
+    const pos = await canvas.boundingBox();
+  
+    if (pos) {
+      await page.waitForTimeout(25);
+      await page.mouse.move(pos.x + 82, pos.y + 58, { steps: 20 });
+      await page.waitForTimeout(25);
+      await page.mouse.down();
+      await page.waitForTimeout(25);
+      await page.mouse.move(pos.x + 208, pos.y + 57, { steps: 20 });
+      await page.waitForTimeout(25);
+      await page.mouse.move(pos.x + 112, pos.y + 202, { steps: 20 });
+      await page.waitForTimeout(25);
+      await page.mouse.up();
+      await page.waitForTimeout(1000);
+    }
+}
