@@ -146,9 +146,9 @@ export default {
     },
     newTeacher: "Nuevo profesor",
     slug: {
-      admin: "Administrador",
+      admin: "Editar profeosr",
       required: "Este campo es obligatorio",
-      editAdmin: "Editar administrador",
+      editAdmin: "Datos del profesor",
       name: "Nombre",
       surname: "Apellidos",
       email: "Correo",
