@@ -53,8 +53,8 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
   console.log({ id, id_User });
 
   const handleSave = async () => {
-    console.log("Guardado");
-    console.log(word, idInciso);
+    // console.log("Guardado");
+    // console.log(word, idInciso);
     const palabra = word;
     try {
       const response = await chibalApi({
@@ -66,8 +66,9 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
           id_User,
         },
       });
+      console.log(response);
 
-      await chibalApi({
+      const updateTable = await chibalApi({
         method: "PUT",
         url: "/student/doExerciseBySpell",
         data: {
@@ -75,6 +76,7 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
           userID: id_User,
         },
       });
+      console.log(updateTable);
 
       if (response.status === 202) {
         // Esperar 3 segundos antes de redirigir a /student

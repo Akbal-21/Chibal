@@ -127,7 +127,8 @@ export default {
       correct: "Correctas",
       incorrect: "Incorrectas",
       notAnswer: "Sin responder",
-      back_Menu: "Back to menu",
+      back_Menu: "Voler al menu",
+      exitWord: "Te deseamos todo el exito en este exercicio📝!!!",
     },
     spelling: {
       exercise: "Ejercicio de deletro",

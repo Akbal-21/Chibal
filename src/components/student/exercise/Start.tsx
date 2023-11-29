@@ -17,14 +17,14 @@ export const Start: FC<Props> = ({ slug, json1 }) => {
   const fetchQuestions = useQuestionsStore((state) => state.setQuestions);
 
   const handleClick = async () => {
-    console.log(json1);
     fetchQuestions(json1);
   };
 
   return (
-    <div style={{ marginTop: "16px" }}>
+    <div className="mt-4">
+      <h1 className="text-3xl text-center">{ms.student.draw.exitWord}</h1>
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button onClick={handleClick} className="btn btn-primary">
+      <button onClick={handleClick} className="btn btn-primary text-3xl">
         {ms.student.draw.starGame}
       </button>
     </div>

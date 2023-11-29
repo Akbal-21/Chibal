@@ -146,13 +146,15 @@ export const Question = () => {
 
   return (
     <div>
-      <div className="flex flex-row space-x-2 items-center justify-center">
+      <div className="grid grid-row space-x-2 items-center justify-center pt-5">
         <div className="text-3xl font-bold">
           {currentQuestion + 1} / {questions.length}
         </div>
       </div>
       <div className="bg-white shadow-md p-4 rounded-md">
-        <h1 className="text-xl font-bold">{info ? info.question : ""}</h1>
+        <h1 className="text-3xl font-bold text-center">
+          {info ? info.question : ""}
+        </h1>
 
         <h4>{info ? info.code : ""}</h4>
 
@@ -175,37 +177,45 @@ export const Question = () => {
           <div style={{ margin: "5px" }}>
             {currentQuestion >= questions.length - 1 ? (
               <div className="grid grid-cols-2">
-                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                <button
-                  onClick={handleClear}
-                  className="btn btn-primary font-bold w-full"
-                >
-                  {ms.student.draw.clean}
-                </button>
-                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                <button
-                  className="btn btn-primary font-bold"
-                  onClick={handleNextQuestion}
-                >
-                  {ms.student.draw.finish}
-                </button>
+                <div className="m-2">
+                  {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                  <button
+                    onClick={handleClear}
+                    className="btn btn-primary font-bold w-full text-2xl"
+                  >
+                    {ms.student.draw.clean}
+                  </button>
+                </div>
+                <div className="m-2">
+                  {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                  <button
+                    className="btn btn-primary font-bold w-full text-2xl"
+                    onClick={handleNextQuestion}
+                  >
+                    {ms.student.draw.finish}
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-2">
-                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                <button
-                  onClick={handleClear}
-                  className="btn btn-primary font-bold"
-                >
-                  {ms.student.draw.clean}
-                </button>
-                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                <button
-                  className="btn btn-primary font-bold"
-                  onClick={handleNextQuestion}
-                >
-                  {ms.student.draw.next}
-                </button>
+                <div className="m-2">
+                  {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                  <button
+                    onClick={handleClear}
+                    className="btn btn-primary font-bold text-2xl w-full"
+                  >
+                    {ms.student.draw.clean}
+                  </button>
+                </div>
+                <div className="m-2">
+                  {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                  <button
+                    className="btn btn-primary font-bold text-2xl w-full"
+                    onClick={handleNextQuestion}
+                  >
+                    {ms.student.draw.next}
+                  </button>
+                </div>
               </div>
             )}
           </div>

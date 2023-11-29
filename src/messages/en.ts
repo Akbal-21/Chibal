@@ -128,6 +128,7 @@ export default {
       incorrect: "Incorrect",
       notAnswer: "Not Answered",
       back_Menu: "Back to menu",
+      exitWord: "We wish you all the success in this exercise📝!!!",
     },
     spelling: {
       exercise: "Spelling Exercise",

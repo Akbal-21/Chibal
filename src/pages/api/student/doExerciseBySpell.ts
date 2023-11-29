@@ -41,7 +41,7 @@ async function updateAlumno_Ejercicio(
       },
     });
     if (!idExcercise) {
-      return res.status(0).json({ message: "Error en la red" });
+      return res.status(400).json({ message: "Error en la red" });
     }
     await db.prisma.alumnos_Ejercicios.update({
       where: {
@@ -67,6 +67,8 @@ async function exerciseByLineStudent(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
+  console.log(req.body);
+
   const { palabra, id, id_User } = req.body as {
     palabra: string;
     id: number;
