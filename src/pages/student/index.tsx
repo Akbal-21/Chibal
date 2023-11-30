@@ -4,7 +4,7 @@ import { useExerciseStudent } from "@/hooks";
 import { en, es } from "@/messages";
 import { useQuestionsStore } from "@/store/student/question";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 const StudentPage = () => {
@@ -86,9 +86,13 @@ const StudentPage = () => {
     }
   }
   const reset = useQuestionsStore(state => state.reset)
-  
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel={ms.student.navbar.exercise}>
+    <SigInLayout titel={ms.student.navbar.exercise} onReload={handleReloadComponent}>
       <div className="grid grid-cols-1 items-center w-full">
         <div className="p-1 mt-20 relative flex justify-center items-center">
           {isLoading ? (
@@ -96,7 +100,7 @@ const StudentPage = () => {
           ) : (
             <div className="grid grid-cols-1">
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <Table className="w-full text-sm text-left text-gray-500">
+                <Table className="w-full text-sm text-left text-gray-500" key={componentKey}>
                   <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
                     <Tr>
                       <Th

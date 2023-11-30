@@ -4,9 +4,9 @@ import { AuthContext, InternationalContext } from "@/context";
 import { useExerciseTeacher } from "@/hooks";
 import { en, es } from "@/messages";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 
 const ExcercisePage = () => {
   const { language } = useContext(InternationalContext);
@@ -43,15 +43,20 @@ const ExcercisePage = () => {
     return route.replace(`/teacher/results/${exerciseId}`);
   };
 
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel="Ejercicios">
+    <SigInLayout titel="Ejercicios" onReload={handleReloadComponent}>
       <div className="p-1 mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
         ) : (
           <div className="grid grid-cols-custom-2">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-              <Table className="w-full text-sm text-left text-gray-500">
+              <Table className="w-full text-sm text-left text-gray-500" key={componentKey}>
                 <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
                   <Tr>
                     <Th

@@ -6,7 +6,7 @@ import { en, es } from "@/messages";
 import { GetServerSideProps, NextPage } from "next";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table';
 
 interface Props {
@@ -24,11 +24,16 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
   const handleBack = () => {
     router.push(`/teacher/results/${slug}`);
   };
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel="Resultados de los Ejercicios">
+    <SigInLayout titel="Resultados de los Ejercicios" onReload={handleReloadComponent}>
       <div className=" mt-7">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <Table className="w-full text-sm text-left text-gray-500 ">
+          <Table className="w-full text-sm text-left text-gray-500 " key={componentKey}>
             <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
               <Tr>
                 <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
