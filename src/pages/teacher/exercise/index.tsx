@@ -6,7 +6,7 @@ import { en, es } from "@/messages";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const ExcercisePage = () => {
   const { language } = useContext(InternationalContext);
@@ -50,13 +50,16 @@ const ExcercisePage = () => {
   };
   return (
     <SigInLayout titel="Ejercicios" onReload={handleReloadComponent}>
-      <div className="p-1 mt-20 relative flex justify-center items-center">
+      <div className="p-1 mt-4 md:mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
         ) : (
-          <div className="grid grid-cols-custom-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-custom-2 w-full">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-              <Table className="w-full text-sm text-left text-gray-500" key={componentKey}>
+              <Table
+                className="w-full text-sm text-left text-gray-500"
+                key={componentKey}
+              >
                 <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
                   <Tr>
                     <Th
@@ -140,9 +143,9 @@ const ExcercisePage = () => {
                 </Tbody>
               </Table>
             </div>
-            <div className="px-4 w-full">
+            <div className="px-4 w-full grid">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-              <button className="btn btn-primary w-48" onClick={handleNew}>
+              <button className="btn btn-primary w-full" onClick={handleNew}>
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>

@@ -10,7 +10,7 @@ import {
   AiFillEdit,
   AiOutlineUsergroupAdd,
 } from "react-icons/ai";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const AdminTablePage = () => {
   const { language } = useContext(InternationalContext);
@@ -54,7 +54,10 @@ const AdminTablePage = () => {
             ) : (
               <div className="grid grid-cols-custom-2">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                  <Table className="w-full text-sm text-left text-gray-500 " key={componentKey}>
+                  <Table
+                    className="w-full text-sm text-left text-gray-500 "
+                    key={componentKey}
+                  >
                     <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
                       <Tr>
                         <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -121,9 +124,12 @@ const AdminTablePage = () => {
                     </Tbody>
                   </Table>
                 </div>
-                <div className="px-4 w-full">
+                <div className="px-4 w-full grid">
                   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                  <button className="btn btn-primary w-36" onClick={handleNew}>
+                  <button
+                    className="btn btn-primary w-full"
+                    onClick={handleNew}
+                  >
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>

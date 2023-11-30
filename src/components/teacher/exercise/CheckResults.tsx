@@ -3,7 +3,7 @@ import { InternationalContext } from "@/context";
 import { LineByStudentID } from "@/interface";
 import { en, es } from "@/messages";
 import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Td, Tr } from "react-super-responsive-table";
 
 interface Props {
   lineStudent: LineByStudentID;

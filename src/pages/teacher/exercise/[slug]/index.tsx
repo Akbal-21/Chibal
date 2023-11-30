@@ -317,7 +317,7 @@ const ExcersisePage: NextPage<Props> = ({
               noValidate
             >
               <div className="form-control relative w-full">
-                <div className=" grid grid-cols-custom-2 w-full gap-5">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-custom-2 w-full">
                   <div>
                     {ms.teacher.exercise.nameExercise}:
                     {errors.NombreEjercicio && (

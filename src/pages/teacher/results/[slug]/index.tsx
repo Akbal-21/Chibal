@@ -9,7 +9,7 @@ import autoTable from "jspdf-autotable";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 interface Props {
   slug: string;
@@ -156,13 +156,19 @@ const ExerciseAnswersPage: NextPage<Props> = ({
     setComponentKey((prevKey) => prevKey + 1);
   };
   return (
-    <SigInLayout titel={ms.teacher.exercise.pdf.results} onReload={handleReloadComponent}>
+    <SigInLayout
+      titel={ms.teacher.exercise.pdf.results}
+      onReload={handleReloadComponent}
+    >
       <div className="pt-11">
         <h2 className="mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl text-center">
           {ms.teacher.exercise.pdf.results}: {NombreEjercicio}
         </h2>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <Table className="w-full text-sm text-left text-gray-500 " key={componentKey}>
+          <Table
+            className="w-full text-sm text-left text-gray-500 "
+            key={componentKey}
+          >
             <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
               <Tr>
                 <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -222,7 +228,7 @@ const ExerciseAnswersPage: NextPage<Props> = ({
           </Table>
         </div>
 
-        <div className="mt-4 grid-cols-2 grid">
+        <div className="mt-4 grid-cols-1 md:grid-cols-2 grid">
           <div className="p-4">
             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
             <button

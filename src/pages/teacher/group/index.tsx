@@ -10,7 +10,7 @@ import {
   AiFillEdit,
   AiOutlineUsergroupAdd,
 } from "react-icons/ai";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 const GroupPage = () => {
   const route = useRouter();
 
@@ -45,13 +45,16 @@ const GroupPage = () => {
   };
   return (
     <SigInLayout titel="Grupos" onReload={handleReloadComponent}>
-      <div className="p-1 mt-20 relative flex justify-center items-center">
+      <div className="p-1 mt-5 md:mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
         ) : (
-          <div className="grid grid-cols-custom-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-custom-2 w-full">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-              <Table className="w-full text-sm text-left text-gray-500 " key={componentKey}>
+              <Table
+                className="w-full text-sm text-left text-gray-500 "
+                key={componentKey}
+              >
                 <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
                   <Tr>
                     <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -100,9 +103,12 @@ const GroupPage = () => {
                 </Tbody>
               </Table>
             </div>
-            <div className="px-4 w-full">
+            <div className="px-4 w-full grid">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-              <button className="btn btn-primary w-28" onClick={handleNewGroup}>
+              <button
+                className="btn btn-primary w-full "
+                onClick={handleNewGroup}
+              >
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>
