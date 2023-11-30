@@ -1,6 +1,8 @@
 import { chibalApi } from "@/api";
+import { InternationalContext } from "@/context";
 import { LineByStudentID } from "@/interface";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { en, es } from "@/messages";
+import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 interface Props {
@@ -12,6 +14,8 @@ export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
   const [isUpdate, setIsUpdate] = useState<boolean>(true);
   const [shift, setShift] = useState<number>(0);
   // const [id_stud, setid_stud] = useState(second)
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
 
   useEffect(() => {
     setShift(lineStudent.Puntaje);
@@ -48,7 +52,7 @@ export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
       <Td className="px-6 whitespace-nowrap">
         <img
           src={String(lineStudent.Imagen)}
-          alt="Letra escrita por el alumno"
+          alt={ms.teacher.exercise.pdf.studentDraw}
           width={50}
           height={50}
         />
@@ -74,7 +78,7 @@ export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
           disabled={isUpdate}
           onClick={updateShift}
         >
-          Actualizar
+          {ms.teacher.exercise.pdf.update}
         </button>
       </Td>
     </Tr>

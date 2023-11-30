@@ -43,6 +43,8 @@ export const getDataOfExercise = async (Ejercicios_id: string) => {
 };
 
 export const getLine = async (Ejercicios_id: string) => {
+  console.log(Ejercicios_id);
+
   await db.prisma.$connect();
 
   const line: ILine[] = await db.prisma.incisos.findMany({
@@ -61,6 +63,7 @@ export const getLine = async (Ejercicios_id: string) => {
 
 export const getAllStudentsByTeacherId = async (parts: string[]) => {
   try {
+    let asigmentStudentExcercise: IGetStudentAsigmentExercise[] = [];
     await db.prisma.$connect();
     const studentsGroup: IGetAllStudentsByTeacherID[] =
       await db.prisma.alumnos.findMany({
@@ -84,9 +87,8 @@ export const getAllStudentsByTeacherId = async (parts: string[]) => {
           },
         },
       });
-
-    const asigmentStudentExcercise: IGetStudentAsigmentExercise[] =
-      await db.prisma.alumnos_Ejercicios.findMany({
+    if (parts[0] !== "new") {
+      asigmentStudentExcercise = await db.prisma.alumnos_Ejercicios.findMany({
         select: {
           Alumnos: {
             select: {
@@ -104,6 +106,7 @@ export const getAllStudentsByTeacherId = async (parts: string[]) => {
           EjercicioID: Number(parts[0]),
         },
       });
+    }
     if (!studentsGroup || !asigmentStudentExcercise) {
       return;
     }

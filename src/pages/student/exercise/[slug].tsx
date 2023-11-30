@@ -45,8 +45,6 @@ export default solve;
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query as { slug: string };
   const results: string = await getExerciseQuestions(Number(slug));
-  console.log(slug);
-  console.log(results);
 
   if (Number(slug)) {
     return {

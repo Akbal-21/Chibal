@@ -15,7 +15,8 @@ export const getAllTeachers = async (idUser: string) => {
           Correo: true,
           Contrasena: true
         }
-      }
+      },
+      Escuela_id: true
     },
     where:{
       Usuario_id: Number( idUser )

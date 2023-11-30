@@ -1,4 +1,9 @@
-import { AuthProvider, ExcerciseProvider, GroupProvider } from "@/context";
+import {
+  AuthProvider,
+  ExcerciseProvider,
+  GroupProvider,
+  InternationalProvider,
+} from "@/context";
 // import { ExcerciseProvider } from "@/context/teacher/excercise";
 import "@/styles/globals.css";
 import "@/styles/table-responsive.css";
@@ -20,13 +25,15 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       >
         <AuthProvider>
-          <GroupProvider>
-            <ExcerciseProvider>
+          <InternationalProvider>
+            <GroupProvider>
+              <ExcerciseProvider>
               <main className={abz.className}>
-                <Component {...pageProps} />
+                  <Component {...pageProps} />
               </main>
-            </ExcerciseProvider>
-          </GroupProvider>
+              </ExcerciseProvider>
+            </GroupProvider>
+          </InternationalProvider>
         </AuthProvider>
       </SWRConfig>
     </SessionProvider>

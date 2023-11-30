@@ -1,6 +1,6 @@
 export const modelUrls = [
-  "https://raw.githubusercontent.com/francisco-renteria/francisco-renteria.github.io/main/digitos/model.json",
-  "https://raw.githubusercontent.com/francisco-renteria/francisco-renteria.github.io/main/letras/model.json",
+  "https://raw.githubusercontent.com/francisco-renteria/francisco-renteria.github.io/main/Quantized/digitos/model.json",
+  "https://raw.githubusercontent.com/francisco-renteria/francisco-renteria.github.io/main/Quantized/letras/model.json",
 ];
 
 // Define un objeto para mapear los índices a caracteres

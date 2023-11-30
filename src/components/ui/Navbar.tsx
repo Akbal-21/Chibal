@@ -1,4 +1,5 @@
-import { AuthContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
+import { en, es } from "@/messages";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
@@ -11,13 +12,26 @@ export const Navbar = () => {
     router.push(url);
   };
 
+  const { language, changeLanguage } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+
+  const changeLanguageUser = () => {
+    if (language === "en") {
+      changeLanguage("es");
+      console.log("Ingles");
+    }
+    if (language === "es") {
+      changeLanguage("en");
+      console.log("Espanol");
+    }
+  };
+
   return (
     <div className="navbar bg-coral rounded-lg">
       <div className="navbar-start">
         <Link href={"/"} className="navbar-item p-0">
           <h1 className="text-white text-2xl">
-            <img src="/logo_chibal2.svg" alt="logo" width={"100px"}/>
-            
+            <img src="/logo_chibal3.svg" alt="logo" width={"100px"} />
           </h1>
         </Link>
       </div>
@@ -28,7 +42,7 @@ export const Navbar = () => {
             className="text-white text-xl navbar-item"
             onClick={() => navigateTo("/student")}
           >
-            <b>Ejercicios</b>
+            <b>{ms.student.navbar.exercise}</b>
           </h1>
         ) : user?.roll === "Administrador" ? (
           <>
@@ -39,7 +53,6 @@ export const Navbar = () => {
             >
               <b>Maestros</b>
             </h1>
-            
           </>
         ) : user?.roll === "Maestro" ? (
           <>
@@ -48,14 +61,14 @@ export const Navbar = () => {
               className="text-white text-xl navbar-item"
               onClick={() => navigateTo("/teacher/group")}
             >
-              <b>Grupo</b>
+              <b>{ms.teacher.navbar.group}</b>
             </h1>
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <h1
               className="text-white text-xl navbar-item"
               onClick={() => navigateTo("/teacher/exercise")}
             >
-              <b>Ejercicios</b>
+              <b>{ms.teacher.navbar.exercise}</b>
             </h1>
           </>
         ) : (
@@ -66,14 +79,14 @@ export const Navbar = () => {
                 className="text-white text-xl navbar-item"
                 onClick={() => navigateTo("/superAdmin/admins")}
               >
-                <b>Administradores</b>
+                <b>{ms.superAdmin.navbar.admins}</b>
               </h1>
               {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <h1
                 className="text-white text-xl navbar-item"
                 onClick={() => navigateTo("/superAdmin/schools")}
               >
-                <b>Escuelas</b>
+                <b>{ms.superAdmin.navbar.schools}</b>
               </h1>
             </>
           )
@@ -87,12 +100,20 @@ export const Navbar = () => {
               // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
               tabIndex={0}
             >
-              <b>{`Hola ${user?.Nombres} `}</b>
+              <b>{`${ms.navbar.hello} ${user?.Nombres} `}</b>
             </label>
             <div className="dropdown-menu dropdown-menu-bottom-left">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button className="dropdown-item text-sm" onClick={logout}>
-                Salir
+                {ms.navbar.logout}
+              </button>
+              <div className="divider" />
+              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+              <button
+                className="dropdown-item text-sm"
+                onClick={() => changeLanguageUser()}
+              >
+                {language === "en" ? "🇲🇽 Español" : "🇺🇸 English"}
               </button>
             </div>
           </div>

@@ -1,8 +1,10 @@
 import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
+import { InternationalContext } from "@/context";
 import { useSchool } from "@/hooks";
-import { ISchoolName } from "@/interface";
+import { en, es } from "@/messages";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import {
   AiFillDelete,
   AiFillEdit,
@@ -11,6 +13,8 @@ import {
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 const SchoolTablePage = () => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const { schools, isError, isLoading } = useSchool("superAdmin/schools");
   //console.log(schools);
   const route = useRouter();
@@ -28,19 +32,17 @@ const SchoolTablePage = () => {
 
   const handleNew = () => {
     console.log("niu");
-    return route.replace("/superAdmin/schools/new");
+    return route.push("/superAdmin/schools/new");
   };
-  const handleEdit = ( admin_id: number ) => {
+  const handleEdit = (admin_id: number) => {
     //console.log(admin_id)
-    return route.replace( `/superAdmin/schools/${admin_id}`);
-    
+    return route.push(`/superAdmin/schools/${admin_id}`);
   };
 
   return (
     <>
-      <SigInLayout titel="CRUD Maestro">
+      <SigInLayout titel={ms.superAdmin.school.index.title}>
         <div>
-
           <div className="p-1 mt-20 relative flex justify-center items-center">
             {isLoading ? (
               <FullScreenLoading />
@@ -54,13 +56,13 @@ const SchoolTablePage = () => {
                           #
                         </Th>
                         <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Escuela
+                          {ms.superAdmin.school.index.school}
                         </Th>
                         <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Administrador
+                          {ms.superAdmin.school.index.admin}
                         </Th>
                         <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Acciones
+                          {ms.superAdmin.school.index.actions.title}
                         </Th>
                       </Tr>
                     </Thead>
@@ -78,15 +80,18 @@ const SchoolTablePage = () => {
                           </Td>
                           <Td className="px-6 py-4 whitespace-nowrap">
                             {!school.Administrador
-                              ? "No asignado"
+                              ? ms.superAdmin.school.index.noAsigment
                               : school.Administrador.Usuarios.Nombres +
                                 school.Administrador.Usuarios.Apellidos}
                           </Td>
                           <Td className="px-6 py-4 whitespace-nowrap">
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                            <button className="btn btn-secondary m-1"
-                            onClick={(e) => handleEdit(school.Escuela_id)}>
-                              <AiFillEdit /> Editar
+                            <button
+                              className="btn btn-secondary m-1"
+                              onClick={(e) => handleEdit(school.Escuela_id)}
+                            >
+                              <AiFillEdit />{" "}
+                              {ms.superAdmin.school.index.actions.edit}
                             </button>
 
                             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -94,7 +99,8 @@ const SchoolTablePage = () => {
                               className="btn btn-error m-1"
                               onClick={(e) => handleDelete(school.Escuela_id)}
                             >
-                              <AiFillDelete /> Elimiar
+                              <AiFillDelete />{" "}
+                              {ms.superAdmin.school.index.actions.dellet}
                             </button>
                           </Td>
                         </Tr>
@@ -104,12 +110,14 @@ const SchoolTablePage = () => {
                 </div>
                 <div className="px-4 w-full">
                   {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                  <button className="btn btn-primary w-28"
-                  onClick={(e) => handleNew()}>
+                  <button
+                    className="btn btn-primary w-28"
+                    onClick={(e) => handleNew()}
+                  >
                     <b className="text-xl">
                       <AiOutlineUsergroupAdd />
                     </b>
-                    Nueva escuela
+                    {ms.superAdmin.school.index.newSchool}
                   </button>
                 </div>
               </div>

@@ -1,12 +1,16 @@
+import { chibalApi } from "@/api";
 import { FullScreenLoading, SigInLayout } from "@/components";
-import { AuthContext } from "@/context";
+import { AuthContext, InternationalContext } from "@/context";
 import { useExerciseTeacher } from "@/hooks";
+import { en, es } from "@/messages";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 const ExcercisePage = () => {
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
   const route = useRouter();
   const handleNew = () => {
     return route.replace(`/teacher/exercise/new-${user?.Usuarios_id}`);
@@ -25,8 +29,14 @@ const ExcercisePage = () => {
     );
   };
 
-  const handleDelete = (Ejercicios_id: number) => {
-    console.log(Ejercicios_id);
+  const handleDelete = async (Ejercicios_id: number) => {
+    const data = await chibalApi({
+      url: "/teacher/exercise",
+      method: "DELETE",
+      data: { Ejercicios_id },
+    });
+    console.log(data);
+    // route.reload();
   };
 
   const handleShowResults = (exerciseId: number) => {
@@ -54,25 +64,25 @@ const ExcercisePage = () => {
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Nombre del ejercicio
+                      {ms.teacher.exercise.nameExercise}
                     </Th>
                     <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Fecha a Publicar
+                      {ms.teacher.exercise.index.publicDate}
                     </Th>
                     <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Fecha Limite de entrega
+                      {ms.teacher.exercise.limitDate}
                     </Th>
                     <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Acciones
+                      {ms.teacher.exercise.index.action.title}
                     </Th>
                   </Tr>
                 </Thead>
@@ -99,7 +109,7 @@ const ExcercisePage = () => {
                           onClick={() => handleEdith(exercise.Ejercicios_id)}
                           disabled={exercise.Estado_id !== 1}
                         >
-                          Editar
+                          {ms.teacher.exercise.index.action.edit}
                         </button>
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
@@ -107,7 +117,7 @@ const ExcercisePage = () => {
                           disabled={exercise.Estado_id !== 1}
                           onClick={() => handleDelete(exercise.Ejercicios_id)}
                         >
-                          Eliminar
+                          {ms.teacher.exercise.index.action.dellet}
                         </button>
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
@@ -117,7 +127,7 @@ const ExcercisePage = () => {
                             handleShowResults(exercise.Ejercicios_id)
                           }
                         >
-                          Mostrar Resultados
+                          {ms.teacher.exercise.index.action.showResults}
                         </button>
                       </Td>
                     </Tr>
@@ -131,7 +141,7 @@ const ExcercisePage = () => {
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>
-                <b>Crear nuevo Ejercicio</b>
+                <b>{ms.teacher.exercise.index.newExercise}</b>
               </button>
             </div>
           </div>

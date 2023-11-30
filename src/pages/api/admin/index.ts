@@ -99,20 +99,32 @@ async function updateTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
 }
 
 async function newTeacher( req: NextApiRequest, res: NextApiResponse<Data> ){
-  const { profe } = req.body;
+  const { profe, id } = req.body;
 
   try {
     await db.prisma.$connect();
   
-    console.log(" crea nuevo teacher ");
+    const escuela_id = await db.prisma.escuela.findUnique({
+      select: {
+        Escuela_id: true
+      },
+      where:{
+        Administrador_id: Number( id )
+      }
+    });
+
+    console.log(escuela_id?.Escuela_id)
+
     const newTeacher = await db.prisma.usuarios.create({
       data:{
         ...profe.Usuarios,
         Maestros:{
           create:{
-            Usuario_id: profe.Usuario_id
+            Usuario_id: profe.Usuario_id,
+            Escuela_id: escuela_id?.Escuela_id
           }
-        }
+        },
+
       }
     });
     

@@ -1,8 +1,9 @@
 import { chibalApi } from "@/api";
 import { SigInLayout, TableStudents } from "@/components";
-import { AuthContext, GroupContext } from "@/context";
+import { AuthContext, GroupContext, InternationalContext } from "@/context";
 import { getDataGroup } from "@/db/teacher";
 import { IDataGroup } from "@/interface";
+import { en, es } from "@/messages";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -47,7 +48,9 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
   const { addStudent, students, resetStudents } = useContext(GroupContext);
   const router = useRouter();
   const navigateTo = (url: string) => {
-    router.push(url);
+    console.log(url);
+
+    return router.replace(url);
   };
 
   let nivel;
@@ -119,10 +122,15 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
     router.replace("/teacher/group");
   };
 
+  const { language } = useContext(InternationalContext);
+  const ms = language === "en" ? en : es;
+
   return (
     <SigInLayout
       titel={
-        slug === "new" ? "Crear un nuevo Grupo" : `Editar el grupo ${slug}`
+        slug === "new"
+          ? ms.teacher.group.slug.index.createNewGroup
+          : `${ms.teacher.group.slug.index.editGroup} ${slug}`
       }
     >
       <div className="pt-10">
@@ -136,7 +144,7 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
               <div className="form-control relative w-full">
                 <div className=" grid grid-cols-3 w-full gap-5">
                   <div>
-                    Nombre del grupo:
+                    {ms.teacher.group.slug.index.nameGroup}:
                     {/* <label className="sr-only">Name</label> */}
                     <input
                       className="input input-solid max-w-full"
@@ -149,13 +157,13 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                   </div>
 
                   <div>
-                    Grado del grupo:
+                    {ms.teacher.group.slug.index.grade}:
                     <br />
                     <div className="dropdown w-full">
                       {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
                       <label className="btn btn-solid-primary" tabIndex={0}>
                         {!levelGroup.level
-                          ? "Seleccione un grado"
+                          ? ms.teacher.group.slug.index.slectGrade
                           : levelGroup.level}
                       </label>
                       <div className="w-full">
@@ -183,13 +191,13 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                   </div>
 
                   <div>
-                    Tipo de Ejercicio:
+                    {ms.teacher.group.slug.index.shift}:
                     <br />
                     <div className="dropdown w-full">
                       {/* biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation> */}
                       <label className="btn btn-solid-primary" tabIndex={0}>
                         {!shiftGroup.horario
-                          ? "Seleccione un grado"
+                          ? ms.teacher.group.slug.index.selectShift
                           : shiftGroup.horario}
                       </label>
                       <div className="w-full">
@@ -223,12 +231,14 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                 {students.length === 0 && slug !== "new" ? (
                   <div>
                     <div className="divider divider-horizontal">
-                      Agregar Alumnos
+                      {ms.teacher.group.slug.index.addStudents}
                     </div>
                     <div className="grid gap-4 w-full">
                       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                       <button className="btn btn-success">
-                        <b className="text-center text-xl">Agregar Alumnos</b>
+                        <b className="text-center text-xl">
+                          {ms.teacher.group.slug.index.addStudents}
+                        </b>
                       </button>
                     </div>
                   </div>
@@ -236,21 +246,23 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
                   slug !== "new" && (
                     <div>
                       <div className="divider divider-horizontal">
-                        Editar Alumnos
+                        {ms.teacher.group.slug.index.editStudents}
                       </div>
                       <div className="grid gap-4 w-full">
-                        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-success"
+                          type="button"
                           onClick={() =>
                             navigateTo(`/teacher/group/${slug}/editStudent`)
                           }
                         >
-                          <b className="text-center text-xl">Editar alumnos</b>
+                          <b className="text-center text-xl">
+                            {ms.teacher.group.slug.index.editStudents}
+                          </b>
                         </button>
                       </div>
                       <div className="divider divider-horizontal">
-                        Lista de Alumnos
+                        {ms.teacher.group.slug.index.listOfStudent.title}
                       </div>
 
                       <TableStudents />
@@ -275,14 +287,14 @@ const EdithGropupPage: NextPage<Props> = ({ slug, dataGroup }) => {
               ) : (
                 <div>
                   <div className="divider divider-horizontal">
-                    Guardart Grupo
+                    {ms.teacher.group.slug.index.saveGroup}
                   </div>
                   <div className="mt-4">
                     <button
                       type="submit"
                       className="rounded-lg btn btn-primary btn-block"
                     >
-                      Guardar
+                      {ms.teacher.group.slug.index.save}
                     </button>
                   </div>
                 </div>
