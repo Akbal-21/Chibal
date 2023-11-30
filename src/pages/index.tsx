@@ -10,7 +10,6 @@ const letter = Sen({ subsets: ["latin"] });
 
 export default function Home() {
   const { user } = useContext(AuthContext);
-  console.log(user);
 
   return (
     <main className={`grid ${letter.className}`}>
