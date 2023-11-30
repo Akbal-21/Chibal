@@ -1,18 +1,19 @@
 import { AuthContext } from "@/context";
-import { useRouter } from "next/router";
+import { Sen } from "next/font/google";
 import { useContext } from "react";
 import AdminPage from "./admin";
 import StudentPage from "./student";
 import SuperAdminPage from "./superAdmin";
 import TeacherPage from "./teacher";
 
+const letter = Sen({ subsets: ["latin"] });
+
 export default function Home() {
-  const router = useRouter();
   const { user } = useContext(AuthContext);
   console.log(user);
 
   return (
-    <main>
+    <main className={`grid ${letter.className}`}>
       {user?.roll === "Administrador" && <AdminPage />}
       {user?.roll === "Maestro" && <TeacherPage />}
       {user?.roll === "Alumno" && <StudentPage />}
