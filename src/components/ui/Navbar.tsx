@@ -99,13 +99,40 @@ export const Navbar = ({ onReload = () => {} }) => {
       <div className="navbar-end">
         <div className="dropdown-container">
           <div className="dropdown">
-            <label
-              className="flex cursor-pointer px-0 text-white text-xl"
-              // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
-              tabIndex={0}
-            >
-              <b>{`${ms.navbar.hello} ${user?.Nombres} `}</b>
-            </label>
+            {user?.roll === "Alumno" ? (
+              <label
+                className="flex cursor-pointer px-0 text-white text-xl"
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+                tabIndex={0}
+              >
+                <b>{`${ms.navbar.hello} ${user?.Nombres} !!!!`}</b>
+              </label>
+            ) : user?.roll === "Maestro" ? (
+              <label
+                className="flex cursor-pointer px-0 text-white text-xl"
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+                tabIndex={0}
+              >
+                <b>{`${ms.navbar.helloTeacher} ${user?.Nombres} `}</b>
+              </label>
+            ) : user?.roll === "Administrador" ? (
+              <label
+                className="flex cursor-pointer px-0 text-white text-xl"
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+                tabIndex={0}
+              >
+                <b>{`${ms.navbar.helloAdmin} ${user?.Nombres} `}</b>
+              </label>
+            ) : (
+              <label
+                className="flex cursor-pointer px-0 text-white text-xl"
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+                tabIndex={0}
+              >
+                <b>{`${ms.navbar.hello} ${user?.Nombres} `}</b>
+              </label>
+            )}
+
             <div className="dropdown-menu dropdown-menu-bottom-left">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button className="dropdown-item text-sm" onClick={logout}>

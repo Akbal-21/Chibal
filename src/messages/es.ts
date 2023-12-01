@@ -210,6 +210,8 @@ export default {
     },
   },
   navbar: {
+    helloTeacher: "Hola profesor",
+    helloAdmin: "Hola administrador",
     hello: "Hola",
     logout: "Cerrar sesión",
     aboutText: `
