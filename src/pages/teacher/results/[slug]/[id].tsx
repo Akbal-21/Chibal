@@ -6,7 +6,8 @@ import { en, es } from "@/messages";
 import { GetServerSideProps, NextPage } from "next";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table';
 
 interface Props {
   slug: string;
@@ -23,31 +24,36 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
   const handleBack = () => {
     router.push(`/teacher/results/${slug}`);
   };
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel="Resultados de los Ejercicios">
+    <SigInLayout titel="Resultados de los Ejercicios" onReload={handleReloadComponent}>
       <div className=" mt-7">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 ">
-            <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <Table className="w-full text-sm text-left text-gray-500 " key={componentKey}>
+            <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+              <Tr>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.studentDraw}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.asDetected}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.asRequest}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.score}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.update}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {lineByStudent.map((lineStudent, index) => (
                 <CheckResults
                   lineStudent={lineStudent}
@@ -55,8 +61,8 @@ const AlumnoResults: NextPage<Props> = ({ id, lineByStudent, slug }) => {
                   key={lineStudent.Inciso_id}
                 />
               ))}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
         <div className="grid grid-cols-1 p-4">
           {/* biome-ignore lint/a11y/useButtonType: <explanation> */}

@@ -8,7 +8,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 interface Props {
   slug: string;
@@ -149,34 +150,45 @@ const ExerciseAnswersPage: NextPage<Props> = ({
     router.push("/teacher/exercise");
   };
 
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel={ms.teacher.exercise.pdf.results}>
+    <SigInLayout
+      titel={ms.teacher.exercise.pdf.results}
+      onReload={handleReloadComponent}
+    >
       <div className="pt-11">
         <h2 className="mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl text-center">
           {ms.teacher.exercise.pdf.results}: {NombreEjercicio}
         </h2>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 ">
-            <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <Table
+            className="w-full text-sm text-left text-gray-500 "
+            key={componentKey}
+          >
+            <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+              <Tr>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.studentName}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.correct}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.incorrect}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.prom}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </Th>
+                <Th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {ms.teacher.exercise.pdf.showResults}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {Object.keys(resultadosAgrupados).map((userId) => {
                 const usuario = resultadosAgrupados[userId];
                 const promedioPuntaje = (
@@ -184,23 +196,23 @@ const ExerciseAnswersPage: NextPage<Props> = ({
                 ).toFixed(2);
 
                 return (
-                  <tr
+                  <Tr
                     key={userId}
                     className="bg-white border-b  hover:bg-gray-100 "
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {usuario.usuario}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {usuario.aciertos.join(", ")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {usuario.fallos.join(", ")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {promedioPuntaje}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </Td>
+                    <Td className="px-6 py-4 whitespace-nowrap">
                       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                       <button
                         className=" btn btn-secondary"
@@ -208,15 +220,15 @@ const ExerciseAnswersPage: NextPage<Props> = ({
                       >
                         {ms.teacher.exercise.pdf.showResults}
                       </button>
-                    </td>
-                  </tr>
+                    </Td>
+                  </Tr>
                 );
               })}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
 
-        <div className="mt-4 grid-cols-2 grid">
+        <div className="mt-4 grid-cols-1 md:grid-cols-2 grid">
           <div className="p-4">
             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
             <button

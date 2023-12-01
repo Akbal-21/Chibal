@@ -138,6 +138,9 @@ export default {
   },
   admin: {
     welcome: "Bienvenido",
+    navbar: {
+      teachers: "Maestros"
+    },
     name: "Nombre",
     actions: {
       title: "Acciones",

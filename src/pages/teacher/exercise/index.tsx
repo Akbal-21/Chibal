@@ -4,8 +4,10 @@ import { AuthContext, InternationalContext } from "@/context";
 import { useExerciseTeacher } from "@/hooks";
 import { en, es } from "@/messages";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+
 const ExcercisePage = () => {
   const { language } = useContext(InternationalContext);
   const ms = language === "en" ? en : es;
@@ -41,66 +43,74 @@ const ExcercisePage = () => {
     return route.replace(`/teacher/results/${exerciseId}`);
   };
 
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel="Ejercicios">
-      <div className="p-1 mt-20 relative flex justify-center items-center">
+    <SigInLayout titel="Ejercicios" onReload={handleReloadComponent}>
+      <div className="p-1 mt-4 md:mt-20 relative flex justify-center items-center">
         {isLoading ? (
           <FullScreenLoading />
         ) : (
-          <div className="grid grid-cols-custom-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-custom-2 w-full">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-              <table className="w-full text-sm text-left text-gray-500">
-                <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-                  <tr>
-                    <th
+              <Table
+                className="w-full text-sm text-left text-gray-500"
+                key={componentKey}
+              >
+                <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+                  <Tr>
+                    <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       #
-                    </th>
-                    <th
+                    </Th>
+                    <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       {ms.teacher.exercise.nameExercise}
-                    </th>
-                    <th
+                    </Th>
+                    <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       {ms.teacher.exercise.index.publicDate}
-                    </th>
-                    <th
+                    </Th>
+                    <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       {ms.teacher.exercise.limitDate}
-                    </th>
-                    <th
+                    </Th>
+                    <Th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       {ms.teacher.exercise.index.action.title}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
+                    </Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
                   {exercise.map((exercise, index) => (
-                    <tr
+                    <Tr
                       className="bg-white border-b  hover:bg-gray-50"
                       key={exercise.Ejercicios_id}
                     >
-                      <td className="px-6 py-4 ">{index + 1}</td>
-                      <td className="px-6 py-4 ">{exercise.NombreEjercicio}</td>
-                      <td className="px-6 py-4 ">
+                      <Td className="px-6 py-4 ">{index + 1}</Td>
+                      <Td className="px-6 py-4 ">{exercise.NombreEjercicio}</Td>
+                      <Td className="px-6 py-4 ">
                         {exercise.Estado_id === 1
                           ? "El ejercicio es un Borrador"
                           : String(exercise.FechaPublicacion).split("T")[0]}
-                      </td>
-                      <td className="px-6 py-4 ">
+                      </Td>
+                      <Td className="px-6 py-4 ">
                         {String(exercise.FechaLimite).split("T")[0]}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap ">
+                      </Td>
+                      <Td className="px-6 py-4 whitespace-nowrap ">
                         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                         <button
                           className="btn btn-secondary mx-1"
@@ -127,15 +137,15 @@ const ExcercisePage = () => {
                         >
                           {ms.teacher.exercise.index.action.showResults}
                         </button>
-                      </td>
-                    </tr>
+                      </Td>
+                    </Tr>
                   ))}
-                </tbody>
-              </table>
+                </Tbody>
+              </Table>
             </div>
-            <div className="px-4 w-full">
+            <div className="px-4 w-full grid">
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-              <button className="btn btn-primary w-48" onClick={handleNew}>
+              <button className="btn btn-primary w-full" onClick={handleNew}>
                 <b className="text-xl">
                   <AiOutlineUsergroupAdd />
                 </b>

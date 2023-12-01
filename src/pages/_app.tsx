@@ -6,6 +6,7 @@ import {
 } from "@/context";
 // import { ExcerciseProvider } from "@/context/teacher/excercise";
 import "@/styles/globals.css";
+import "@/styles/table-responsive.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";

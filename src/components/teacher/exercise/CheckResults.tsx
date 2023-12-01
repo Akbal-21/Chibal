@@ -3,6 +3,8 @@ import { InternationalContext } from "@/context";
 import { LineByStudentID } from "@/interface";
 import { en, es } from "@/messages";
 import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
+import { Td, Tr } from "react-super-responsive-table";
+
 interface Props {
   lineStudent: LineByStudentID;
   id_Student: string;
@@ -46,30 +48,30 @@ export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
   };
 
   return (
-    <tr className="bg-white border-b  hover:bg-gray-100 ">
-      <td className="px-6 whitespace-nowrap">
+    <Tr className="bg-white border-b  hover:bg-gray-100 ">
+      <Td className="px-6 whitespace-nowrap">
         <img
           src={String(lineStudent.Imagen)}
           alt={ms.teacher.exercise.pdf.studentDraw}
           width={50}
           height={50}
         />
-      </td>
-      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
+      </Td>
+      <Td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         {lineStudent.Respuesta}
-      </td>
-      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
+      </Td>
+      <Td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         {lineStudent.Incisos.LoSolicitado}
-      </td>
-      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
+      </Td>
+      <Td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         <input
           type="number"
           className="input input-primary"
           value={shift}
           onChange={(e) => onChangeUpdate(e)}
         />
-      </td>
-      <td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
+      </Td>
+      <Td className="px-6 py-1 text-xl font-bold whitespace-nowrap">
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button
           className="btn btn-secondary"
@@ -78,7 +80,7 @@ export const CheckResults: FC<Props> = ({ lineStudent, id_Student }) => {
         >
           {ms.teacher.exercise.pdf.update}
         </button>
-      </td>
-    </tr>
+      </Td>
+    </Tr>
   );
 };

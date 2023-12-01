@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-export const Navbar = () => {
+export const Navbar = ({ onReload = () => {} }) => {
+  
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
 
@@ -51,7 +52,7 @@ export const Navbar = () => {
               className="text-white text-xl navbar-item"
               onClick={() => navigateTo("/admin")}
             >
-              <b>Maestros</b>
+              <b>{ms.admin.navbar.teachers}</b>
             </h1>
           </>
         ) : user?.roll === "Maestro" ? (
@@ -111,7 +112,7 @@ export const Navbar = () => {
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button
                 className="dropdown-item text-sm"
-                onClick={() => changeLanguageUser()}
+                onClick={() => {changeLanguageUser(); onReload(); }}
               >
                 {language === "en" ? "🇲🇽 Español" : "🇺🇸 English"}
               </button>

@@ -4,7 +4,8 @@ import { useExerciseStudent } from "@/hooks";
 import { en, es } from "@/messages";
 import { useQuestionsStore } from "@/store/student/question";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
 const StudentPage = () => {
   // const { user } = useLoginUser();
@@ -85,9 +86,13 @@ const StudentPage = () => {
     }
   }
   const reset = useQuestionsStore(state => state.reset)
-  
+  const [componentKey, setComponentKey] = useState(0);
+  const handleReloadComponent = () => {
+    // Incrementar la clave del componente para forzar su recarga
+    setComponentKey((prevKey) => prevKey + 1);
+  };
   return (
-    <SigInLayout titel={ms.student.navbar.exercise}>
+    <SigInLayout titel={ms.student.navbar.exercise} onReload={handleReloadComponent}>
       <div className="grid grid-cols-1 items-center w-full">
         <div className="p-1 mt-20 relative flex justify-center items-center">
           {isLoading ? (
@@ -95,53 +100,53 @@ const StudentPage = () => {
           ) : (
             <div className="grid grid-cols-1">
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table className="w-full text-sm text-left text-gray-500">
-                  <thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
-                    <tr>
-                      <th
+                <Table className="w-full text-sm text-left text-gray-500" key={componentKey}>
+                  <Thead className=" text-xs text-gray-700 uppercase bg-gray-200 ">
+                    <Tr>
+                      <Th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         #
-                      </th>
-                      <th
+                      </Th>
+                      <Th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         {ms.student.index.nameExercise}
-                      </th>
-                      <th
+                      </Th>
+                      <Th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         {ms.student.index.limitDate}
-                      </th>
-                      <th
+                      </Th>
+                      <Th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         {ms.student.index.actions.title}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                      </Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
                     {exercise.map((exercise, index) => (
-                      <tr
+                      <Tr
                         className="bg-white border-b  hover:bg-gray-50"
                         key={exercise.Ejercicios.Ejercicios_id}
                       >
-                        <td className="px-6 py-4 ">{index + 1}</td>
-                        <td className="px-6 py-4 ">
+                        <Td className="px-6 py-4 ">{index + 1}</Td>
+                        <Td className="px-6 py-4 ">
                           {exercise.Ejercicios.NombreEjercicio}
-                        </td>
-                        <td className="px-6 py-4 ">
+                        </Td>
+                        <Td className="px-6 py-4 ">
                           {
                             String(exercise.Ejercicios.FechaLimite).split(
                               "T",
                             )[0]
                           }
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap ">
+                        </Td>
+                        <Td className="px-6 py-4 whitespace-nowrap ">
                           {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                           <button
                             className="btn btn-secondary mx-1"
@@ -161,11 +166,11 @@ const StudentPage = () => {
                           </button>
                           <br />
                           {fun1(exercise.Ejercicios.FechaLimite)}
-                        </td>
-                      </tr>
+                        </Td>
+                      </Tr>
                     ))}
-                  </tbody>
-                </table>
+                  </Tbody>
+                </Table>
               </div>
             </div>
           )}
