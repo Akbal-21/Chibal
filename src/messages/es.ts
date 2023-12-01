@@ -139,7 +139,7 @@ export default {
   admin: {
     welcome: "Bienvenido",
     navbar: {
-      teachers: "Maestros"
+      teachers: "Maestros",
     },
     name: "Nombre",
     actions: {
@@ -212,5 +212,14 @@ export default {
   navbar: {
     hello: "Hola",
     logout: "Cerrar sesión",
+    aboutText: `
+    Derecvhos reservados
+    contacto:
+    Akbal Fernando: aserranov1500@alumno.ipn.mx
+    Luis Francisco: lrenteriac1400@alumno.ipn.mx
+    Oscar Gutierrez: ogutierrezm1400@alumno.ipn.mx
+    Profesor a cargo: Ruben Peredo Valderrama.
+    `,
+    about: "Acerca de",
   },
 };

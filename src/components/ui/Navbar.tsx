@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 
 export const Navbar = ({ onReload = () => {} }) => {
-  
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
 
@@ -25,6 +24,10 @@ export const Navbar = ({ onReload = () => {} }) => {
       changeLanguage("en");
       console.log("Espanol");
     }
+  };
+
+  const handleAbout = () => {
+    alert(ms.navbar.aboutText);
   };
 
   return (
@@ -112,9 +115,23 @@ export const Navbar = ({ onReload = () => {} }) => {
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button
                 className="dropdown-item text-sm"
-                onClick={() => {changeLanguageUser(); onReload(); }}
+                onClick={() => {
+                  changeLanguageUser();
+                  onReload();
+                }}
               >
                 {language === "en" ? "🇲🇽 Español" : "🇺🇸 English"}
+              </button>
+
+              <div className="divider" />
+              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+              <button
+                className="dropdown-item text-sm"
+                onClick={() => {
+                  handleAbout();
+                }}
+              >
+                {ms.navbar.about}
               </button>
             </div>
           </div>

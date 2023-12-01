@@ -139,7 +139,7 @@ export default {
   admin: {
     welcome: "Welcome",
     navbar: {
-      teachers: "Teachers"
+      teachers: "Teachers",
     },
     name: "Name",
     actions: {
@@ -212,5 +212,14 @@ export default {
   navbar: {
     hello: "Hello",
     logout: "Logout",
+    aboutText: `
+    Rights reserved
+    contact us:
+    Akbal Fernando: aserranov1500@alumno.ipn.mx
+    Luis Francisco: lrenteriac1400@alumno.ipn.mx
+    Oscar Gutierrez: ogutierrezm1400@alumno.ipn.mx
+    Teacher in charge: Ruben Peredo Valderrama.
+    `,
+    about: "About",
   },
 };
