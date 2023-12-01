@@ -52,7 +52,7 @@ export const Navbar = ({ onReload = () => {} }) => {
               className="text-white text-xl navbar-item"
               onClick={() => navigateTo("/admin")}
             >
-              <b>Maestros</b>
+              <b>{ms.admin.navbar.teachers}</b>
             </h1>
           </>
         ) : user?.roll === "Maestro" ? (
