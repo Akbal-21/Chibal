@@ -215,12 +215,12 @@ export default {
     hello: "Hola",
     logout: "Cerrar sesión",
     aboutText: `
-    Derecvhos reservados
-    contacto:
+    Derechos reservados
+    Contacto:
     Akbal Fernando: aserranov1500@alumno.ipn.mx
     Luis Francisco: lrenteriac1400@alumno.ipn.mx
     Oscar Gutierrez: ogutierrezm1400@alumno.ipn.mx
-    Profesor a cargo: Ruben Peredo Valderrama.
+    Director de Trabajo Terminal: Ruben Peredo Valderrama.
     `,
     about: "Acerca de",
   },
