@@ -13,8 +13,8 @@ export const Item = forwardRef<HTMLDivElement, ItemProps>(({ id, withOpacity, is
     const inlineStyles: CSSProperties = {
         opacity: withOpacity ? '0.5' : '1',
         //transformOrigin: '50% 50%',
-        height: '140px',
-        width: '140px',
+        height: '15vmin',
+        width: '15vmin',
         borderRadius: '10px',
         cursor: isDragging ? 'grabbing' : 'grab',
         color:'black',
@@ -25,7 +25,7 @@ export const Item = forwardRef<HTMLDivElement, ItemProps>(({ id, withOpacity, is
         alignItems: 'center',
         //boxShadow: isDragging ? 'rgb(63 63 68 / 5%) 0px 2px 0px 2px, rgb(34 33 81 / 15%) 0px 2px 3px 2px' : 'rgb(63 63 68 / 5%) 0px 0px 0px 1px, rgb(34 33 81 / 15%) 0px 1px 3px 0px',
         //transform: isDragging ? 'scale(1.05)' : 'scale(1)',
-        border:id===""? 'dashed 4px':'solid',
+        border:id===""? 'dashed 4px':'solid 2px',
         userSelect: 'none',
         ...style,
     };

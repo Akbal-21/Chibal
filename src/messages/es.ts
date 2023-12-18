@@ -127,11 +127,11 @@ export default {
       correct: "Correctas",
       incorrect: "Incorrectas",
       notAnswer: "Sin responder",
-      back_Menu: "Voler al menu",
-      exitWord: "Te deseamos todo el exito en este exercicio📝!!!",
+      back_Menu: "Volver al menu",
+      exitWord: "Te deseamos todo el éxito en este ejercicio📝!!!",
     },
     spelling: {
-      exercise: "Ejercicio de deletro",
+      exercise: "Ejercicio de deletreo",
       exerciseFinish: "¡Juego completado!",
       sendResults: "Enviar resultados",
     },
@@ -217,11 +217,21 @@ export default {
     aboutText: `
     Derechos reservados
     Contacto:
-    Akbal Fernando: aserranov1500@alumno.ipn.mx
-    Luis Francisco: lrenteriac1400@alumno.ipn.mx
-    Oscar Gutierrez: ogutierrezm1400@alumno.ipn.mx
-    Director de Trabajo Terminal: Ruben Peredo Valderrama.
+
+    Fernando Serrano: aserranov1500@alumno.ipn.mx
+    Luis Renteria: lrenteriac1400@alumno.ipn.mx
+    Oscar Gutiérrez: ogutierrezm1400@alumno.ipn.mx
+    
+    Director de Trabajo Terminal: Rubén Peredo Valderrama.
     `,
     about: "Acerca de",
+  },
+  welcome:{
+    welcome: "¡Bienvenido(a)!",
+    message: "Te invitamos a revisar nuestro manual de usuario para familiarizarte con todas las características y funcionalidades que ofrecemos.",
+    link: "Aquí está el enlace al manual: ",
+    manual: "Manual de Usuario",
+    enjoy: "¡Disfruta tu experiencia!",
+    team: "- Equipo de desarrollo de Ch'ibal",
   },
 };

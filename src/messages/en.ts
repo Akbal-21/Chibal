@@ -216,12 +216,22 @@ export default {
     logout: "Logout",
     aboutText: `
     Rights reserved
-    contact us:
-    Akbal Fernando: aserranov1500@alumno.ipn.mx
-    Luis Francisco: lrenteriac1400@alumno.ipn.mx
-    Oscar Gutierrez: ogutierrezm1400@alumno.ipn.mx
+    Contact us:
+
+    Fernando Serrano: aserranov1500@alumno.ipn.mx
+    Luis Renteria: lrenteriac1400@alumno.ipn.mx
+    Oscar Gutiérrez: ogutierrezm1400@alumno.ipn.mx
+    
     Teacher in charge: Ruben Peredo Valderrama.
     `,
     about: "About",
+  },
+  welcome:{
+    welcome: "Welcome!",
+    message: "We invite you to review our user manual to familiarize yourself with all the features and functionalities we offer. ",
+    link: "Here is the link to the manual: ",
+    manual: "User manual",
+    enjoy: "Enjoy your experience!",
+    team: "- Ch'ibal Development Team",
   },
 };

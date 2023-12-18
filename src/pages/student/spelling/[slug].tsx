@@ -256,6 +256,12 @@ export const App2: NextPage<Props> = ({ word, idInciso }) => {
                 ))}
               </Grid>
             </SortableContext>
+            {!isGameComplete && (
+              <div className="text-4xl mt-4 text-center">
+                {word}
+              </div>
+            )}
+            
             {isGameComplete && (
               <div className="text-4xl mt-4 text-center">
                 <div className="m-2">{ms.student.spelling.exerciseFinish}</div>
